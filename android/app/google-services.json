@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "362955024137",
+    "project_id": "bustrackingapp00final",
+    "storage_bucket": "bustrackingapp00final.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:362955024137:android:0dbfef5bc19dd2b99455d8",
+        "android_client_info": {
+          "package_name": "com.example.bustrackingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "362955024137-c2r2pr57frrfhdpqduoca2sgl5q347br.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1aIa9JkbYemEV7eDsetFtBsGApbaK518"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "362955024137-c2r2pr57frrfhdpqduoca2sgl5q347br.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
