@@ -15,9 +15,9 @@ import 'package:bustrackingapp/screens/adminscreens/adminhomescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'adminscreens/adminloginscreen.dart';
-import 'adminscreens/listofdriverscreen.dart';
-import 'adminscreens/listofparentsscreen.dart';
+import 'screens/adminscreens/adminloginscreen.dart';
+import 'screens/adminscreens/listofdriverscreen.dart';
+import 'screens/adminscreens/listofparentsscreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
         "selectschoolscreen": ((context) => selectschoolscreen()),
         "listofdriverscreen": ((context) => listofdriverscreen()),
         "listofparentsscreen": (context) => listofparentsscreen(),
+        
         "parentwelcomescreen": (context) => parentwelcomescreen(),
         "parentloginotpscreen": (context) => parentsloginotpscreen(),
         "parentbustrackscreen": (context) => parentbustrackscreen(),

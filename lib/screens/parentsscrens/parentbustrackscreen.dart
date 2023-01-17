@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:bustrackingapp/providers/provider.dart';
@@ -20,9 +21,11 @@ class _parentbustrackscreenState extends State<parentbustrackscreen> {
   double homelat = 0;
   double homelong = 0;
   late BitmapDescriptor icon;
-  late final Uint8List markericonofhome;
 
-  late final Uint8List markericonofbus;
+  final Set<Marker> markers = new Set();
+
+  void addmarker() {}
+
   getIcons() async {
     var icon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(), "assets/images/home2.png");
@@ -31,20 +34,9 @@ class _parentbustrackscreenState extends State<parentbustrackscreen> {
     });
   }
 
-  Future<Uint8List> futurefunc() async {
-    return markericonofbus;
-  }
-
-// this function convvert img to byte may beee
-  Future<Uint8List> getBytesFromAsset(String path, int width) async {
-    ByteData data = await rootBundle.load(path);
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
-        targetWidth: width);
-    ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
-        .buffer
-        .asUint8List();
-  }
+  // Future<Uint8List> futurefunc() async {
+  //   return markericonofbus;
+  // }
 
   // this function for call upper function.
   // insise inisatte direct not call with async so put in another call function and
@@ -73,26 +65,10 @@ class _parentbustrackscreenState extends State<parentbustrackscreen> {
     setState(() {});
   }
 
-//below code assign image logo to variable at initstate
-//main problem here is both variable in one function if i do than it gives error
-// markericon of bus no intialied so i make  2 below  function.
-
-  void callgetbytefromassetforhomeicon() async {
-    markericonofhome = await getBytesFromAsset('assets/images/home2.png', 100);
-    // markericonofbus = await getBytesFromAsset('assets/images/bus2.png', 100);
-  }
-
-  void callgetbytefromassetforbusicon() async {
-    //   markericonofhome = await getBytesFromAsset('assets/images/home2.png', 100);
-    markericonofbus = await getBytesFromAsset('assets/images/bus.png', 100);
-  }
-
   @override
   void initState() {
     super.initState();
-    print(markericonofbus);
-    callgetbytefromassetforhomeicon();
-    callgetbytefromassetforbusicon();
+
     // getIcons();
     sethome();
   }
@@ -122,9 +98,7 @@ class _parentbustrackscreenState extends State<parentbustrackscreen> {
                 if (added) {
                   updatecamerapos(snapshot);
                 }
-                while(markericonofbus==null){
-                   return CircularProgressIndicator();
-                }
+
                 if (!snapshot.hasData) {
                   return CircularProgressIndicator();
                 } else {
@@ -137,7 +111,9 @@ class _parentbustrackscreenState extends State<parentbustrackscreen> {
                         zoom: 14.4,
                         target: LatLng(snapshot.data!.get('letitude'),
                             snapshot.data!.get('longitude'))),
-                    markers: {
+                    markers: 
+
+                    {
                       //this marker showwww home logo of parent
                       //ok again chnage for git
 
@@ -145,14 +121,19 @@ class _parentbustrackscreenState extends State<parentbustrackscreen> {
                         markerId: MarkerId("home"),
                         position: LatLng(homelat, homelong),
                         // icon: icon,
-                        icon: BitmapDescriptor.fromBytes(markericonofhome),
+                        icon: BitmapDescriptor.fromBytes(
+                            Provider.of<Alldata>(context, listen: false)
+                                .markericonofhome),
                       ),
+
                       // this logo showww bbus  hereeeeeeeeee
                       Marker(
                         markerId: MarkerId("a"),
                         position: LatLng(snapshot.data!.get('letitude'),
                             snapshot.data!.get('longitude')),
-                        icon: BitmapDescriptor.fromBytes(markericonofbus),
+                        icon: BitmapDescriptor.fromBytes(
+                            Provider.of<Alldata>(context, listen: false)
+                                .markericonofbus),
                       )
                     },
                   );

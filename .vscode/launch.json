@@ -8,7 +8,7 @@
             "name": "bustrackingapp",
             "request": "launch",
             "type": "dart",
-            "program": "lib/screens/main.dart",
+            "program": "lib/parentsscreens/dummy.dart",
         
             "args": [
                 "--no-sound-null-safety"
