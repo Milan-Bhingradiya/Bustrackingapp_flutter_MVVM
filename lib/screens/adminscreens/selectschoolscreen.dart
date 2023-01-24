@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:geocoder/services/base.dart';
+//import 'package:geocoder/services/base.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geocoder/geocoder.dart';
+//import 'package:geocoder/geocoder.dart';
 
 import 'admindrawerwidget.dart';
+
+import 'package:geocoding/geocoding.dart';
 
 class selectschoolscreen extends StatefulWidget {
   const selectschoolscreen({super.key});
@@ -20,12 +22,18 @@ class _selectschoolscreenState extends State<selectschoolscreen> {
   var text = TextEditingController();
 
   void findaddress() async {
-    final address2 = await Geocoder.local
-        .findAddressesFromCoordinates(Coordinates(lat, log));
-    var first = address2.first;
+    // final address2 = await Geocoding .local
+    //     .findAddressesFromCoordinates(Coordinates(lat, log));
+    // var first = address2.first;
+
+    // using geocoding pckg..
+    List<Placemark> placemarks = await placemarkFromCoordinates(lat, log);
+
     setState(() {
       // address = first.addressLine;
-      text.text = first.addressLine;
+      // text.text = first.addressLine;
+      address = placemarks.first.country!;
+      text.text=placemarks.first.country!;
     });
     // print("aaaaaaaaaaaaaaaaaaaaaaaa $address");
   }

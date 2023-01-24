@@ -1,5 +1,5 @@
 import 'package:bustrackingapp/screens/adminlogincheck.dart';
-import 'package:bustrackingapp/screens/parentsscrens/parentsloginscreen.dart';
+import 'package:bustrackingapp/screens/parentsscrens/auth/parentsloginscreen.dart';
 import 'package:flutter/material.dart';
 
 import 'adminscreens/adminloginscreen.dart';
@@ -39,7 +39,7 @@ class selectwhoyouarescreen extends StatelessWidget {
                   //     MaterialPageRoute(
                   //         builder: ((context) => parentsloginscreen()))),
 
-                  Navigator.pushNamed(context, "parentprofilescreen"),
+                  Navigator.pushNamed(context, "parentwelcomescreen"),
               child: Container(
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
@@ -103,8 +103,6 @@ class selectwhoyouarescreen extends StatelessWidget {
                 ),
               ),
             ),
-
-            
           ],
         ),
       ),

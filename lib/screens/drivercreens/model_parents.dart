@@ -1,23 +1,24 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-class model {
-  late String drivername;
-  late int driverphonenumber;
+
+class modelofparents {
+  late String parentname;
+    late String parentchildname;
+  late int parentphonenumber;
   late String password;
   late String lat;
   late String long;
   late final QueryDocumentSnapshot;
 
 
-  model(this.QueryDocumentSnapshot) {
+
+  modelofparents(this.QueryDocumentSnapshot) {
     // here ass*hole int lat & long woking idk why so use string 
      this.lat = QueryDocumentSnapshot["letitude"].toString();
    this.long = QueryDocumentSnapshot["longitude"].toString();
-    drivername = QueryDocumentSnapshot["drivername"];
+    parentname = QueryDocumentSnapshot["parentname"];
+parentchildname=QueryDocumentSnapshot["parentchildname"];
      password = QueryDocumentSnapshot["password"];
   }
 
-  functionofmodel() {
-    print(QueryDocumentSnapshot);
-  }
+
 }

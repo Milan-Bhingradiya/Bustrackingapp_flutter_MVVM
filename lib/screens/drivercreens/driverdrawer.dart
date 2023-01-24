@@ -30,14 +30,14 @@ class driverdrawer extends StatelessWidget {
             ListTile(
               title: Text("show map "),
               onTap: () {
-                Navigator.pushNamed(context, "drivershowmap");
+                Navigator.pushNamed(context, "mapfordriver");
                 //Navigator.pop(context);
               },
             ),
             ListTile(
               title: Text("MY PROFILE"),
               onTap: () {
-                Navigator.pushNamed(context, "parentprofilescreen");
+                Navigator.pushNamed(context, "driverprofilescreen");
               },
             ),
             ListTile(

@@ -1,19 +1,20 @@
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'package:bustrackingapp/providers/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 import 'model.dart';
 
 List<model> listofmodel = [];
 final Set<Marker> markers = new Set();
 
-Future<List<model>> firestoretomodel() async {
-  await Future.delayed(Duration(seconds: 3), () {
-    print("Executed after 5 seconds");
-  });
+List<model> firestore_to_model()  {
+  
 
-  // final Document =
-  //     FirebaseFirestore.instance.collection('drivers').doc('ramu3');
 
   FirebaseFirestore.instance
       .collection('drivers')
@@ -31,40 +32,50 @@ Future<List<model>> firestoretomodel() async {
   return listofmodel;
 }
 
-void makemarker() {
-  for (var i = 0; i < (listofmodel.length - 1); i++) {
+void makemarker(context) {
+  markers.add(Marker(
+    markerId: MarkerId("home"),
+    position: LatLng(21.98765, 71.9876543),
+    icon: Provider.of<Alldata>(context, listen: false).homeicon,
+  ));
+
+  for (var i = 1; i < (listofmodel.length - 1); i++) {
     markers.add(Marker(
       markerId: MarkerId(
         listofmodel[i].drivername,
       ),
       position: LatLng(
           double.parse(listofmodel[i].lat), double.parse(listofmodel[i].long)),
-      icon: BitmapDescriptor.defaultMarker,
+      icon: Provider.of<Alldata>(context, listen: false).busicon,
     ));
   }
 }
 
-class dummy extends StatefulWidget {
-  const dummy({super.key});
+class multiplemarker extends StatefulWidget {
+  const multiplemarker({super.key});
 
   @override
-  State<dummy> createState() => _dummyState();
+  State<multiplemarker> createState() => _dummyState();
 }
 
-class _dummyState extends State<dummy> {
+class _dummyState extends State<multiplemarker> {
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    Provider.of<Alldata>(context, listen: false).make_and_assign_icon();
   }
 
   @override
   Widget build(BuildContext context) {
+    print("multiplemarker wiget buildddddddddddddddddddddddddddddddddddddddddd");
     Future.delayed(Duration(seconds: 1), () {
-      print("Executed after 5 seconds");
+      print("Executed after 1 seconds");
       setState(() {
-        firestoretomodel();
-        makemarker();
+        firestore_to_model();
+        makemarker(context);
+
         listofmodel.clear();
       });
     });

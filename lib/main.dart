@@ -1,13 +1,17 @@
 import 'package:bustrackingapp/providers/provider.dart';
+import 'package:bustrackingapp/screens/drivercreens/driverprofilescreen.dart';
 import 'package:bustrackingapp/screens/drivercreens/drivershowmapscreen.dart';
 import 'package:bustrackingapp/screens/drivercreens/driverwelcomescreen.dart';
+import 'package:bustrackingapp/screens/drivercreens/map_for_driver.dart';
+import 'package:bustrackingapp/screens/parentsscrens/trackingbus/multiple_track/multiplemarker.dart';
+import 'package:bustrackingapp/screens/parentsscrens/trackingbus/select_single_or_multiple_track.dart';
 import 'package:provider/provider.dart';
 import 'package:bustrackingapp/screens/adminlogincheck.dart';
 import 'package:bustrackingapp/screens/adminscreens/selectschoolscreen.dart';
-import 'package:bustrackingapp/screens/parentsscrens/parentbustrackscreen.dart';
-import 'package:bustrackingapp/screens/parentsscrens/parentprofilescreen.dart';
+import 'package:bustrackingapp/screens/parentsscrens/trackingbus/single_track/parentbustrackscreen.dart';
+import 'package:bustrackingapp/screens/parentsscrens/profile/parentprofilescreen.dart';
 import 'package:bustrackingapp/screens/parentsscrens/parentwelcomescreen.dart';
-import 'package:bustrackingapp/screens/parentsscrens/parentloginotpscreen.dart';
+import 'package:bustrackingapp/screens/parentsscrens/auth/parentloginotpscreen.dart';
 import 'package:bustrackingapp/screens/selectwhoyouarescreen.dart';
 import 'package:bustrackingapp/screens/studentloginscreen.dart';
 import 'package:bustrackingapp/screens/adminscreens/adminhomescreen.dart';
@@ -55,6 +59,12 @@ class MyApp extends StatelessWidget {
         //driver
         "driverwelcomescreen" :((context) => driverwelcomescreen()),
         "drivershowmap":(context) => drivershowmapscreen(),
+
+
+        "parent_multiple_marker":(context) => multiplemarker(),
+        "select_single_or_multiple_track":(context) => select_single_or_multiple_track(),
+        "mapfordriver":(context) => mapfordriver(),
+        "driverprofilescreen":(context) => driverprofilescreen(),
       },
       title: 'Flutter Demo',
       theme: ThemeData(

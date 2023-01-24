@@ -1,9 +1,14 @@
 import 'dart:async';
-
-import 'package:bustrackingapp/screens/parentsscrens/dummy.dart';
-import 'package:bustrackingapp/screens/parentsscrens/parentdrawerwidget.dart';
+//import 'dart:html';
+//import 'dart:html';
+import 'dart:io';
+import 'package:bustrackingapp/screens/parentsscrens/trackingbus/multiple_track/multiplemarker.dart';
+import 'package:bustrackingapp/screens/parentsscrens/drawer/parentdrawerwidget.dart';
+import 'package:bustrackingapp/screens/parentsscrens/trackingbus/select_single_or_multiple_track.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/provider.dart';
@@ -16,6 +21,27 @@ class parentwelcomescreen extends StatefulWidget {
 }
 
 class _parentwelcomescreenState extends State<parentwelcomescreen> {
+
+  File? final_img;
+  late final imaegtemporary;
+
+//   Future uploadfile() async {
+//  // final file = File( image.path);
+//   }
+
+  select_img() async {
+    
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+   final imaegtemporary = File(image.path);
+    }
+
+    setState(() {
+      this.final_img = imaegtemporary;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -23,18 +49,7 @@ class _parentwelcomescreenState extends State<parentwelcomescreen> {
 
     // here i check if already i assign icon to variable
     //then bypass assign icon to bus
-
-    if (!Provider.of<Alldata>(context, listen: false)
-        .marker_of_home_and_bus_set) {
-      Provider.of<Alldata>(context, listen: false)
-          .callgetbytefromassetforhomeicon();
-
-      Provider.of<Alldata>(context, listen: false)
-          .callgetbytefromassetforbusicon();
-
-      Provider.of<Alldata>(context, listen: false).marker_of_home_and_bus_set =
-          true;
-    }
+    Provider.of<Alldata>(context, listen: false).make_and_assign_icon();
   }
 
   @override
@@ -47,15 +62,32 @@ class _parentwelcomescreenState extends State<parentwelcomescreen> {
           children: [
             // for checking i am able to make stream or not just for example
             GestureDetector(
-              onTap: () {
+              onTap: () async {
                 print("touch");
+                // List<Placemark> placemarks = await placemarkFromCoordinates(
+                //     21.22461083368087, 72.77901540143989);
+                // print(placemarks.last.street);
 
-                Navigator.push(context,
-                    MaterialPageRoute(builder: ((context) => dummy())));
+                select_img();
+
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: ((context) => select_single_or_multiple_track())));
 
                 // print(DocumentSnapshot.);
               },
-              child: Container(height: 200, width: 200, color: Colors.amber),
+              child: Container(
+                  height: 200,
+                  width: 200,
+                  color: Colors.amber,
+                  child: (final_img != null)
+                      ? Image.file(
+                          final_img!,
+                          height: 200,
+                          width: 200,
+                        )
+                      : Container()),
             )
           ],
         ),

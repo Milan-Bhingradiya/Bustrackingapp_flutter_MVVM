@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:bustrackingapp/providers/provider.dart';
-import 'package:bustrackingapp/screens/parentsscrens/parentdrawerwidget.dart';
+import 'package:bustrackingapp/screens/parentsscrens/drawer/parentdrawerwidget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,8 +24,6 @@ class _parentbustrackscreenState extends State<parentbustrackscreen> {
 
   final Set<Marker> markers = new Set();
 
-  void addmarker() {}
-
   getIcons() async {
     var icon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(), "assets/images/home2.png");
@@ -43,13 +41,14 @@ class _parentbustrackscreenState extends State<parentbustrackscreen> {
   //then call inside this function so we can call in initstat .maybe u dont under stand :)((()))
 
   Future<void> updatecamerapos(snapshot) async {
-    await mapController
-        .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-            zoom: 14.4,
-            target: LatLng(
-              snapshot.data!.get('letitude'),
-              snapshot.data!.get('longitude'),
-            ))));
+    await mapController.animateCamera(
+      CameraUpdate.newCameraPosition(CameraPosition(
+          zoom: 14.4,
+          target: LatLng(
+            snapshot.data!.get('letitude'),
+            snapshot.data!.get('longitude'),
+          ))),
+    );
   }
 
 // this function for  get  of lat long value from parent after givven document id
@@ -69,6 +68,7 @@ class _parentbustrackscreenState extends State<parentbustrackscreen> {
   void initState() {
     super.initState();
 
+    Provider.of<Alldata>(context, listen: false).make_and_assign_icon();
     // getIcons();
     sethome();
   }
@@ -82,6 +82,7 @@ class _parentbustrackscreenState extends State<parentbustrackscreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("widget build");
     return Scaffold(
       appBar: AppBar(
         title: Text("you can see below where is your bus"),
@@ -92,7 +93,8 @@ class _parentbustrackscreenState extends State<parentbustrackscreen> {
           child: StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection('drivers')
-                  .doc('ramu3')
+                  .doc(Provider.of<Alldata>(context, listen: false)
+                                  .track_single_bus_document_id)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (added) {
@@ -111,30 +113,33 @@ class _parentbustrackscreenState extends State<parentbustrackscreen> {
                         zoom: 14.4,
                         target: LatLng(snapshot.data!.get('letitude'),
                             snapshot.data!.get('longitude'))),
-                    markers: 
-
-                    {
+                    markers: {
                       //this marker showwww home logo of parent
                       //ok again chnage for git
 
                       Marker(
-                        markerId: MarkerId("home"),
-                        position: LatLng(homelat, homelong),
-                        // icon: icon,
-                        icon: BitmapDescriptor.fromBytes(
-                            Provider.of<Alldata>(context, listen: false)
-                                .markericonofhome),
-                      ),
+                          markerId: MarkerId("home"),
+                          position: LatLng(homelat, homelong),
+                          // icon: icon,
+                          icon:  Provider.of<Alldata>(context, listen: false)
+                                   .homeicon),
+                          ///////////////////////////////////////
+                          // ///
+                          //  BitmapDescriptor.fromBytes(
+                          //     Provider.of<Alldata>(context, listen: false)
+                          //         .markericonofhome),
+
+                          ///////////////////////////////////
+                          
 
                       // this logo showww bbus  hereeeeeeeeee
                       Marker(
                         markerId: MarkerId("a"),
                         position: LatLng(snapshot.data!.get('letitude'),
                             snapshot.data!.get('longitude')),
-                        icon: BitmapDescriptor.fromBytes(
-                            Provider.of<Alldata>(context, listen: false)
-                                .markericonofbus),
-                      )
+                        icon:  Provider.of<Alldata>(context, listen: false)
+                                   .busicon),
+                      
                     },
                   );
                 }
