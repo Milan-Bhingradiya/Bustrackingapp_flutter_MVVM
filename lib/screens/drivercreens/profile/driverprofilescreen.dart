@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
-import '../../providers/provider.dart';
+import '../../../providers/provider.dart';
 
 class driverprofilescreen extends StatefulWidget {
   const driverprofilescreen({super.key});
@@ -43,6 +43,8 @@ class _driverprofilescreenState extends State<driverprofilescreen> {
 
   Future<void> doesPhonenumberAlreadyExist(String phonenum) async {
     print("aaaaaaaaaaaaaaaaaaaaaaa");
+
+   // TODO: change query by new database
     final QuerySnapshot result = await FirebaseFirestore.instance
         .collection('drivers')
         .where('driverphonenumber', isEqualTo: phonenum)
@@ -56,9 +58,22 @@ class _driverprofilescreenState extends State<driverprofilescreen> {
 
   void givedatatotextfield() async {
     print("bbbbbbbbbbbbbbbbbbbb");
-    final data = await FirebaseFirestore.instance
+    // final data = await FirebaseFirestore.instance
+    //     .collection("drivers")
+    //     .doc(driver_documentid_after_login)
+    //     .get();
+
+
+ // TODO: fix me  institute list
+   final data =await FirebaseFirestore.instance
+        .collection('main')
+        .doc("main_document")
+        .collection("institute_list")
+        //TODO: institute ma variable avse
+        .doc('brilliant vidyalaya')
         .collection("drivers")
-        .doc(driver_documentid_after_login)
+        //TODO: arshil bhai ni jagya a variable avse
+        .doc('arsilbhai')
         .get();
     //  snapshot = data;
     //print(data['parentchildname']);
@@ -214,7 +229,6 @@ class _driverprofilescreenState extends State<driverprofilescreen> {
     return GestureDetector(
       onTap: () {
         setState(() {
-
           // if if_condition is true its is go to editmode..
           if (errortext_driveremailfield == null &&
               errortext_drivernamefield == null &&
@@ -227,7 +241,7 @@ class _driverprofilescreenState extends State<driverprofilescreen> {
             });
           }
           // if else is true it is go to again simple watch profile state
-           else if (errortext_driveremailfield == null &&
+          else if (errortext_driveremailfield == null &&
               errortext_drivernamefield == null &&
               errortext_driverphonenumberfield == null) {
             setState(() {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'adminscreens/adminloginscreen.dart';
+import 'schooladminscreens/auth/adminloginscreen.dart';
 
 class adminlogincheck extends StatelessWidget {
   const adminlogincheck({super.key});

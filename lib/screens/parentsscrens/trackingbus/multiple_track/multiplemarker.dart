@@ -1,6 +1,9 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:bustrackingapp/providers/provider.dart';
+import 'package:bustrackingapp/screens/parentsscrens/trackingbus/track/data/list_of_bus.dart';
+import 'package:bustrackingapp/screens/school_admin/buses/list_of_bus_screen.dart';
+import 'package:bustrackingapp/screens/school_admin/drivers/listofdriverscreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,48 +11,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'model.dart';
-
-List<model> listofmodel = [];
-final Set<Marker> markers = new Set();
-
-List<model> firestore_to_model()  {
-  
-
-
-  FirebaseFirestore.instance
-      .collection('drivers')
-      // .doc('ramu3')
-      .get()
-      .then((QuerySnapshot querySnapshot) {
-    querySnapshot.docs.forEach((doc) {
-      // print(doc["drivername"]);
-      model m = model(doc);
-      listofmodel.add(m);
-    });
-  });
-  print(listofmodel.length);
-
-  return listofmodel;
-}
-
-void makemarker(context) {
-  markers.add(Marker(
-    markerId: MarkerId("home"),
-    position: LatLng(21.98765, 71.9876543),
-    icon: Provider.of<Alldata>(context, listen: false).homeicon,
-  ));
-
-  for (var i = 1; i < (listofmodel.length - 1); i++) {
-    markers.add(Marker(
-      markerId: MarkerId(
-        listofmodel[i].drivername,
-      ),
-      position: LatLng(
-          double.parse(listofmodel[i].lat), double.parse(listofmodel[i].long)),
-      icon: Provider.of<Alldata>(context, listen: false).busicon,
-    ));
-  }
-}
 
 class multiplemarker extends StatefulWidget {
   const multiplemarker({super.key});
@@ -59,33 +20,99 @@ class multiplemarker extends StatefulWidget {
 }
 
 class _dummyState extends State<multiplemarker> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
+  List<model> listofmodel = [];
+  final Set<Marker> markers = new Set();
 
-    Provider.of<Alldata>(context, listen: false).make_and_assign_icon();
+//firestore to object
+  List<model> firestore_to_model() {
+    try {
+      FirebaseFirestore.instance
+          .collection('drivers')
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+          model m = model(doc);
+          listofmodel.add(m);
+
+          // listofmodel.removeWhere((elementt) =>
+          //     elementt.drivername ==
+          //     list_of_bus.where((element) => element == elementt));
+        });
+      });
+    } catch (e) {
+      print("eeeeeeeeeeeeeeeeeeeeeeeeeeeerooooooooooooooooooo $e");
+    }
+
+    print(listofmodel.length);
+    return listofmodel;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    print("multiplemarker wiget buildddddddddddddddddddddddddddddddddddddddddd");
-    Future.delayed(Duration(seconds: 1), () {
+  void allbusmodel_to_onlyselectedbusmodel(context) {
+    print("aal bus ${listofmodel.length} ");
+    listofmodel.removeWhere((elementt) {
+      return elementt.busnum ==
+          Provider.of<Alldata>(context, listen: false)
+              .list_of_selected_bus
+              .where((element) => element != elementt.busnum);
+    });
+
+    print("slected bus only   ${listofmodel.length}           ");
+  }
+
+  void makemarker(context) {
+    markers.add(Marker(
+      markerId: MarkerId("home"),
+      position: LatLng(21.98765, 71.9876543),
+      icon: Provider.of<Alldata>(context, listen: false).homeicon,
+    ));
+
+    for (var i = 1; i < (listofmodel.length - 1); i++) {
+      markers.add(Marker(
+        markerId: MarkerId(
+          listofmodel[i].drivername,
+        ),
+        position: LatLng(double.parse(listofmodel[i].lat),
+            double.parse(listofmodel[i].long)),
+        icon: Provider.of<Alldata>(context, listen: false).busicon,
+      ));
+    }
+  }
+
+  Future<void> recall_func() async {
+    Future.delayed(Duration(seconds: 3), () {
       print("Executed after 1 seconds");
       setState(() {
         firestore_to_model();
         makemarker(context);
-
         listofmodel.clear();
       });
     });
+  }
 
-    return Container(
-      child: GoogleMap(
-        initialCameraPosition:
-            CameraPosition(zoom: 10.4, target: LatLng(21, 71)),
-        markers: markers,
-      ),
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<Alldata>(context, listen: false).make_and_assign_icon();
+    recall_func();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print("wiget buildddddddddddddddddddddddddddddddddddddddddd");
+    return FutureBuilder(
+      future: recall_func(),
+      builder: (context, snapshot) {
+        return Container(
+          child: GoogleMap(
+            initialCameraPosition:
+                CameraPosition(zoom: 10.4, target: LatLng(21, 71)),
+            markers: markers,
+          ),
+        );
+      },
     );
   }
+
+
+ 
 }

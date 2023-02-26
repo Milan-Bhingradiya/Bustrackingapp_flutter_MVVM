@@ -1,10 +1,10 @@
-import 'package:bustrackingapp/screens/drivercreens/model_parents.dart';
+import 'package:bustrackingapp/screens/drivercreens/show_map/model_parents.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-import '../../providers/provider.dart';
+import '../../../providers/provider.dart';
 
 class mapfordriver extends StatefulWidget {
   const mapfordriver({super.key});

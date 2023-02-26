@@ -45,7 +45,7 @@ class admindrawer extends StatelessWidget {
             ListTile(
               title: Text("BUSES"),
               onTap: () {
-                //Navigator.pop(context);
+                Navigator.pushNamed(context, "listofbusscreen");
               },
             ),
             ListTile(

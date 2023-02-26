@@ -1,3 +1,23 @@
+
+
+
+
+// old file che
+
+// not used now 
+
+// in past use for ayth using email and password
+// oli black and whiye main admin juni
+
+
+
+
+
+
+
+
+
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';

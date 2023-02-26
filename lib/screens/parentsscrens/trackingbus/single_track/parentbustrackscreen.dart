@@ -70,7 +70,7 @@ class _parentbustrackscreenState extends State<parentbustrackscreen> {
 
     Provider.of<Alldata>(context, listen: false).make_and_assign_icon();
     // getIcons();
-    sethome();
+    // sethome();
   }
 
   // @override
@@ -84,17 +84,28 @@ class _parentbustrackscreenState extends State<parentbustrackscreen> {
   Widget build(BuildContext context) {
     print("widget build");
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text("you can see below where is your bus"),
+        leading: BackButton(
+          color: Colors.black,
+        ),
+        title: Text(
+          "Live Tracking",
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
-      drawer: parentdrawer(),
-      body: Container(
-          padding: EdgeInsets.only(top: 20, bottom: 35, left: 10, right: 10),
+      // drawer: parentdrawer(),
+      body:
+      
+       Container(
+          // padding: EdgeInsets.only(top: 20, bottom: 35, left: 10, right: 10),
           child: StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection('drivers')
                   .doc(Provider.of<Alldata>(context, listen: false)
-                                  .track_single_bus_document_id)
+                      .track_single_bus_document_id)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (added) {
@@ -105,6 +116,7 @@ class _parentbustrackscreenState extends State<parentbustrackscreen> {
                   return CircularProgressIndicator();
                 } else {
                   return GoogleMap(
+                    mapType: MapType.normal,
                     onMapCreated: (controller) {
                       mapController = controller;
                       added = true;
@@ -121,25 +133,23 @@ class _parentbustrackscreenState extends State<parentbustrackscreen> {
                           markerId: MarkerId("home"),
                           position: LatLng(homelat, homelong),
                           // icon: icon,
-                          icon:  Provider.of<Alldata>(context, listen: false)
-                                   .homeicon),
-                          ///////////////////////////////////////
-                          // ///
-                          //  BitmapDescriptor.fromBytes(
-                          //     Provider.of<Alldata>(context, listen: false)
-                          //         .markericonofhome),
+                          icon: Provider.of<Alldata>(context, listen: false)
+                              .homeicon),
+                      ///////////////////////////////////////
+                      // ///
+                      //  BitmapDescriptor.fromBytes(
+                      //     Provider.of<Alldata>(context, listen: false)
+                      //         .markericonofhome),
 
-                          ///////////////////////////////////
-                          
+                      ///////////////////////////////////
 
                       // this logo showww bbus  hereeeeeeeeee
                       Marker(
-                        markerId: MarkerId("a"),
-                        position: LatLng(snapshot.data!.get('letitude'),
-                            snapshot.data!.get('longitude')),
-                        icon:  Provider.of<Alldata>(context, listen: false)
-                                   .busicon),
-                      
+                          markerId: MarkerId("a"),
+                          position: LatLng(snapshot.data!.get('letitude'),
+                              snapshot.data!.get('longitude')),
+                          icon: Provider.of<Alldata>(context, listen: false)
+                              .busicon),
                     },
                   );
                 }

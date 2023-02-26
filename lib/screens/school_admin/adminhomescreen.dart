@@ -1,5 +1,5 @@
-import 'package:bustrackingapp/screens/adminscreens/admindrawerwidget.dart';
-import 'package:bustrackingapp/screens/adminscreens/listofparentsscreen.dart';
+
+import 'package:bustrackingapp/screens/school_admin/drawer/admindrawerwidget.dart';
 import 'package:bustrackingapp/screens/studentloginscreen.dart';
 import 'package:flutter/material.dart';
 

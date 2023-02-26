@@ -29,6 +29,7 @@ class _parentwelcomescreenState extends State<parentwelcomescreen> {
   io.File? final_img;
 
   final storageRef = FirebaseStorage.instance.ref();
+
   Future<void> select_img() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
@@ -45,7 +46,6 @@ class _parentwelcomescreenState extends State<parentwelcomescreen> {
       //  url = await mountainImagesRef.getDownloadURL();
       final ref = storageRef.child("images/first");
       ref.putFile(final_img!);
-    
     } catch (e) {
       print(e);
     }
@@ -64,47 +64,19 @@ class _parentwelcomescreenState extends State<parentwelcomescreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("parent home screen")),
-      drawer: parentdrawer(),
-      body: Container(
-        child: Column(
-          children: [
-            // for checking i am able to make stream or not just for example
-            GestureDetector(
-                onTap: () async {
-                  select_img();
-                },
-                child: CircleAvatar(
-                    radius: 100,
-                    backgroundImage:
-                        final_img == null ? null : FileImage(final_img!),
-                    child: final_img == null
-                        ? Container(
-                            child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.person),
-                              Text("select profile")
-                            ],
-                          ))
-                        : null)),
-
-            GestureDetector(
-              onTap: () async {
-                await uploadPic().then((value) {
-                  Fluttertoast.showToast(msg: "your profile has been updated");
-                });
-                //  print(url_of_img);
-              },
-              child: Container(
-                height: 100,
-                width: 100,
-                color: Colors.amber,
-              ),
-            )
-          ],
+        backgroundColor: Color(0xFFffffff),
+        appBar: AppBar(
+          title: Text("parent home screen"),
+          backgroundColor: Color(0xFFc793ff),
         ),
-      ),
-    );
+        drawer: parentdrawer(),
+        body: Column(
+          children: [
+            SizedBox(
+              height: 100,
+            ),
+            Container(child: Image.asset("assets/images/parent_welcome.png"))
+          ],
+        ));
   }
 }

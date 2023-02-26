@@ -1,6 +1,8 @@
-import 'dart:async';
 
-import 'package:bustrackingapp/screens/drivercreens/driverdrawer.dart';
+// location packgare not woking atyre ****nu  i future use geoloctor
+
+import 'dart:async';
+import 'package:bustrackingapp/screens/drivercreens/drawer/driverdrawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
@@ -11,14 +13,28 @@ class driverwelcomescreen extends StatefulWidget {
 }
 
 class _driverwelcomescreenState extends State<driverwelcomescreen> {
+  bool switch_value = false;
+
   bool colorsofstart = false;
   bool colorsofend = false;
 
+  late PermissionStatus permissionGranted;
   StreamSubscription<LocationData>? locationsubscription;
-  Location location = Location();
+  Location location2 = Location();
 
-  void colorchangeofstart_and_listenlocation() {
-    listenlocation();
+  void colorchangeofstart_and_listenlocation() async {
+    permissionGranted = await location2.hasPermission();
+    print(permissionGranted);
+    if (permissionGranted == PermissionStatus.denied) {
+      print("no");
+      permissionGranted = await location2.requestPermission();
+    }
+    if (permissionGranted == PermissionStatus.granted) {
+      print("yes");
+      // listenlocation();
+      temp();
+    }
+
     setState(() {
       colorsofstart = true;
       colorsofend = false;
@@ -33,17 +49,26 @@ class _driverwelcomescreenState extends State<driverwelcomescreen> {
     });
   }
 
+  temp() {
+    location2.onLocationChanged.listen((LocationData currentLocation) {
+      print(currentLocation.latitude);
+    });
+  }
+
+
+
   Future<void> listenlocation() async {
-    locationsubscription = location.onLocationChanged.handleError((onError) {
-      print("mmmmmmmmmmmmmmmmmmmmmmmmmm $onError");
-      locationsubscription?.cancel();
-      setState(() {
-        locationsubscription = null;
-        print("erorrrrrrrrrrrrrrr");
-      });
+    print("chalu");
+    locationsubscription = location2.onLocationChanged.handleError((onError) {
+      print("$onError");
+      // setState(() {
+      //   locationsubscription?.cancel();
+      //   locationsubscription = null;
+      //   print("erorrr");
+      // });
     }).listen((LocationData currrentlocation2) async {
-      final a = currrentlocation2.latitude;
-      final b = currrentlocation2.longitude;
+      var a = await currrentlocation2.latitude;
+      var b = await currrentlocation2.longitude;
       try {
         await FirebaseFirestore.instance
             .collection('drivers')
@@ -54,7 +79,7 @@ class _driverwelcomescreenState extends State<driverwelcomescreen> {
         });
         print("submit");
       } catch (e) {
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa $e");
+        print("aaaaa $e");
       }
     });
     print("strat live location");
@@ -69,10 +94,22 @@ class _driverwelcomescreenState extends State<driverwelcomescreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    location2.requestService();
+    location2.requestPermission();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: driverdrawer(),
-      appBar: AppBar(title: Text("driver home screen")),
+      appBar: AppBar(
+        title: Text("driver home screen"),
+        elevation: 0,
+        backgroundColor: Colors.amber,
+      ),
       // drawer: parentdrawer(),
       body: Container(
         child: Center(
@@ -117,6 +154,20 @@ class _driverwelcomescreenState extends State<driverwelcomescreen> {
               SizedBox(
                 height: 50,
               ),
+              SizedBox(
+                height: 200,
+                width: 200,
+                child: FittedBox(
+                  fit: BoxFit.fill,
+                  child: Switch(
+                      value: switch_value,
+                      onChanged: (a) {
+                        setState(() {
+                          switch_value = a;
+                        });
+                      }),
+                ),
+              )
             ],
           ),
         ),

@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../trackingbus/track/screen/trackscreen.dart';
+
 class parentdrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -9,7 +11,10 @@ class parentdrawer extends StatelessWidget {
         child: ListView(
           children: [
             DrawerHeader(
-                decoration: BoxDecoration(color: Colors.amber),
+                decoration: BoxDecoration(
+
+                    //color: Colors.amber
+                    color: Color(0xFFc793ff)),
                 child: Container(
                   alignment: Alignment.center,
                   child: Text(
@@ -21,7 +26,7 @@ class parentdrawer extends StatelessWidget {
                   ),
                 )),
             ListTile(
-              title: Text("wecomescreen"),
+              title: Text("welcomescreen"),
               onTap: () {
                 Navigator.pushNamed(context, "parentwelcomescreen");
                 //Navigator.pop(context);
@@ -30,7 +35,13 @@ class parentdrawer extends StatelessWidget {
             ListTile(
               title: Text("TRACK BUS"),
               onTap: () {
-                Navigator.pushNamed(context, "select_single_or_multiple_track");
+                // Navigator.pushNamed(context, "select_single_or_multiple_track");
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      //TODO: TODO:
+                      builder: (context) => trackscreen(),
+                    ));
                 //Navigator.pop(context);
               },
             ),
@@ -50,7 +61,7 @@ class parentdrawer extends StatelessWidget {
                 title: Text("sign out"),
                 onTap: () {
                   FirebaseAuth.instance.signOut();
-                  Navigator.pushNamed(context, "/");
+                  // Navigator.pushNamed(context, "/");
 
                   //Navigator.pop(context);
                 }),

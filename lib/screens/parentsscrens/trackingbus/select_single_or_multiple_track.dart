@@ -1,6 +1,9 @@
 import 'dart:ffi';
 
 import 'package:bustrackingapp/screens/parentsscrens/trackingbus/multiple_track/multiplemarker.dart';
+import 'package:bustrackingapp/screens/parentsscrens/trackingbus/single_track/parentbustrackscreen.dart';
+import 'package:bustrackingapp/screens/parentsscrens/trackingbus/track/screen/trackscreen.dart';
+import 'package:bustrackingapp/screens/parentsscrens/trackingbus/track/widgets/bus_and_num.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -25,6 +28,7 @@ class _select_single_or_multiple_trackState
   List<String> listof_all_documentid = [];
 
   List<DropdownMenuItem> listof_dropdownmenuitem = [];
+
   int? a;
 
   String dropdownvalue = "temp";
@@ -84,12 +88,33 @@ class _select_single_or_multiple_trackState
           body: SafeArea(
         child: Column(
           children: [
+            GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        //TODO: TODO:
+                        builder: (context) => trackscreen(),
+                      ));
+                },
+                child: Container(
+                  color: Colors.black,
+                  height: 100,
+                  width: 300,
+                )),
             SizedBox(
               height: 40,
             ),
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, "parent_multiple_marker");
+
+                
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => multiplemarker()));
+
+              //  Navigator.pushNamed(context, "parent_multiple_marker");
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -257,7 +282,7 @@ class _select_single_or_multiple_trackState
                     ////////////////////////////////////////////////////////////////////////////
                     SizedBox(
                       height: 20,
-                    )
+                    ),
                   ],
                 ),
               ),

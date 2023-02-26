@@ -123,7 +123,10 @@ class _parentprofilescreenState extends State<parentprofilescreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         drawer: parentdrawer(),
-        appBar: AppBar(title: Text("edit profile")),
+        appBar: AppBar(
+          title: Text("edit profile"),
+          backgroundColor: Color(0xFFc793ff),
+        ),
         body: Container(
           padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
           child: SingleChildScrollView(

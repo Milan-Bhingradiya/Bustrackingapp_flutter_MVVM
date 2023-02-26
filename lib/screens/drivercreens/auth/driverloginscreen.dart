@@ -6,29 +6,28 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
-TextEditingController id_textbox_conroller = TextEditingController();
-TextEditingController password_textbox_conroller = TextEditingController();
-
-class parentsloginscreen extends StatefulWidget {
+class driverloginscreen extends StatefulWidget {
   static late String phonenumber;
   static late String verificationid;
 
   @override
-  State<parentsloginscreen> createState() => _parentsloginscreenState();
+  State<driverloginscreen> createState() => _driverloginscreenState();
 }
 
-class _parentsloginscreenState extends State<parentsloginscreen> {
-//
-
+class _driverloginscreenState extends State<driverloginscreen> {
   String dropdownvalue = "";
 
-  ///
+  TextEditingController mobile_number_textbox_controller =
+      TextEditingController();
+  TextEditingController id_textbox_controller = TextEditingController();
+  TextEditingController password_textbox_controller = TextEditingController();
   late String password;
 
   String errormsg = "";
 
   bool email_or_phone = false;
 
+//TODO: change here
   Future<bool> doesPhonenumberAlreadyExist(String name) async {
     final QuerySnapshot result = await FirebaseFirestore.instance
         .collection('parents')
@@ -47,18 +46,10 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
   }
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-  
-    // super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    // Provider.of<Alldata>(context, listen: false)
-    //     .fill_list_of_institute_dropdownitem();
+    print(Provider.of<Alldata>(context, listen: false)
+        .list_of_institute_dropdownitem
+        .length);
     return Scaffold(
       body: Container(
         child: SingleChildScrollView(
@@ -68,14 +59,32 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
                 height: 80,
               ),
               Text(
-                "PARENTS",
+                "DRIVER",
                 style: TextStyle(fontSize: 40),
               ),
               SizedBox(
-                height: 60,
+                height: 30,
               ),
-              if (email_or_phone) mobile_num_textbox(),
-              ////////////////////////
+              if (email_or_phone)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 25),
+                  child: TextField(
+                    controller: mobile_number_textbox_controller,
+                    keyboardType: TextInputType.phone,
+                    onChanged: ((value) {}),
+                    decoration: InputDecoration(
+                        hintText: "Enter Mobie Number",
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(color: Colors.white)),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                BorderSide(color: Colors.grey.shade800)),
+                        fillColor: Colors.white,
+                        filled: true),
+                  ),
+                ),
               if (!email_or_phone)
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 25),
@@ -109,25 +118,24 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
               SizedBox(
                 height: 5,
               ),
-              //////////////////
-              if (!email_or_phone) id_textbox(),
-              SizedBox(
-                height: 5,
-              ),
-              if (!email_or_phone) password_textbox(),
-
+              if (!email_or_phone) id_textbox(id_textbox_controller),
+              if (!email_or_phone)
+                password_textbox(password_textbox_controller),
               SizedBox(
                 height: 30,
               ),
               GestureDetector(
                   onTap: (() async {
-                    // bool checknumexistornot =
+                    //     bool checknumexistornot =
                     //     await doesPhonenumberAlreadyExist(phonenumber.toString());
 
-                    //TODO: if phoene is slected floowinnd code will execute
-                    if (false) {
+//TODO:
+
+// login using mobbile number/////////
+                    if (email_or_phone) {
                       await FirebaseAuth.instance.verifyPhoneNumber(
-                        phoneNumber: '+91${parentsloginscreen.phonenumber}',
+                        phoneNumber:
+                            '+91${mobile_number_textbox_controller.text}',
                         verificationCompleted:
                             (PhoneAuthCredential credential) {},
                         verificationFailed: (FirebaseAuthException e) {},
@@ -139,24 +147,23 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
                         codeAutoRetrievalTimeout: (String verificationId) {},
                       );
 
-                      // Navigator.pushNamed(context, "parentloginotpscreen");
+                      Navigator.pushNamed(context, "parentloginotpscreen");
                     } else {
                       print("this number is not exist");
-
-                      //  Navigator.pushNamed(context, "parentwelcomescreen");
                     }
+                    // if (user != null) {
+                    //   Navigator.pushNamed(context, "adminhomescreen");
+                    // }
 
 //TODO: logic of  auth with pass
 
                     var get_password_from_firebase;
                     var docSnapshot;
                     if (email_or_phone == false) {
-                      
-
                       if (dropdownvalue == "" ||
                           dropdownvalue == null ||
-                          id_textbox_conroller.text == null ||
-                          id_textbox_conroller.text == "") {
+                          id_textbox_controller.text == null ||
+                          id_textbox_controller.text == "") {
                       } else {
                         print("parent login getting password query fired");
                         docSnapshot = await FirebaseFirestore.instance
@@ -164,18 +171,18 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
                             .doc("main_document")
                             .collection("institute_list")
                             .doc("$dropdownvalue")
-                            .collection("parents")
-                            .doc(id_textbox_conroller.text.toString())
+                            .collection("drivers")
+                            .doc(id_textbox_controller.text.toString())
                             .get();
                       }
 
                       if (dropdownvalue == "" ||
                           dropdownvalue == null ||
-                          id_textbox_conroller.text == null ||
+                          password_textbox_controller.text == null ||
+                          id_textbox_controller.text == null ||
                           docSnapshot == 0 ||
-                          docSnapshot == null ||
-                          docSnapshot == 0) {
-                        print("some value is  null in parent login");
+                          docSnapshot == null) {
+                        print("some value is  null in driver login");
                       }
 
                       if (docSnapshot == null) {
@@ -184,24 +191,21 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
                         get_password_from_firebase = await data["password"];
                       }
                       if (get_password_from_firebase ==
-                          password_textbox_conroller.text) {
+                          password_textbox_controller.text) {
                         print("bhai hu aya");
-                        Navigator.pushNamed(context, "parentwelcomescreen");
+                        Navigator.pushNamed(context, "driverwelcomescreen");
                       } else {
                         Fluttertoast.showToast(
                             msg: "Wrong Credentials",
                             backgroundColor: Colors.red[400]);
                       }
                     }
-                    // if (user != null) {
-                    //   Navigator.pushNamed(context, "adminhomescreen");
-                    // }
                   }),
                   child: Container(
                       height: 60,
                       width: MediaQuery.of(context).size.width / 1.16,
                       decoration: BoxDecoration(
-                          color: Colors.purple[300],
+                          color: Colors.amber,
                           borderRadius: BorderRadius.circular(10)),
                       child: Center(
                           child:
@@ -239,33 +243,12 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
   }
 }
 
-Widget password_textbox() {
-  return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 25),
-    child: TextField(
-      controller: password_textbox_conroller,
-      keyboardType: TextInputType.phone,
-      onChanged: ((value) {}),
-      decoration: InputDecoration(
-          hintText: "Password",
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.white)),
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.grey.shade800)),
-          fillColor: Colors.white,
-          filled: true),
-    ),
-  );
-}
-
 @override
-Widget id_textbox() {
+Widget id_textbox(id_textbox_controller) {
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: 25),
     child: TextField(
-      controller: id_textbox_conroller,
+      controller: id_textbox_controller,
       onChanged: ((value) {}),
       decoration: InputDecoration(
           hintText: "Enter Id",
@@ -281,16 +264,15 @@ Widget id_textbox() {
   );
 }
 
-Widget mobile_num_textbox() {
+Widget password_textbox(password_textbox_controller) {
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: 25),
     child: TextField(
+      controller: password_textbox_controller,
       keyboardType: TextInputType.phone,
-      onChanged: ((value) {
-        parentsloginscreen.phonenumber = value;
-      }),
+      onChanged: ((value) {}),
       decoration: InputDecoration(
-          hintText: "Enter Mobie Number",
+          hintText: "Password",
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: Colors.white)),
