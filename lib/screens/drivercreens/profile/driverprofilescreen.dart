@@ -70,10 +70,12 @@ class _driverprofilescreenState extends State<driverprofilescreen> {
         .doc("main_document")
         .collection("institute_list")
         //TODO: institute ma variable avse
-        .doc('brilliant vidyalaya')
+        .doc(Provider.of<Alldata>(context, listen: false)
+              .driver_selected_institute_at_driverlogin)
         .collection("drivers")
         //TODO: arshil bhai ni jagya a variable avse
-        .doc('arsilbhai')
+        .doc( Provider.of<Alldata>(context, listen: false)
+                            .driver_name_at_driverlogin)
         .get();
     //  snapshot = data;
     //print(data['parentchildname']);

@@ -193,6 +193,12 @@ class _driverloginscreenState extends State<driverloginscreen> {
                       if (get_password_from_firebase ==
                           password_textbox_controller.text) {
                         print("bhai hu aya");
+
+                        Provider.of<Alldata>(context, listen: false)
+                                .driver_selected_institute_at_driverlogin =
+                            dropdownvalue;
+                        Provider.of<Alldata>(context, listen: false)
+                            .driver_name_at_driverlogin=id_textbox_controller.text;
                         Navigator.pushNamed(context, "driverwelcomescreen");
                       } else {
                         Fluttertoast.showToast(

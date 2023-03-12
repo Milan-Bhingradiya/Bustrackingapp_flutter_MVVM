@@ -99,11 +99,12 @@ class _School_auth_screenState extends State<School_auth_screen> {
                           MaterialPageRoute(
                             builder: (context) => adminhomescreen(),
                           ));
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: "Wrong Credentials",
+                          backgroundColor: Colors.red[400]);
+                      print(d["password"]);
                     }
-                    Fluttertoast.showToast(
-                        msg: "Wrong Credentials",
-                        backgroundColor: Colors.red[400]);
-                    print(d["password"]);
                   }
                 },
                 child: Container(

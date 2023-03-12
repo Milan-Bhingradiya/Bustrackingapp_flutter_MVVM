@@ -51,12 +51,12 @@ class parentdrawer extends StatelessWidget {
                 Navigator.pushNamed(context, "parentprofilescreen");
               },
             ),
-            ListTile(
-              title: Text("BUSES"),
-              onTap: () {
-                //Navigator.pop(context);
-              },
-            ),
+            // ListTile(
+            //   title: Text("BUSES"),
+            //   onTap: () {
+            //     //Navigator.pop(context);
+            //   },
+            // ),
             ListTile(
                 title: Text("sign out"),
                 onTap: () {

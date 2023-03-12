@@ -59,7 +59,7 @@ class Alldata extends ChangeNotifier {
 
   List<DropdownMenuItem> list_of_institute_dropdownitem = [];
 
-  void fill_list_of_institute_dropdownitem () async {
+  void fill_list_of_institute_dropdownitem() async {
     print("bbbbbbbbbbbbbbbbbbbbbbbbb");
     QuerySnapshot querysnapshot = await FirebaseFirestore.instance
         .collection("main")
@@ -69,9 +69,15 @@ class Alldata extends ChangeNotifier {
 
     querysnapshot.docs.forEach((doc) {
       list_of_institute_dropdownitem.add(DropdownMenuItem(
-          value: doc.id.toString(), child: Text(doc.id.toString()))
-          
-          );
+          value: doc.id.toString(), child: Text(doc.id.toString())));
     });
   }
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//TODO:  aya chhe after login nu badhu
+  late String parent_selected_institute_at_login_at_parentlogin;
+
+   late String driver_selected_institute_at_driverlogin;
+    late String driver_name_at_driverlogin;
 }

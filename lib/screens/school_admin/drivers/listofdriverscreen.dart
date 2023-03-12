@@ -156,7 +156,7 @@ class _listofdriverscreenState extends State<listofdriverscreen> {
                                               borderRadius:
                                                   BorderRadius.circular(7)),
                                           child: Text(
-                                              "Bus num :  ${snapshot.data!.docs[index]['driverbusnum'].toString()}")),
+                                              "Bus num :  ${snapshot.data!.docs[index]['busnum'].toString()}")),
                                       // SizedBox(
                                       //   height: 6,
                                       // )

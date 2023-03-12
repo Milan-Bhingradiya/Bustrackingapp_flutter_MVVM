@@ -30,19 +30,24 @@ class _adddriverscreenState extends State<adddriverscreen> {
 
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
-
-
   late String institute_name;
 
-
-  List<DropdownMenuItem> listofdriver_dropdown = [];
+  List<DropdownMenuItem> listof_bus_dropdown = [];
   String dropdownvalue = "";
   bool onetimeexecuted = false;
   void readdata_and_fill_listofdriver_dropdown() async {
     if (onetimeexecuted == false) {
-      QuerySnapshot mm = await firebase.collection("drivers").get();
+      // QuerySnapshot mm = await firebase.collection("drivers").get();
+      QuerySnapshot mm = await FirebaseFirestore.instance
+          .collection('main')
+          .doc("main_document")
+          .collection("institute_list")
+          .doc(institute_name)
+          .collection("buses")
+          .get();
+
       mm.docs.forEach((doc) {
-        listofdriver_dropdown.add(DropdownMenuItem(
+        listof_bus_dropdown.add(DropdownMenuItem(
           value: doc["busnum"].toString(),
           child: Text("${doc["busnum"].toString()}"),
         ));
@@ -57,10 +62,9 @@ class _adddriverscreenState extends State<adddriverscreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    readdata_and_fill_listofdriver_dropdown();
-
-       institute_name = Provider.of<Alldata>(context, listen: false)
+    institute_name = Provider.of<Alldata>(context, listen: false)
         .selected_schholname_from_schhol_auth;
+    readdata_and_fill_listofdriver_dropdown();
   }
 
   @override
@@ -231,7 +235,7 @@ class _adddriverscreenState extends State<adddriverscreen> {
                                       ? null
                                       : dropdownvalue,
                               hint: Text("Select bus "),
-                              items: listofdriver_dropdown,
+                              items: listof_bus_dropdown,
                               onChanged: (value) {
                                 setState(() {
                                   dropdownvalue = value;
@@ -247,7 +251,7 @@ class _adddriverscreenState extends State<adddriverscreen> {
                           //       //    style: TextStyle(),
                           //       value: dropdownvalue,
                           //       //hint: Text("Select bus Number"),
-                          //       items: listofdriver_dropdown,
+                          //       items: listof_bus_dropdown,
                           //       onChanged: (value) {
                           //         print(value);
                           //         setState(() {
@@ -271,16 +275,17 @@ class _adddriverscreenState extends State<adddriverscreen> {
                             print("succesful");
                             try {
                               await FirebaseFirestore.instance
-                                 .collection('main')
-                    .doc("main_document")
-                    .collection("institute_list")
-                    .doc(institute_name).collection("drivers")
+                                  .collection('main')
+                                  .doc("main_document")
+                                  .collection("institute_list")
+                                  .doc(institute_name)
+                                  .collection("drivers")
                                   .doc(drivername)
                                   .set({
                                 'drivername': drivername,
                                 'driverphonenumber': driverphonenumber,
                                 'password': confirmdriverpassword,
-                                'driverbusnum': dropdownvalue,
+                                'busnum': dropdownvalue,
                               }).then((value) {
                                 Fluttertoast.showToast(msg: "new driver added");
                               });

@@ -165,6 +165,8 @@ class _selectwhoyouarescreenState extends State<selectwhoyouarescreen> {
                                   borderRadius: BorderRadius.circular(30),
                                   elevation: 10,
                                   child: CircleAvatar(
+                                    backgroundImage: AssetImage(
+                                        "assets/images/selectscreen_driver_logo.png"),
                                     radius: 30,
                                     backgroundColor: Colors.white,
                                   ),
@@ -228,6 +230,8 @@ class _selectwhoyouarescreenState extends State<selectwhoyouarescreen> {
                                   borderRadius: BorderRadius.circular(30),
                                   elevation: 10,
                                   child: CircleAvatar(
+                                    backgroundImage: AssetImage(
+                                        "assets/images/selectscreen_parent_logo.png"),
                                     radius: 30,
                                     backgroundColor: Colors.white,
                                   ),
@@ -294,6 +298,8 @@ class _selectwhoyouarescreenState extends State<selectwhoyouarescreen> {
                                   borderRadius: BorderRadius.circular(30),
                                   elevation: 10,
                                   child: CircleAvatar(
+                                    backgroundImage: AssetImage(
+                                        "assets/images/selectscreen_school_logo.png"),
                                     radius: 30,
                                     backgroundColor: Colors.white,
                                   ),
@@ -361,6 +367,15 @@ class _selectwhoyouarescreenState extends State<selectwhoyouarescreen> {
                                   borderRadius: BorderRadius.circular(30),
                                   elevation: 10,
                                   child: CircleAvatar(
+                                    backgroundImage: AssetImage(
+                                        "assets/images/selectscreen_admin_logo.png"),
+                                    child: Container(
+                                      child: Icon(
+                                        Icons.person,
+                                        color: Colors.black,
+                                        size: 40,
+                                      ),
+                                    ),
                                     radius: 30,
                                     backgroundColor: Colors.white,
                                   ),

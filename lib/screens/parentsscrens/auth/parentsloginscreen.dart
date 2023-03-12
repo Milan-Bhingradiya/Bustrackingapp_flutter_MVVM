@@ -51,7 +51,6 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
     // TODO: implement initState
     super.initState();
 
-  
     // super.initState();
   }
 
@@ -151,8 +150,6 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
                     var get_password_from_firebase;
                     var docSnapshot;
                     if (email_or_phone == false) {
-                      
-
                       if (dropdownvalue == "" ||
                           dropdownvalue == null ||
                           id_textbox_conroller.text == null ||
@@ -186,6 +183,10 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
                       if (get_password_from_firebase ==
                           password_textbox_conroller.text) {
                         print("bhai hu aya");
+
+                        Provider.of<Alldata>(context, listen: false)
+                                .parent_selected_institute_at_login_at_parentlogin =
+                            dropdownvalue;
                         Navigator.pushNamed(context, "parentwelcomescreen");
                       } else {
                         Fluttertoast.showToast(

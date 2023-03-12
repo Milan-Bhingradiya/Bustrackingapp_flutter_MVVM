@@ -1,5 +1,4 @@
-
-// for animation _bus_logo_animation_conroller uncommet karje future milan 
+// for animation _bus_logo_animation_conroller uncommet karje future milan
 import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
@@ -57,7 +56,7 @@ class _trackscreen extends State<trackscreen> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    create_list_of_bus();
+    create_list_of_bus(context);
 //
     Provider.of<Alldata>(context, listen: false).list_of_selected_bus.clear();
 
@@ -82,7 +81,7 @@ class _trackscreen extends State<trackscreen> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-   // _bus_logo_animation_conroller.dispose();
+    // _bus_logo_animation_conroller.dispose();
     // TODO: implement dispose
 
     super.dispose();
@@ -112,8 +111,12 @@ class _trackscreen extends State<trackscreen> with TickerProviderStateMixin {
                 // padding: EdgeInsets.only(top: 20, bottom: 35, left: 10, right: 10),
                 child: StreamBuilder(
                     stream: FirebaseFirestore.instance
+                        .collection('main')
+                        .doc("main_document")
+                        .collection("institute_list")
+                        .doc(Provider.of<Alldata>(context, listen: false)
+                            .parent_selected_institute_at_login_at_parentlogin)
                         .collection('drivers')
-                        //   .doc("ramu3")
                         .snapshots(),
                     builder: (context, snapshot) {
                       // if (added) {
@@ -123,7 +126,7 @@ class _trackscreen extends State<trackscreen> with TickerProviderStateMixin {
                       if (!snapshot.hasData) {
                         return CircularProgressIndicator();
                       } else {
-                        print("before ${newmarkers.length}");
+                        print("before marker ${newmarkers.length}");
                         newmarkers.clear();
 
                         //  for all bus track add in new marker
@@ -189,7 +192,7 @@ class _trackscreen extends State<trackscreen> with TickerProviderStateMixin {
                         //   return want_to_delete;
                         // });
 
-                        print("after ${newmarkers.length}");
+                        print("after marker${newmarkers.length}");
 
                         return GoogleMap(
                           mapType: MapType.normal,
@@ -239,7 +242,7 @@ class _trackscreen extends State<trackscreen> with TickerProviderStateMixin {
                     show_listofbus = !show_listofbus;
 
                     //animation
-                //    _bus_logo_animation_conroller.forward();
+                    //    _bus_logo_animation_conroller.forward();
                   });
                 },
                 child: Container(
