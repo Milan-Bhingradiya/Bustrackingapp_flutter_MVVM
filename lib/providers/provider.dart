@@ -77,6 +77,8 @@ class Alldata extends ChangeNotifier {
 
 //TODO:  aya chhe after login nu badhu
   late String parent_selected_institute_at_login_at_parentlogin;
+  late String parent_id_login_at_parentlogin;
+  
 
    late String driver_selected_institute_at_driverlogin;
     late String driver_name_at_driverlogin;

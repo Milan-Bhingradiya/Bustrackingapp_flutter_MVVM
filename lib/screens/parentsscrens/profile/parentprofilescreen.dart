@@ -41,7 +41,6 @@ class _parentprofilescreenState extends State<parentprofilescreen> {
 
   late DocumentSnapshot snapshot;
 
-  late String documentid;
   bool parent_textfield_enable = false;
 
   bool visible_set_location_button = false;
@@ -60,7 +59,7 @@ class _parentprofilescreenState extends State<parentprofilescreen> {
     parentletitudecontroller.text = parentlocation.latitude.toString();
     parentlongitudecontroller.text = parentlocation.longitude.toString();
 
-    FirebaseFirestore.instance.collection("parents").doc(documentid).update({
+    FirebaseFirestore.instance.collection("parents").doc("darshil ").update({
       'letitude': parentlat,
       'longitude': parentlong,
     });
@@ -69,111 +68,172 @@ class _parentprofilescreenState extends State<parentprofilescreen> {
   ///////////////////////////////////////////////////////////////////////////////////////////////////
   /// document id lidhi aya thi
 
-  Future<void> doesPhonenumberAlreadyExist(String phonenum) async {
+  // Future<void> doesPhonenumberAlreadyExist(String phonenum) async {
+  //   final QuerySnapshot result = await FirebaseFirestore.instance
+  //       .collection('parents')
+  //       .where('parentphonenumber', isEqualTo: phonenum)
+  //       .limit(1)
+  //       .get();
+  //   // print(result.docs.first.reference.id);
+  //   documentid = await result.docs.first.reference.id;
+  //   Provider.of<Alldata>(context, listen: false).parent_document_id_afterlogin =
+  //       documentid;
+
+  // }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+  // void givedatatotextfield() async {
+  //   print("bbbbbbbbbbbbbbbbbbbb");
+  //   data = await FirebaseFirestore.instance
+  //       .collection("parents")
+  //       .doc(documentid)
+  //       .get();
+  //   snapshot = data;
+  //   //print(data['parentchildname']);
+
+  //   childnamecontroller.text = data_of_Parents['parentchildname'].toString();
+  //   new_parentchildname = data_of_Parents['parentchildname'].toString();
+
+  //   phonenumbercontroller.text = data['parentphonenumber'].toString();
+  //   new_parentphonenumber = data['parentphonenumber'].toString();
+
+  //   parentnamecontroller.text = data['parentname'].toString();
+  //   new_parentname = data['parentname'].toString();
+
+  //   parentletitudecontroller.text = data['letitude'].toString();
+  //   parentlat = data['letitude'];
+
+  //   parentlongitudecontroller.text = data['longitude'].toString();
+  //   parentlong = data['longitude'];
+  // }
+
+  // void temp() async {
+  //   await doesPhonenumberAlreadyExist("9016064322");
+  //   givedatatotextfield();
+  // }
+
+  Future getdata_from_firebase() async {
+// phone num available or not
+//if available than give owener name(docid)
     final QuerySnapshot result = await FirebaseFirestore.instance
         .collection('parents')
-        .where('parentphonenumber', isEqualTo: phonenum)
+        .where('parentphonenumber', isEqualTo: "9016064322")
         .limit(1)
         .get();
     // print(result.docs.first.reference.id);
-    documentid = await result.docs.first.reference.id;
+    final documentid = await result.docs.first.reference.id;
     Provider.of<Alldata>(context, listen: false).parent_document_id_afterlogin =
         documentid;
-    print("aaaaaaaaaaaaaaaaaaaaaa");
-    childnamecontroller.text = "aaaaaaaaa";
-  }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-  void givedatatotextfield() async {
-    print("bbbbbbbbbbbbbbbbbbbb");
-    final data = await FirebaseFirestore.instance
-        .collection("parents")
-        .doc(documentid)
+//now after getting docid(parentname) get all information of parent
+    final data_of_Parents = await FirebaseFirestore.instance
+    .collection('main')
+                        .doc("main_document")
+                        .collection("institute_list")
+                        .doc(Provider.of<Alldata>(context, listen: false)
+                            .parent_selected_institute_at_login_at_parentlogin)
+                       .collection("parents")
+        .doc(Provider.of<Alldata>(context, listen: false)
+                                .parent_id_login_at_parentlogin.toString())
         .get();
-    snapshot = data;
-    //print(data['parentchildname']);
-
-    childnamecontroller.text = data['parentchildname'].toString();
-    new_parentchildname = data['parentchildname'].toString();
-
-    phonenumbercontroller.text = data['parentphonenumber'].toString();
-    new_parentphonenumber = data['parentphonenumber'].toString();
-
-    parentnamecontroller.text = data['parentname'].toString();
-    new_parentname = data['parentname'].toString();
-
-    parentletitudecontroller.text = data['letitude'].toString();
-    parentlat = data['letitude'];
-
-    parentlongitudecontroller.text = data['longitude'].toString();
-    parentlong = data['longitude'];
+        
+    return data_of_Parents;
   }
 
-  void temp() async {
-    await doesPhonenumberAlreadyExist("9016064322");
-    givedatatotextfield();
-  }
-
-  @override
-  void initState() {
-    temp();
-  }
+  // @override
+  // void initState() {
+  //   temp();
+  // }
 
   @override
   Widget build(BuildContext context) {
+    print("builddddddddddddddd");
     return Scaffold(
         drawer: parentdrawer(),
         appBar: AppBar(
           title: Text("edit profile"),
           backgroundColor: Color(0xFFc793ff),
         ),
-        body: Container(
-          padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 50,
+        body: FutureBuilder(
+          future: getdata_from_firebase(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              childnamecontroller.text =
+                  snapshot.data['parentchildname'].toString();
+              phonenumbercontroller.text =
+                  snapshot.data['parentphonenumber'].toString();
+              parentnamecontroller.text =
+                  snapshot.data['parentname'].toString();
+              parentletitudecontroller.text =
+                  snapshot.data['letitude'].toString();
+              parentlongitudecontroller.text =
+                  snapshot.data['longitude'].toString();
+
+              new_parentchildname = snapshot.data['parentchildname'].toString();
+              new_parentphonenumber =
+                  snapshot.data['parentphonenumber'].toString();
+              new_parentname = snapshot.data['parentname'].toString();
+              parentlat = snapshot.data['letitude'];
+              parentlong = snapshot.data['longitude'];
+              return Container(
+                padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 50,
+                      ),
+                      Text(
+                          "WELCOME  ${new_parentname.toString().toUpperCase()}  ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      Visibility(
+                        visible: taptochoose,
+                        child: Text("Tap To Choose"),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      parentname_textfield(snapshot),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      parentchildname_textfield(),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      parentphonenumber_textfield(),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      parentletitude_textfield(),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      parentlongitude_textfield(),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      set_lat_long_button(),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      parentbutton_edit_or_save()
+                    ],
+                  ),
                 ),
-                Visibility(
-                  visible: taptochoose,
-                  child: Text("Tap To Choose"),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                parentname_textfield(),
-                SizedBox(
-                  height: 15,
-                ),
-                parentchildname_textfield(),
-                SizedBox(
-                  height: 15,
-                ),
-                parentphonenumber_textfield(),
-                SizedBox(
-                  height: 15,
-                ),
-                parentletitude_textfield(),
-                SizedBox(
-                  height: 15,
-                ),
-                parentlongitude_textfield(),
-                SizedBox(
-                  height: 15,
-                ),
-                set_lat_long_button(),
-                SizedBox(
-                  height: 15,
-                ),
-                parentbutton_edit_or_save()
-              ],
-            ),
-          ),
+              );
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          },
         ));
   }
 
-  Widget parentname_textfield() {
+  Widget parentname_textfield(snapshot) {
     return TextField(
       controller: parentnamecontroller,
       enabled: parent_textfield_enable,
@@ -186,23 +246,22 @@ class _parentprofilescreenState extends State<parentprofilescreen> {
         prefixIcon: const Icon(Icons.person),
       ),
       onChanged: (value) {
-        setState(() {
-          new_parentname = value;
+        new_parentname = value;
 
-          if (new_parentname.isEmpty) {
-            errortext_parentnamefield = 'Name is required';
-          } else if (new_parentname.length < 3) {
-            errortext_parentnamefield = 'Name must be at least 3 characters';
-          } else {
-            errortext_parentnamefield = null;
-          }
-        });
+        if (new_parentname.isEmpty) {
+          errortext_parentnamefield = 'Name is required';
+        } else if (new_parentname.length < 3) {
+          errortext_parentnamefield = 'Name must be at least 3 characters';
+        } else {
+          errortext_parentnamefield = null;
+        }
       },
     );
   }
 
   Widget parentchildname_textfield() {
     return TextField(
+      autofocus: true,
       controller: childnamecontroller,
       enabled: parent_textfield_enable,
       decoration: InputDecoration(
@@ -214,17 +273,15 @@ class _parentprofilescreenState extends State<parentprofilescreen> {
         prefixIcon: const Icon(Icons.person),
       ),
       onChanged: (value) {
-        setState(() {
-          new_parentchildname = value;
+        new_parentchildname = value;
 
-          if (new_parentchildname.isEmpty) {
-            errortext_parentchildfield = 'Name is required';
-          } else if (new_parentchildname.length < 3) {
-            errortext_parentchildfield = 'Name must be at least 3 characters';
-          } else {
-            errortext_parentchildfield = null;
-          }
-        });
+        if (new_parentchildname.isEmpty) {
+          errortext_parentchildfield = 'Name is required';
+        } else if (new_parentchildname.length < 3) {
+          errortext_parentchildfield = 'Name must be at least 3 characters';
+        } else {
+          errortext_parentchildfield = null;
+        }
       },
     );
   }
@@ -242,16 +299,14 @@ class _parentprofilescreenState extends State<parentprofilescreen> {
         prefixIcon: const Icon(Icons.person),
       ),
       onChanged: (value) {
-        setState(() {
-          new_parentphonenumber = value;
-          if (new_parentphonenumber.isEmpty) {
-            errortext_parentphonenumberfield = 'number is required';
-          } else if (new_parentphonenumber.length < 10) {
-            errortext_parentphonenumberfield = 'Enter a valid number';
-          } else {
-            errortext_parentphonenumberfield = null;
-          }
-        });
+        new_parentphonenumber = value;
+        if (new_parentphonenumber.isEmpty) {
+          errortext_parentphonenumberfield = 'number is required';
+        } else if (new_parentphonenumber.length < 10) {
+          errortext_parentphonenumberfield = 'Enter a valid number';
+        } else {
+          errortext_parentphonenumberfield = null;
+        }
       },
     );
   }
@@ -270,14 +325,12 @@ class _parentprofilescreenState extends State<parentprofilescreen> {
         prefixIcon: const Icon(Icons.person),
       ),
       onChanged: (value) {
-        setState(() {
-          parentlat = double.parse(value);
-          if (parentlat == 0) {
-            errortext_parentletitude = 'number is required';
-          } else {
-            errortext_parentletitude = null;
-          }
-        });
+        parentlat = double.parse(value);
+        if (parentlat == 0) {
+          errortext_parentletitude = 'number is required';
+        } else {
+          errortext_parentletitude = null;
+        }
       },
     );
   }
@@ -296,14 +349,12 @@ class _parentprofilescreenState extends State<parentprofilescreen> {
         prefixIcon: const Icon(Icons.person),
       ),
       onChanged: (value) {
-        setState(() {
-          parentlong = double.parse(value);
-          if (parentlong == 0) {
-            errortext_parentlongitude = 'number is required';
-          } else {
-            errortext_parentlongitude = null;
-          }
-        });
+        parentlong = double.parse(value);
+        if (parentlong == 0) {
+          errortext_parentlongitude = 'number is required';
+        } else {
+          errortext_parentlongitude = null;
+        }
       },
     );
   }
@@ -367,7 +418,7 @@ class _parentprofilescreenState extends State<parentprofilescreen> {
 
               FirebaseFirestore.instance
                   .collection("parents")
-                  .doc(documentid)
+                  .doc("darshil ")
                   .update({
                 "parentname": new_parentname,
                 "parentchildname": new_parentchildname,

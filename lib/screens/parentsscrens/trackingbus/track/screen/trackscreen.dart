@@ -1,6 +1,5 @@
 // for animation _bus_logo_animation_conroller uncommet karje future milan
 
-
 //when i last time commit this file have lots of error idk why i commit and then i merge new code that work fine this is old code
 import 'dart:async';
 import 'dart:typed_data';
@@ -88,6 +87,7 @@ class _trackscreen extends State<trackscreen> with TickerProviderStateMixin {
     // TODO: implement dispose
 
     super.dispose();
+    list_of_bus.clear();
   }
 
   @override

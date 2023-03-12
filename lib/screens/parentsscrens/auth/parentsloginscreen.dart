@@ -187,6 +187,10 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
                         Provider.of<Alldata>(context, listen: false)
                                 .parent_selected_institute_at_login_at_parentlogin =
                             dropdownvalue;
+
+                             Provider.of<Alldata>(context, listen: false)
+                                .parent_id_login_at_parentlogin =
+                            id_textbox_conroller.text;
                         Navigator.pushNamed(context, "parentwelcomescreen");
                       } else {
                         Fluttertoast.showToast(
