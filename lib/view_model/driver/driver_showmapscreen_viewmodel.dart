@@ -74,7 +74,6 @@ class Driver_showmapscreen_viewmodel extends ChangeNotifier {
   Future<void> fill_list_of_marker_of_parent() async {
     try {
       for (int x = 0; x < (list_of_parentmodel.length); x++) {
-        print("inside callll");
         await list_of_markers_of_home.add(Marker(
           markerId: MarkerId(
             list_of_parentmodel[x].parentname,
@@ -85,6 +84,7 @@ class Driver_showmapscreen_viewmodel extends ChangeNotifier {
         ));
       }
     } catch (e) {
+      
       print("second erorrrrrrrrrrrrrrrrrrrrrrrrrrrr $e");
     }
   }

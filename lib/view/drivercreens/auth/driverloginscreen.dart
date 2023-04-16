@@ -2,6 +2,7 @@ import 'package:bustrackingapp/providers/provider.dart';
 import 'package:bustrackingapp/res/component/driver/auth/custom_textbox.dart';
 import 'package:bustrackingapp/res/component/driver/auth/select_institute_textbox.dart';
 import 'package:bustrackingapp/view_model/driver/driver_loginscreen_viewmodel.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -65,9 +66,7 @@ class _driverloginscreenState extends State<driverloginscreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(Provider.of<Alldata>(context, listen: false)
-        .list_of_institute_dropdownitem
-        .length);
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
@@ -82,14 +81,31 @@ class _driverloginscreenState extends State<driverloginscreen> {
           child: Column(
             children: [
               SizedBox(
-                height: 100,
+                height: size.height / 10,
               ),
-              Text(
-                "DRIVER",
-                style: TextStyle(fontSize: 40),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Hero(
+                    tag: "driver",
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage(
+                          "assets/images/selectscreen_driver_logo.png"),
+                      radius: 45,
+                      backgroundColor: Colors.white,
+                    ),
+                  ),
+                  SizedBox(
+                    width: size.width / 30,
+                  ),
+                  Text(
+                    "DRIVER",
+                    style: TextStyle(fontSize: 40),
+                  ),
+                ],
               ),
               SizedBox(
-                height: 30,
+                height: size.height / 25,
               ),
               if (email_or_phone)
                 custom_textbox(
@@ -101,42 +117,54 @@ class _driverloginscreenState extends State<driverloginscreen> {
                 //   listofdropdown: Provider.of<Alldata>(context, listen: false)
                 //       .list_of_institute_dropdownitem,
                 // ),
-                Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25),
-                    child: Container(
-                      child: Padding(
-                        padding: EdgeInsets.all(10),
-                        child: DropdownButton(
-                          borderRadius: BorderRadius.circular(8),
-                          underline: SizedBox(),
-                          isExpanded: true,
-                          icon: Icon(Icons.arrow_drop_down_circle_outlined),
-                          hint: Text("select institute"),
-                          value: dropdownvalue == "" || dropdownvalue == null
-                              ? null
-                              : dropdownvalue,
-                          items: Provider.of<Alldata>(context, listen: false)
-                              .list_of_institute_dropdownitem,
-                          onChanged: (value) {
-                            setState(() {
-                              dropdownvalue = value;
-                            });
-                          },
-                        ),
-                      ),
+                Container(
+                  child: DropdownButtonFormField2(
+                    decoration: InputDecoration(
+                        isDense: true,
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                BorderSide(color: Colors.grey.shade800))),
+                    dropdownStyleData: DropdownStyleData(
+                      maxHeight: size.height / 3,
+                      width: size.width / 1.1777,
+                      padding: null,
                       decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12)),
-                      height: 55,
-                      width: double.infinity,
-                    )),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      offset: const Offset(-9, 0),
+                    ),
+                    autofocus: false,
+                    isExpanded: true,
+                    hint: Text("select institute"),
+                    value: dropdownvalue == "" || dropdownvalue == null
+                        ? null
+                        : dropdownvalue,
+                    items: Provider.of<Alldata>(context, listen: false)
+                        .list_of_institute_dropdownitem,
+                    onChanged: (value) {
+                      setState(() {
+                        dropdownvalue = value;
+                      });
+                    },
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    // borderRadius: BorderRadius.circular(12)
+                  ),
+                  height: size.height / 12,
+                  width: size.width / 1.1555,
+                ),
+
+              //-------------------------------
               SizedBox(
-                height: 8,
+                height: size.height / 80,
               ),
               if (!email_or_phone)
                 custom_textbox(
                   controller: id_textbox_controller,
                   hinttext: "Enter driver name",
+           
                 ),
               SizedBox(
                 height: 8,
@@ -145,9 +173,10 @@ class _driverloginscreenState extends State<driverloginscreen> {
                 custom_textbox(
                   controller: password_textbox_controller,
                   hinttext: "Enter password",
+                  
                 ),
               SizedBox(
-                height: 30,
+                height: size.height / 40,
               ),
               GestureDetector(
                   onTap: (() async {
@@ -205,12 +234,12 @@ class _driverloginscreenState extends State<driverloginscreen> {
                       } else if (user_valid_or_not ==
                           user_valid_or_invalid_or_emptyfiled.True) {
                         print("true");
-                        Navigator.pushNamed(context, "driverwelcomescreen");
+                        Navigator.pushNamed(context, "select_driverscreen_from_bottomnavigationbar");
                       }
                     }
                   }),
                   child: Container(
-                      height: 60,
+                      height: size.height / 12,
                       width: MediaQuery.of(context).size.width / 1.16,
                       decoration: BoxDecoration(
                           color: Colors.amber,

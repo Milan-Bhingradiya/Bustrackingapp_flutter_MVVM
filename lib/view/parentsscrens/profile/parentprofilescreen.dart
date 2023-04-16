@@ -1,12 +1,15 @@
 import 'package:bustrackingapp/providers/provider.dart';
 import 'package:bustrackingapp/view_model/parents/parent_profilescreen_viewmodel.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:bustrackingapp/view/parentsscrens/drawer/parentdrawerwidget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'dart:io' as io;
 
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -16,6 +19,7 @@ class parentprofilescreen extends StatefulWidget {
 }
 
 class _parentprofilescreenState extends State<parentprofilescreen> {
+  bool showing_picked_image = false;
   dynamic parent_profilescreen_viewmodel = null;
 
   String save_or_edit = "Edit";
@@ -40,14 +44,16 @@ class _parentprofilescreenState extends State<parentprofilescreen> {
         await Provider.of<Parent_profilescreen_viewmodel>(context,
             listen: false);
 //------------------------------
-    parent_profilescreen_viewmodel.get_parent_data_and_fill_in_textfield(
+    await parent_profilescreen_viewmodel.get_parent_data_and_fill_in_textfield(
         context,
         childnamecontroller,
         phonenumbercontroller,
         parentnamecontroller,
         parentletitudecontroller,
         parentlongitudecontroller);
-    setState(() {});
+    if (this.mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -60,62 +66,130 @@ class _parentprofilescreenState extends State<parentprofilescreen> {
     print("builddddddddddddddd");
     return Scaffold(
         drawer: parentdrawer(),
-        appBar: AppBar(
-          title: Text("edit profile"),
-          backgroundColor: Color(0xFFc793ff),
-        ),
+        // appBar: AppBar(
+        //   title: Text("edit profile"),
+        //   backgroundColor: Color(0xFFc793ff),
+        // ),
         body: (parent_profilescreen_viewmodel == null)
             ? Center(child: CircularProgressIndicator())
-            : Container(
-                padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-                child: SingleChildScrollView(
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 50,
-                        ),
-                        Text(
-                            "WELCOME  ${parent_profilescreen_viewmodel.new_parentname.toString().toUpperCase()}  ",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        Visibility(
-                          visible: taptochoose,
-                          child: Text("Tap To Choose"),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        parentname_textfield(),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        parentchildname_textfield(),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        parentphonenumber_textfield(),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        parentletitude_textfield(),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        parentlongitude_textfield(),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        set_lat_long_button(),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        parentbutton_edit_or_save()
-                      ],
+            : SafeArea(
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 30,
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              print("ontap called");
+                              print(save_or_edit);
+                              if (save_or_edit == "Save") {
+                                print("ontap in side");
+
+                                await parent_profilescreen_viewmodel
+                                    .select_img();
+
+                                if (parent_profilescreen_viewmodel
+                                            .selected_profileimg_path ==
+                                        null ||
+                                    parent_profilescreen_viewmodel
+                                            .selected_profileimg_path ==
+                                        "") {
+                                  showing_picked_image = false;
+                                } else {
+                                  print("showing_picked_image true kayru");
+                                  showing_picked_image = true;
+                                }
+                                setState(() {});
+                              }
+                            },
+                            child: Column(
+                              children: [
+                                Visibility(
+                                  visible: !showing_picked_image,
+                                  child: CircleAvatar(
+                                      child: Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                      radius: 70,
+                                      backgroundColor: Colors.grey[100],
+                                      foregroundImage: (parent_profilescreen_viewmodel
+                                                      .profile_img_downloadlink ==
+                                                  null ||
+                                              parent_profilescreen_viewmodel
+                                                      .profile_img_downloadlink ==
+                                                  "")
+                                          ? null
+                                          : NetworkImage(
+                                              parent_profilescreen_viewmodel
+                                                  .profile_img_downloadlink
+                                                  .toString())),
+                                ),
+                                Visibility(
+                                  visible: showing_picked_image,
+                                  child: CircleAvatar(
+                                      radius: 70,
+                                      backgroundColor: Colors.grey[100],
+                                      foregroundImage: (parent_profilescreen_viewmodel
+                                                      .selected_profileimg_path ==
+                                                  null ||
+                                              parent_profilescreen_viewmodel
+                                                      .selected_profileimg_path ==
+                                                  "")
+                                          ? null
+                                          : FileImage(io.File(
+                                              parent_profilescreen_viewmodel
+                                                  .selected_profileimg_path
+                                                  .toString()))),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Text(
+                              "WELCOME  ${parent_profilescreen_viewmodel.new_parentname.toString().toUpperCase()}  ",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold)),
+                          Visibility(
+                            visible: taptochoose,
+                            child: Text("Tap To Choose"),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          parentname_textfield(),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          parentchildname_textfield(),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          parentphonenumber_textfield(),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          parentletitude_textfield(),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          parentlongitude_textfield(),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          set_lat_long_button(),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          parentbutton_edit_or_save()
+                        ],
+                      ),
                     ),
                   ),
                 ),

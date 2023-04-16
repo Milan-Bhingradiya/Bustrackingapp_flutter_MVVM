@@ -48,7 +48,7 @@ class Parent_firestore_service {
 /////
 
   Future<bool> parent_profile_upload(institutename, parentname, new_parentname,
-      new_parentchildname, new_parentphonenumber, parentlat, parentlong) async {
+      new_parentchildname, new_parentphonenumber, parentlat, parentlong,profile_img_downloadlink) async {
     bool check_update_or_not = false;
     await FirebaseFirestore.instance
         .collection('main')
@@ -65,11 +65,12 @@ class Parent_firestore_service {
       "parentphonenumber": new_parentphonenumber,
       'letitude': parentlat,
       'longitude': parentlong,
+      "profile_img_link":profile_img_downloadlink,
     }).then((value) {
       check_update_or_not = true;
     }).catchError((error) {
       // Handle any errors
-      print(error);
+      print("inside service erorr is:;; $error" );
       check_update_or_not = false;
     });
 
@@ -141,5 +142,51 @@ class Parent_firestore_service {
         .get();
 
     return querySnapshot;
+  }
+
+//when user goto parent welcome screen  using phone number and otp method we neeed to find
+// s=institute name and parent name from this phonenumber ..
+//if we have institutename and parent name then we can easily call function for fil profile data
+
+  Future<Map<String, String>> get_parent_institutename_and_parentname_from_phonenumber(phonenumber) async {
+    String? institutename; String? parentname;
+    Map<String, String>? map;
+
+    final all_institute = await FirebaseFirestore.instance
+        .collection("main")
+        .doc("main_document")
+        .collection("institute_list")
+        .get();
+
+    for (var institute_name_doc in all_institute.docs) {
+      final all_matched_phonenumber_docs = await FirebaseFirestore.instance
+          .collection("main")
+          .doc("main_document")
+          .collection("institute_list")
+          .doc(institute_name_doc.id.toString())
+          .collection("parents")
+          .where("parentphonenumber", isEqualTo: phonenumber)
+          .get();
+
+      if (all_matched_phonenumber_docs.size > 0) {
+        institutename = institute_name_doc.id.toString();
+        parentname = all_matched_phonenumber_docs.docs.first.id.toString();
+
+        map = {
+          "institutename": institutename.toString(),
+          "parentname": parentname.toString()
+        };
+        break; // exit loop once a match is found
+      }
+    }
+
+    if (map == null) {
+      map = {"institutename": "", "parentname": ""};
+
+      return map;
+    } else {
+      return map;
+    }
+
   }
 }

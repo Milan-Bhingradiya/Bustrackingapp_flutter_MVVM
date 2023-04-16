@@ -2,6 +2,7 @@ import 'package:bustrackingapp/providers/provider.dart';
 import 'package:bustrackingapp/view/school_admin/adminhomescreen.dart';
 import 'package:bustrackingapp/view_model/schooladmin/schooladmin_loginscreen_viewmodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -37,6 +38,7 @@ class _School_auth_screenState extends State<School_auth_screen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -48,54 +50,85 @@ class _School_auth_screenState extends State<School_auth_screen> {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(30),
+            padding: EdgeInsets.all(size.width / 25),
             child: Column(
               children: [
                 SizedBox(
-                  height: 50,
+                  height: size.height / 10,
                 ),
-                Text(
-                  "SCHOOL ADMIN",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Hero(
+                      tag: "schooladmin",
+                      child: CircleAvatar(
+                        backgroundImage: AssetImage(
+                            "assets/images/selectscreen_school_logo.png"),
+                        radius: 45,
+                        backgroundColor: Colors.white,
+                      ),
+                    ),
+                    SizedBox(
+                      width: size.width / 30,
+                    ),
+                    Text(
+                      "SCHOOL ADMIN",
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
                 SizedBox(
-                  height: 50,
+                  height: size.height / 20,
                 ),
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 25),
                     child: Container(
-                      child: Padding(
-                        padding: EdgeInsets.all(10),
-                        child: DropdownButton(
-                          borderRadius: BorderRadius.circular(8),
-                          underline: SizedBox(),
-                          isExpanded: true,
-                          icon: Icon(Icons.arrow_drop_down_circle_outlined),
-                          hint: Text("select institute"),
-                          value: dropdownvalue == "" || dropdownvalue == null
-                              ? null
-                              : dropdownvalue,
-                          items: Provider.of<Alldata>(context, listen: false)
-                              .list_of_institute_dropdownitem,
-                          onChanged: (value) {
-                            setState(() {
-                              dropdownvalue = value;
-                            });
-                          },
+                      child: DropdownButtonFormField2(
+                        ////
+                        dropdownStyleData: DropdownStyleData(
+                          maxHeight: size.height / 3,
+                          width: size.width / 1.1777,
+                          padding: null,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          offset: const Offset(-9, 0),
                         ),
+
+                        // this is from dropdown pac for style dropdownitems...
+                        decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.green)),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black))),
+
+                        isExpanded: true,
+
+                        hint: Text("select institute"),
+                        value: dropdownvalue == "" || dropdownvalue == null
+                            ? null
+                            : dropdownvalue,
+                        items: Provider.of<Alldata>(context, listen: false)
+                            .list_of_institute_dropdownitem,
+                        onChanged: (value) {
+                          setState(() {
+                            dropdownvalue = value;
+                          });
+                        },
                       ),
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(12)),
-                      height: 55,
+                      height: size.height / 12,
                       width: double.infinity,
                     )),
                 SizedBox(
-                  height: 30,
+                  height: size.height / 35,
                 ),
                 password_textbox(passwordcontroller),
                 SizedBox(
-                  height: 60,
+                  height: size.height / 20,
                 ),
                 GestureDetector(
                   onTap: () async {

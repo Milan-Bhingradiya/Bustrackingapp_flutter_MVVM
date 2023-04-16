@@ -14,7 +14,6 @@ class custom_textbox extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 25),
       child: TextField(
         controller: controller,
-        keyboardType: TextInputType.phone,
         onChanged: ((value) {}),
         decoration: InputDecoration(
             hintText: hinttext.toString(),

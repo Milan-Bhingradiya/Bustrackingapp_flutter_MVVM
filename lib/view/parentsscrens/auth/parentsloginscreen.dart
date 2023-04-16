@@ -1,5 +1,6 @@
 import 'package:bustrackingapp/providers/provider.dart';
 import 'package:bustrackingapp/view_model/parents/parent_loginscreen_viewmodel.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -12,9 +13,6 @@ TextEditingController id_textbox_conroller = TextEditingController();
 TextEditingController password_textbox_conroller = TextEditingController();
 
 class parentsloginscreen extends StatefulWidget {
-  static late String phonenumber;
-  static late String verificationid;
-
   @override
   State<parentsloginscreen> createState() => _parentsloginscreenState();
 }
@@ -32,23 +30,6 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
 
   bool email_or_phone = false;
 
-  Future<bool> doesPhonenumberAlreadyExist(String name) async {
-    final QuerySnapshot result = await FirebaseFirestore.instance
-        .collection('parents')
-        .where('parentphonenumber', isEqualTo: name)
-        .limit(1)
-        .get();
-    final List<DocumentSnapshot> documents = result.docs;
-    if (documents.length == 1) {
-      print("chheeeeeeeeeee");
-
-      return true;
-    } else {
-      print("nathiiiiiiiiiiiiiiii");
-      return false;
-    }
-  }
-
   @override
   void initState() {
     // TODO: implement initState
@@ -62,8 +43,7 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Provider.of<Alldata>(context, listen: false)
-    //     .fill_list_of_institute_dropdownitem();
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -81,64 +61,92 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 100,
+                      height: size.height / 7.5,
                     ),
-                    Text(
-                      "PARENTS",
-                      style: TextStyle(fontSize: 40),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Hero(
+                          tag: "parent",
+                          child: CircleAvatar(
+                            backgroundImage: AssetImage(
+                                "assets/images/selectscreen_parent_logo.png"),
+                            radius: 50,
+                            backgroundColor: Colors.white,
+                          ),
+                        ),
+                        SizedBox(
+                          width: size.width / 30,
+                        ),
+                        Text(
+                          "PARENTS",
+                          style: TextStyle(fontSize: 40),
+                        ),
+                      ],
                     ),
                     SizedBox(
-                      height: 30,
+                      height: size.height / 30,
                     ),
 
                     ////////////////////////
+                    ///email_or_phone= is true means phonenumber textbox show
                     if (!email_or_phone)
                       Padding(
                           padding: EdgeInsets.symmetric(horizontal: 25),
                           child: Container(
-                            child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: DropdownButton(
-                                borderRadius: BorderRadius.circular(8),
-                                underline: SizedBox(),
-                                isExpanded: true,
-                                icon:
-                                    Icon(Icons.arrow_drop_down_circle_outlined),
-                                hint: Text("select institute"),
-                                value:
-                                    dropdownvalue == "" || dropdownvalue == null
-                                        ? null
-                                        : dropdownvalue,
-                                items:
-                                    Provider.of<Alldata>(context, listen: false)
-                                        .list_of_institute_dropdownitem,
-                                onChanged: (value) {
-                                  setState(() {
-                                    dropdownvalue = value;
-                                  });
-                                },
+                            child: DropdownButtonFormField2(
+                              dropdownStyleData: DropdownStyleData(
+                                maxHeight: size.height / 3,
+                                width: size.width / 1.1777,
+                                padding: null,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                offset: const Offset(-9, 0),
                               ),
+                              decoration: InputDecoration(
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.green)),
+                                  border: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.black))),
+                              isExpanded: true,
+                              hint: Text("select institute"),
+                              value:
+                                  dropdownvalue == "" || dropdownvalue == null
+                                      ? null
+                                      : dropdownvalue,
+                              items:
+                                  Provider.of<Alldata>(context, listen: false)
+                                      .list_of_institute_dropdownitem,
+                              onChanged: (value) {
+                                setState(() {
+                                  dropdownvalue = value;
+                                });
+                              },
                             ),
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(12)),
-                            height: 55,
+                            height: size.height / 12,
                             width: double.infinity,
                           )),
 
-                    if (email_or_phone) mobile_num_textbox(),
+                    if (email_or_phone)
+                      mobile_num_textbox(parent_loginscreen_viewmodel),
                     SizedBox(
-                      height: 5,
+                      height: size.height / 80,
                     ),
                     //////////////////
                     if (!email_or_phone) id_textbox(),
                     SizedBox(
-                      height: 5,
+                      height: size.height / 80,
                     ),
                     if (!email_or_phone) password_textbox(),
 
                     SizedBox(
-                      height: 30,
+                      height: size.height / 30,
                     ),
                     GestureDetector(
                         onTap: (() async {
@@ -146,30 +154,41 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
                           //     await doesPhonenumberAlreadyExist(phonenumber.toString());
 
                           //TODO: if phoene is slected floowinnd code will execute
-                          if (false) {
-                            await FirebaseAuth.instance.verifyPhoneNumber(
-                              phoneNumber:
-                                  '+91${parentsloginscreen.phonenumber}',
-                              verificationCompleted:
-                                  (PhoneAuthCredential credential) {},
-                              verificationFailed: (FirebaseAuthException e) {},
-                              codeSent:
-                                  (String verificationId, int? resendToken) {
-                                // Provider.of<Alldata>(context, listen: false)
-                                //         .parent_login_verification_id =
-                                verificationId;
-                                Navigator.pushNamed(
-                                    context, "parentloginotpscreen");
-                              },
-                              codeAutoRetrievalTimeout:
-                                  (String verificationId) {},
-                            );
-
+                          if (email_or_phone) {
+// before sending otp pela i check for number is exist or notin db
+// if number is exist then otp send function will execute
+                            bool user_exist = await parent_loginscreen_viewmodel
+                                .get_institutename_and_parentname_from_phonenumber(
+                                    context);
+                            print("user exist: $user_exist");
+                            if (user_exist) {
+                              await FirebaseAuth.instance.verifyPhoneNumber(
+                                phoneNumber:
+                                    '+91${parent_loginscreen_viewmodel.parentphonenumber}',
+                                verificationCompleted:
+                                    (PhoneAuthCredential credential) {
+                                  print("verification completed");
+                                },
+                                verificationFailed:
+                                    (FirebaseAuthException e) {},
+                                codeSent:
+                                    (String verificationId, int? resendToken) {
+                                  Provider.of<Parent_loginscreen_viewmodel>(
+                                          context,
+                                          listen: false)
+                                      .verificationid_for_otp = verificationId;
+                                  Navigator.pushNamed(
+                                      context, "parentloginotpscreen");
+                                },
+                                codeAutoRetrievalTimeout:
+                                    (String verificationId) {},
+                              );
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg:
+                                      "This number is not Registed by institude kindly contact your institute");
+                            }
                             // Navigator.pushNamed(context, "parentloginotpscreen");
-                          } else {
-                            print("this number is not exist");
-
-                            //  Navigator.pushNamed(context, "parentwelcomescreen");
                           }
 
                           //TODO: logic of  auth with pass
@@ -199,8 +218,8 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
                                 user_valid_or_invalid_or_emptyfiled_in_parent
                                     .True) {
                               print("true");
-                              Navigator.pushNamed(
-                                  context, "parentwelcomescreen");
+                              Navigator.pushNamed(context,
+                                  "select_parentscreen_from_bottomnavigationbar");
                             }
                           }
 
@@ -220,7 +239,7 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
                                 child: Text(
                                     email_or_phone ? "SEND OTP" : "SIGN IN")))),
                     SizedBox(
-                      height: 20,
+                      height: size.height / 40,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -244,7 +263,7 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
                           ),
                         )
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -298,13 +317,13 @@ Widget id_textbox() {
   );
 }
 
-Widget mobile_num_textbox() {
+Widget mobile_num_textbox(parent_loginscreen_viewmodel) {
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: 25),
     child: TextField(
       keyboardType: TextInputType.phone,
       onChanged: ((value) {
-        parentsloginscreen.phonenumber = value;
+        parent_loginscreen_viewmodel.parentphonenumber = value;
       }),
       decoration: InputDecoration(
           hintText: "Enter Mobie Number",

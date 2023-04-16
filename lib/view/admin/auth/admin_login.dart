@@ -30,6 +30,7 @@ class _admin_login extends State<admin_login> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -41,15 +42,15 @@ class _admin_login extends State<admin_login> {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(30),
+            padding: EdgeInsets.all(size.width / 20),
             child: Column(
               children: [
                 SizedBox(
                   height: 30,
                 ),
                 Container(
-                  height: 150,
-                  width: 150,
+                  height: size.height / 4.5,
+                  width: size.width / 2.5,
                   // decoration: BoxDecoration(
                   //     color: Colors.amber,
                   //     borderRadius: BorderRadius.circular(8)),
@@ -58,15 +59,15 @@ class _admin_login extends State<admin_login> {
                       child: Image.asset("assets/images/adminlogo.png")),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: size.height / 50,
                 ),
                 textbox(admin_loginscreen_viewmodel, "id"),
                 SizedBox(
-                  height: 30,
+                  height: size.height / 35,
                 ),
                 textbox(admin_loginscreen_viewmodel, "Password"),
                 SizedBox(
-                  height: 60,
+                  height: size.height / 25,
                 ),
                 GestureDetector(
                   onTap: () async {
@@ -112,7 +113,7 @@ Widget textbox(
 ) {
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: 25),
-    child: TextField(
+    child: TextFormField(
       keyboardType: TextInputType.name,
       onChanged: ((value) {
         print(hinttext);
@@ -128,7 +129,7 @@ Widget textbox(
           hintText: hinttext,
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.white)),
+              borderSide: BorderSide(color: Colors.grey.shade800)),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: Colors.grey.shade800)),

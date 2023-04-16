@@ -1,4 +1,5 @@
 import 'package:bustrackingapp/providers/provider.dart';
+import 'package:bustrackingapp/view/drivercreens/auth/driverloginscreen.dart';
 import 'package:bustrackingapp/view/school_admin/drivers/listofdriverscreen.dart';
 import 'package:bustrackingapp/view/parentsscrens/auth/parentsloginscreen.dart';
 import 'package:bustrackingapp/view/school_admin/auth/school_auth_screen.dart';
@@ -142,7 +143,24 @@ class _selectwhoyouarescreenState extends State<selectwhoyouarescreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, "driverloginscreen");
+                        Navigator.push(
+                            context,
+                            //"driverloginscreen"
+                            // PageRouteBuilder(
+                            //     transitionDuration: Duration(milliseconds: 800),
+                            //     pageBuilder: (_, __, ___) =>
+                            //         driverloginscreen())
+
+                            PageRouteBuilder(
+                              transitionDuration: Duration(milliseconds: 800),
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) =>
+                                      driverloginscreen(),
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                return child;
+                              },
+                            ));
                       },
                       child: Container(
                         height: MediaQuery.of(context).size.height / 5.5,
@@ -161,14 +179,17 @@ class _selectwhoyouarescreenState extends State<selectwhoyouarescreen> {
                                     child: Material(
                                   borderRadius: BorderRadius.circular(30),
                                   elevation: 10,
-                                  child: CircleAvatar(
-                                    backgroundImage: AssetImage(
-                                        "assets/images/selectscreen_driver_logo.png"),
-                                    radius: 30,
-                                    backgroundColor: Colors.white,
+                                  child: Hero(
+                                    tag: "driver",
+                                    child: CircleAvatar(
+                                      backgroundImage: AssetImage(
+                                          "assets/images/selectscreen_driver_logo.png"),
+                                      radius: 30,
+                                      backgroundColor: Colors.white,
+                                    ),
                                   ),
                                 ))
-                              ],
+                              ], 
                             ),
                           ),
                           Expanded(
@@ -207,7 +228,12 @@ class _selectwhoyouarescreenState extends State<selectwhoyouarescreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, "parentsloginscreen");
+                        Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                                transitionDuration: Duration(milliseconds: 800),
+                                pageBuilder: (_, __, ___) =>
+                                    parentsloginscreen()));
                       },
                       child: Container(
                         height: MediaQuery.of(context).size.height / 5.5,
@@ -226,11 +252,14 @@ class _selectwhoyouarescreenState extends State<selectwhoyouarescreen> {
                                     child: Material(
                                   borderRadius: BorderRadius.circular(30),
                                   elevation: 10,
-                                  child: CircleAvatar(
-                                    backgroundImage: AssetImage(
-                                        "assets/images/selectscreen_parent_logo.png"),
-                                    radius: 30,
-                                    backgroundColor: Colors.white,
+                                  child: Hero(
+                                    tag: "parent",
+                                    child: CircleAvatar(
+                                      backgroundImage: AssetImage(
+                                          "assets/images/selectscreen_parent_logo.png"),
+                                      radius: 30,
+                                      backgroundColor: Colors.white,
+                                    ),
                                   ),
                                 ))
                               ],
@@ -273,9 +302,12 @@ class _selectwhoyouarescreenState extends State<selectwhoyouarescreen> {
                     child: GestureDetector(
                       onTap: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) => School_auth_screen())));
+                          context,
+                          PageRouteBuilder(
+                              transitionDuration: Duration(milliseconds: 800),
+                              pageBuilder: (_, __, ___) =>
+                                  School_auth_screen()),
+                        );
                       },
                       child: Container(
                         height: MediaQuery.of(context).size.height / 5.5,
@@ -294,11 +326,14 @@ class _selectwhoyouarescreenState extends State<selectwhoyouarescreen> {
                                     child: Material(
                                   borderRadius: BorderRadius.circular(30),
                                   elevation: 10,
-                                  child: CircleAvatar(
-                                    backgroundImage: AssetImage(
-                                        "assets/images/selectscreen_school_logo.png"),
-                                    radius: 30,
-                                    backgroundColor: Colors.white,
+                                  child: Hero(
+                                    tag: "schooladmin",
+                                    child: CircleAvatar(
+                                      backgroundImage: AssetImage(
+                                          "assets/images/selectscreen_school_logo.png"),
+                                      radius: 30,
+                                      backgroundColor: Colors.white,
+                                    ),
                                   ),
                                 ))
                               ],
@@ -360,18 +395,21 @@ class _selectwhoyouarescreenState extends State<selectwhoyouarescreen> {
                                     child: Material(
                                   borderRadius: BorderRadius.circular(30),
                                   elevation: 10,
-                                  child: CircleAvatar(
-                                    backgroundImage: AssetImage(
-                                        "assets/images/selectscreen_admin_logo.png"),
-                                    child: Container(
-                                      child: Icon(
-                                        Icons.person,
-                                        color: Colors.black,
-                                        size: 40,
+                                  child: Hero(
+                                    tag: "admin",
+                                    child: CircleAvatar(
+                                      backgroundImage: AssetImage(
+                                          "assets/images/selectscreen_admin_logo.png"),
+                                      child: Container(
+                                        child: Icon(
+                                          Icons.person,
+                                          color: Colors.black,
+                                          size: 40,
+                                        ),
                                       ),
+                                      radius: 30,
+                                      backgroundColor: Colors.white,
                                     ),
-                                    radius: 30,
-                                    backgroundColor: Colors.white,
                                   ),
                                 ))
                               ],

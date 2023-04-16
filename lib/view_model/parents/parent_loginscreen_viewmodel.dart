@@ -3,6 +3,9 @@ import 'package:bustrackingapp/respository/parent/parent_auth_repo.dart';
 import 'package:flutter/material.dart';
 
 class Parent_loginscreen_viewmodel extends ChangeNotifier {
+  String? verificationid_for_otp;
+  String? parentphonenumber;
+
   String? parent_selected_institute_at_login;
   String? parent_entered_name_at_login;
 
@@ -44,6 +47,32 @@ class Parent_loginscreen_viewmodel extends ChangeNotifier {
       } else {
         return user_valid_or_invalid_or_emptyfiled_in_parent.False;
       }
+    }
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////
+
+  Future<bool> get_institutename_and_parentname_from_phonenumber(
+      context) async {
+    Map res = await parent_auth_repo
+        .get_institutename_and_parentname_from_phonenumber(parentphonenumber);
+
+    var institutename = res["institutename"];
+    var parentname = res["parentname"];
+
+    if (institutename == "" ||
+        institutename == null ||
+        parentname == "" ||
+        parentname == null) {
+      print("falsssssssssssssssssssssssssssssssssssssss");
+      return false;
+    } else {
+      parent_selected_institute_at_login = institutename.toString();
+      parent_entered_name_at_login = parentname.toString();
+      print("trueeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+      print(institutename);
+      print(parentname);
+      return true;
     }
   }
 }

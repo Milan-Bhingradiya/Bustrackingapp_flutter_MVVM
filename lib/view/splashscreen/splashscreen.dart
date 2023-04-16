@@ -2,6 +2,7 @@ import 'package:bustrackingapp/view/selectwhoyouarescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:lottie/lottie.dart';
 
 class splashscreen extends StatefulWidget {
   const splashscreen({super.key});
@@ -17,7 +18,8 @@ class _splashscreenState extends State<splashscreen> {
     super.initState();
 
     Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushReplacement(context,MaterialPageRoute(builder:(context) => selectwhoyouarescreen()));
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => selectwhoyouarescreen()));
     });
   }
 
@@ -26,6 +28,7 @@ class _splashscreenState extends State<splashscreen> {
     return Scaffold(
       body: Column(
         children: [
+          //Lottie.asset("assets/lottie_files/bus_animation_lottiefile.json"),
           Expanded(
               child: Container(
             //     decoration: BoxDecoration(
