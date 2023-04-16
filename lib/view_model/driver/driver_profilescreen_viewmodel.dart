@@ -1,13 +1,14 @@
-import 'package:bustrackingapp/respository/driver/driver_auth_repo.dart';
-import 'package:bustrackingapp/respository/driver/driver_profile_repo.dart';
+import 'package:bustrackingapp/data/network_services/driver_services/driver_firestore_service.dart';
+
 import 'package:bustrackingapp/view_model/driver/driver_loginscreen_viewmodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Driver_profilescreen_viewmodel extends ChangeNotifier {
-  final Driver_profile_repo driver_profile_repo = Driver_profile_repo();
 
+  Driver_firestore_service driver_firestore_service =
+      Driver_firestore_service();
   String new_drivername = "";
   String new_driverphonenumber = "";
   String new_driveremail = "";
@@ -30,8 +31,8 @@ class Driver_profilescreen_viewmodel extends ChangeNotifier {
         .toString();
     drivername = driver_login_viewmodel.driver_name_at_driverlogin.toString();
 
-    final DocumentSnapshot driverdata = await driver_profile_repo
-        .get_driver_document_using_drivername_and_institutename(
+    final DocumentSnapshot driverdata = await driver_firestore_service
+        .get_driver_doc(
             institutename, drivername);
 
     // give data to cntrollers....
@@ -50,7 +51,7 @@ class Driver_profilescreen_viewmodel extends ChangeNotifier {
 
   // profile upload
   Future<bool> upload_profile() async {
-    bool updated_or_failed = await driver_profile_repo.upload_driver_profile(
+    bool updated_or_failed = await driver_firestore_service.driver_profile_upload(
         institutename,
         drivername,
         new_drivername,

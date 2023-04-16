@@ -1,5 +1,6 @@
+import 'package:bustrackingapp/data/network_services/parent_services/parent_firestore_service.dart';
 import 'package:bustrackingapp/model/parent/auth/parent_enum.dart';
-import 'package:bustrackingapp/respository/parent/parent_auth_repo.dart';
+
 import 'package:flutter/material.dart';
 
 class Parent_loginscreen_viewmodel extends ChangeNotifier {
@@ -9,7 +10,9 @@ class Parent_loginscreen_viewmodel extends ChangeNotifier {
   String? parent_selected_institute_at_login;
   String? parent_entered_name_at_login;
 
-  Parent_auth_repo parent_auth_repo = Parent_auth_repo();
+  
+  Parent_firestore_service parent_firestore_service =
+      Parent_firestore_service();
 
   Future<user_valid_or_invalid_or_emptyfiled_in_parent>
       check_authenticity_of_user(institutename, parentname, password) async {
@@ -22,8 +25,8 @@ class Parent_loginscreen_viewmodel extends ChangeNotifier {
     } else {
       print("parent login getting password query fired");
 
-      get_password_from_firebase = await parent_auth_repo
-          .get_parent_password_from_firestore(institutename, parentname);
+      get_password_from_firebase = await parent_firestore_service
+          .get_password_of_parent_from_document(institutename, parentname);
       print("password: $get_password_from_firebase");
     }
 
@@ -54,8 +57,8 @@ class Parent_loginscreen_viewmodel extends ChangeNotifier {
 
   Future<bool> get_institutename_and_parentname_from_phonenumber(
       context) async {
-    Map res = await parent_auth_repo
-        .get_institutename_and_parentname_from_phonenumber(parentphonenumber);
+    Map res = await parent_firestore_service
+        .get_parent_institutename_and_parentname_from_phonenumber(parentphonenumber);
 
     var institutename = res["institutename"];
     var parentname = res["parentname"];

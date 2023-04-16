@@ -1,14 +1,16 @@
-import 'package:bustrackingapp/respository/admin/admin_auth_repo.dart';
+import 'package:bustrackingapp/data/network_services/admin_services/admin_firestore_service.dart';
+
 import 'package:flutter/material.dart';
 
 class Admin_loginscreen_viewmodel with ChangeNotifier {
-  Admin_auth_repo admin_addinstitute_repo = Admin_auth_repo();
+    Admin_firestore_service admin_firestore_service = Admin_firestore_service();
+
 
   String? id;
   String? password;
 
   Future<bool> check_admin_authenticity() async {
-    String adminpassword = await admin_addinstitute_repo.get_admin_password();
+    String adminpassword = await admin_firestore_service.get_admin_password();
 
     print(adminpassword);
     print(adminpassword);

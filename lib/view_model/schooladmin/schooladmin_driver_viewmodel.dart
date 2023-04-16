@@ -1,4 +1,5 @@
-import 'package:bustrackingapp/respository/schooladmin/schooladmin_driver_repo.dart';
+import 'package:bustrackingapp/data/network_services/schooladmin_services/schooladmin_firestore_service.dart';
+
 import 'package:bustrackingapp/view_model/driver/driver_loginscreen_viewmodel.dart';
 import 'package:bustrackingapp/view_model/schooladmin/schooladmin_loginscreen_viewmodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Schooladmin_driver_viewmodel extends ChangeNotifier {
-  Schooladmin_driver_repo schooladmin_driver_repo = Schooladmin_driver_repo();
-
+  Schooladmin_firestore_service schooladmin_firestore_service =
+      Schooladmin_firestore_service();
   dynamic schooladmin_loginscreen_viewmodel = null;
 
   String? institutename;
@@ -30,7 +31,7 @@ class Schooladmin_driver_viewmodel extends ChangeNotifier {
 
     // QuerySnapshot mm = await firebase.collection("drivers").get();
     listof_bus_dropdown.clear();
-    QuerySnapshot mm = await schooladmin_driver_repo
+    QuerySnapshot mm = await schooladmin_firestore_service
         .get_buses_snapshot(schooladmin_loginscreen_viewmodel.institutename);
 
     mm.docs.forEach((doc) {
@@ -51,7 +52,7 @@ class Schooladmin_driver_viewmodel extends ChangeNotifier {
 
     institutename = schooladmin_login_viewmodel.institutename;
 
-    return await schooladmin_driver_repo.add_driver(institutename,
+    return await schooladmin_firestore_service.add_driver(institutename,
         selectedbusnum, drivername, driverphonenumber, confirmdriverpassword);
   }
 }

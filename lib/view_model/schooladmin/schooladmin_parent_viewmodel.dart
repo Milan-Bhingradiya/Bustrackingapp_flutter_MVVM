@@ -1,11 +1,12 @@
-import 'package:bustrackingapp/respository/schooladmin/schooladmin_parent_repo.dart';
+import 'package:bustrackingapp/data/network_services/schooladmin_services/schooladmin_firestore_service.dart';
+
 import 'package:bustrackingapp/view_model/schooladmin/schooladmin_loginscreen_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Schooladmin_parent_viewmodel extends ChangeNotifier {
-  Schooladmin_parent_repo schooladmin_parent_repo = Schooladmin_parent_repo();
-
+  Schooladmin_firestore_service schooladmin_firestore_service =
+      Schooladmin_firestore_service();
   String? institutename;
   String? selectedbusnum;
   String? parentname;
@@ -21,7 +22,7 @@ class Schooladmin_parent_viewmodel extends ChangeNotifier {
 
     institutename = schooladmin_login_viewmodel.institutename;
 
-    return await schooladmin_parent_repo.add_parent(institutename, parentname,
-        parentphonenumber, parentchildname, confirmparentpassword);
+    return await schooladmin_firestore_service.add_parent(institutename,
+        parentname, parentphonenumber, parentchildname, confirmparentpassword);
   }
 }

@@ -1,5 +1,6 @@
+import 'package:bustrackingapp/data/network_services/parent_services/parent_firestore_service.dart';
 import 'package:bustrackingapp/res/component/parent/trackbus/bus_and_num_widget.dart';
-import 'package:bustrackingapp/respository/parent/parent_trackbus_repo.dart';
+
 import 'package:bustrackingapp/view_model/parents/parent_loginscreen_viewmodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,8 @@ import 'dart:ui' as ui;
 import 'package:provider/provider.dart';
 
 class Parent_trackbusscreen_viewmodel extends ChangeNotifier {
-  Parent_trackbus_repo parent_trackbus_repo = Parent_trackbus_repo();
+  Parent_firestore_service parent_firestore_service =
+      Parent_firestore_service();
   dynamic parent_loginscreen_viewmodel = null;
 
   List<bus_and_num_widget> list_of_bus = [];
@@ -50,7 +52,7 @@ class Parent_trackbusscreen_viewmodel extends ChangeNotifier {
         Provider.of<Parent_loginscreen_viewmodel>(context, listen: false);
     //----------
     QuerySnapshot querySnapshot =
-        await parent_trackbus_repo.get_driver_collection_querysnapshot(
+        await parent_firestore_service.get_driver_collection_querysnapshot(
             parent_loginscreen_viewmodel.parent_selected_institute_at_login);
 
     // await FirebaseFirestore.instance.collection('drivers').get();

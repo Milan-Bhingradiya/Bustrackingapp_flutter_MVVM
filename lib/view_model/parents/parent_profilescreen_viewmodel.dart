@@ -1,7 +1,9 @@
 import 'dart:io' as io;
 
+import 'package:bustrackingapp/data/network_services/parent_services/parent_firebasestorage_service.dart';
+import 'package:bustrackingapp/data/network_services/parent_services/parent_firestore_service.dart';
 import 'package:bustrackingapp/model/parent/profile/parentlocation_model.dart';
-import 'package:bustrackingapp/respository/parent/parent_profile_repo.dart';
+
 import 'package:bustrackingapp/view_model/parents/parent_loginscreen_viewmodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -9,7 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Parent_profilescreen_viewmodel extends ChangeNotifier {
-  final Parent_profile_repo parent_profile_repo = Parent_profile_repo();
+    Parent_firestore_service parent_firestore_service =
+      Parent_firestore_service();
+
+  Parent_firebasestorage_service parent_firebasestorage_service =
+      Parent_firebasestorage_service();
 
   String new_parentchildname = "";
   String new_parentphonenumber = "";
@@ -45,8 +51,8 @@ class Parent_profilescreen_viewmodel extends ChangeNotifier {
     parentname = parent_login_viewmodel.parent_entered_name_at_login.toString();
 
     ///
-    final DocumentSnapshot parentdata = await parent_profile_repo
-        .get_parent_document_using_parentname_and_institutename(
+    final DocumentSnapshot parentdata = await parent_firestore_service
+        .get_parent_doc(
             institutename, parentname);
 
     // give data to cntrollers....
@@ -75,13 +81,13 @@ class Parent_profilescreen_viewmodel extends ChangeNotifier {
 
 //set current location
   Future<bool> ask_for_loctaion_permission() async {
-    return await parent_profile_repo.ask_for_loctaion_permission();
+    return await parent_firestore_service.ask_for_loctaion_permission();
   }
 
   Future<void> set_current_location(
       parentletitudecontroller, parentlongitudecontroller) async {
     parentlocation_model locationdata =
-        await parent_profile_repo.set_current_location();
+        await parent_firestore_service.set_current_location();
 
     new_parentlat = locationdata.letitude;
     new_parentlong = locationdata.longitude;
@@ -107,7 +113,7 @@ class Parent_profilescreen_viewmodel extends ChangeNotifier {
 
     bool updated_or_failed = false;
    
-      updated_or_failed = await parent_profile_repo.upload_parent_profile(
+      updated_or_failed = await parent_firestore_service.parent_profile_upload(
           institutename,
           parentname,
           new_parentname,
@@ -128,7 +134,7 @@ class Parent_profilescreen_viewmodel extends ChangeNotifier {
 
   Future<void> select_img() async {
     selected_profileimg_path =
-        await parent_profile_repo.pick_img_and_return_path();
+        await parent_firebasestorage_service.pick_img_and_returnpath();
   }
 
   Future<void> upload_pic_and_save_downloadlink() async {

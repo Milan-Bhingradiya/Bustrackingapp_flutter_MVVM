@@ -1,5 +1,6 @@
+import 'package:bustrackingapp/data/network_services/driver_services/driver_firestore_service.dart';
 import 'package:bustrackingapp/model/driver/showmap/model_parents.dart';
-import 'package:bustrackingapp/respository/driver/driver_showmap_repo.dart';
+
 import 'package:bustrackingapp/view_model/driver/driver_loginscreen_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,7 +9,9 @@ import 'package:provider/provider.dart';
 import 'dart:ui' as ui;
 
 class Driver_showmapscreen_viewmodel extends ChangeNotifier {
-  final Driver_showmap_repo driver_profile_repo = Driver_showmap_repo();
+  Driver_firestore_service driver_firestore_service =
+      Driver_firestore_service();
+
   late String institutename;
 
   List<modelofparents> list_of_parentmodel = [];
@@ -52,8 +55,8 @@ class Driver_showmapscreen_viewmodel extends ChangeNotifier {
 
     ///
     try {
-      final querySnapshot = await driver_profile_repo
-          .get_all_parent_of_given_institute(institutename);
+      final querySnapshot = await driver_firestore_service
+          .get_parent_documentist_of_given_institutename(institutename);
 
       print("oooooooo ${querySnapshot.size}");
       querySnapshot.docs.forEach((doc) {
