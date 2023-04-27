@@ -4,8 +4,10 @@ import 'package:bustrackingapp/view/admin/admin.dart';
 import 'package:bustrackingapp/view/admin/auth/admin_login.dart';
 
 import 'package:bustrackingapp/view/drivercreens/auth/driverloginscreen.dart';
+import 'package:bustrackingapp/view/drivercreens/chat/driver_chatting_screen.dart';
 import 'package:bustrackingapp/view/drivercreens/select_driverscreen_from_bottomnavigationbar.dart';
 import 'package:bustrackingapp/view/parentsscrens/auth/parentsloginscreen.dart';
+import 'package:bustrackingapp/view/parentsscrens/chat/chatting_screen.dart';
 import 'package:bustrackingapp/view/parentsscrens/select_parentscreen_from_bottomnavigationbar.dart';
 import 'package:bustrackingapp/view/school_admin/buses/list_of_bus_screen.dart';
 import 'package:bustrackingapp/view/school_admin/parents/addnewparents_screen.dart';
@@ -17,10 +19,13 @@ import 'package:bustrackingapp/view/splashscreen/splashscreen.dart';
 import 'package:bustrackingapp/view_model/admin/admin_addinstitute_viewmodel.dart';
 import 'package:bustrackingapp/view_model/admin/admin_loginscreen_viewmodel.dart';
 import 'package:bustrackingapp/view_model/driver/driver_bottomnavigationbar_viewmodel.dart';
+import 'package:bustrackingapp/view_model/driver/driver_chattingscreen_viewmodel.dart';
 import 'package:bustrackingapp/view_model/driver/driver_loginscreen_viewmodel.dart';
 import 'package:bustrackingapp/view_model/driver/driver_profilescreen_viewmodel.dart';
+import 'package:bustrackingapp/view_model/driver/driver_selectparent_for_chat_screen_viewmodel.dart';
 import 'package:bustrackingapp/view_model/driver/driver_showmapscreen_viewmodel.dart';
 import 'package:bustrackingapp/view_model/driver/driver_welcomescreen_viewmodel.dart';
+import 'package:bustrackingapp/view_model/parents/parent_chattingscreen_viewmodel.dart';
 import 'package:bustrackingapp/view_model/parents/parent_loginscreen_viewmodel.dart';
 
 import 'package:bustrackingapp/view_model/parents/parent_profilescreen_viewmodel.dart';
@@ -77,9 +82,15 @@ class MyApp extends StatelessWidget {
               create: (create) => Driver_welcomescreen_viewmodel()),
           ChangeNotifierProvider<Driver_showmapscreen_viewmodel>(
               create: (create) => Driver_showmapscreen_viewmodel()),
-              ChangeNotifierProvider<Driver_bottomnavigationbar_viewmodel>(
+          ChangeNotifierProvider<Driver_bottomnavigationbar_viewmodel>(
               create: (create) => Driver_bottomnavigationbar_viewmodel()),
-              
+          ChangeNotifierProvider<Driver_selectparent_for_chat_screen_viewmodel>(
+              create: (create) =>
+                  Driver_selectparent_for_chat_screen_viewmodel()),
+
+                   ChangeNotifierProvider<Driver_chattingscreen_viewmodel>(
+              create: (create) =>
+                  Driver_chattingscreen_viewmodel()),
 
           //parent ke
           ChangeNotifierProvider<Parent_loginscreen_viewmodel>(
@@ -88,14 +99,13 @@ class MyApp extends StatelessWidget {
               create: (create) => Parent_profilescreen_viewmodel()),
           ChangeNotifierProvider<Parent_trackbusscreen_viewmodel>(
               create: (create) => Parent_trackbusscreen_viewmodel()),
-          ChangeNotifierProvider<
-                  Parent_bottomnavigationbar_viewmodel>(
-              create: (create) =>
-                  Parent_bottomnavigationbar_viewmodel()),
-   ChangeNotifierProvider<
-                  Parent_selectdriver_for_chat_screen_viewmodel>(
+          ChangeNotifierProvider<Parent_bottomnavigationbar_viewmodel>(
+              create: (create) => Parent_bottomnavigationbar_viewmodel()),
+          ChangeNotifierProvider<Parent_selectdriver_for_chat_screen_viewmodel>(
               create: (create) =>
                   Parent_selectdriver_for_chat_screen_viewmodel()),
+          ChangeNotifierProvider<Parent_chattingscreen_viremodel>(
+              create: (create) => Parent_chattingscreen_viremodel()),
           //schooladmin
 
           ChangeNotifierProvider<Schooladmin_loginscreen_viewmodel>(
@@ -131,15 +141,18 @@ class MyApp extends StatelessWidget {
                 "select_parentscreen_from_bottomnavigationbar": (context) =>
                     select_parentscreen_from_bottomnavigationbar(),
 
+                "Chatting_screen": (context) => Chatting_screen(),
+
                 "parentprofilescreen": (context) => parentprofilescreen(),
                 "parentsloginscreen": (context) => parentsloginscreen(),
                 //driver
                 "driverwelcomescreen": ((context) => driverwelcomescreen()),
                 "mapfordriver": (context) => mapfordriver(),
                 "driverprofilescreen": (context) => driverprofilescreen(),
-               "select_driverscreen_from_bottomnavigationbar": (context) =>
+                "select_driverscreen_from_bottomnavigationbar": (context) =>
                     select_driverscreen_from_bottomnavigationbar(),
 
+                    "driver_chatting_screen":(context) => Driver_chatting_screen(),
 
                 //buses
                 "listofbusscreen": (context) => listofbusscreen(),

@@ -1,4 +1,4 @@
-import 'package:bustrackingapp/data/network_services/schooladmin_services/schooladmin_firestore_service.dart';
+import 'package:bustrackingapp/services/network_services/schooladmin_services/schooladmin_firestore_service.dart';
 
 import 'package:bustrackingapp/view_model/driver/driver_loginscreen_viewmodel.dart';
 import 'package:bustrackingapp/view_model/schooladmin/schooladmin_loginscreen_viewmodel.dart';
@@ -11,8 +11,9 @@ class Schooladmin_driver_viewmodel extends ChangeNotifier {
       Schooladmin_firestore_service();
   dynamic schooladmin_loginscreen_viewmodel = null;
 
-  String? institutename;
-  String? selectedbusnum;
+  String? institute_doc_id;
+  String? bus_doc_u_id;
+  String? bus_num;
   String? drivername;
   String? driverphonenumber;
   String? driverpassword;
@@ -32,11 +33,12 @@ class Schooladmin_driver_viewmodel extends ChangeNotifier {
     // QuerySnapshot mm = await firebase.collection("drivers").get();
     listof_bus_dropdown.clear();
     QuerySnapshot mm = await schooladmin_firestore_service
-        .get_buses_snapshot(schooladmin_loginscreen_viewmodel.institutename);
+        .get_buses_snapshot(schooladmin_loginscreen_viewmodel.institute_doc_id);
 
     mm.docs.forEach((doc) {
       if (doc["assigned"] == false) {
         listof_bus_dropdown.add(DropdownMenuItem(
+          key: Key(doc.id.toString()),
           value: doc["busnum"].toString(),
           child: Text("${doc["busnum"].toString()}"),
         ));
@@ -50,9 +52,14 @@ class Schooladmin_driver_viewmodel extends ChangeNotifier {
     final schooladmin_login_viewmodel =
         Provider.of<Schooladmin_loginscreen_viewmodel>(context, listen: false);
 
-    institutename = schooladmin_login_viewmodel.institutename;
-
-    return await schooladmin_firestore_service.add_driver(institutename,
-        selectedbusnum, drivername, driverphonenumber, confirmdriverpassword);
+    institute_doc_id = schooladmin_login_viewmodel.institute_doc_id;
+    return await schooladmin_firestore_service.add_driver(
+      institute_doc_id,
+      bus_doc_u_id,
+      bus_num,
+      drivername,
+      driverphonenumber,
+      confirmdriverpassword,
+    );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:bustrackingapp/view_model/driver/driver_selectparent_for_chat_screen_viewmodel.dart';
 import 'package:bustrackingapp/view_model/parents/parent_selectdriver_for_chat_screen_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,19 +7,19 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class select_driver_for_chat extends StatefulWidget {
-  const select_driver_for_chat({super.key});
+class select_parent_for_chat extends StatefulWidget {
+  const select_parent_for_chat({super.key});
 
   @override
-  State<select_driver_for_chat> createState() => _select_driver_for_chatState();
+  State<select_parent_for_chat> createState() => _select_parent_for_chatState();
 }
 
-class _select_driver_for_chatState extends State<select_driver_for_chat> {
-  dynamic parent_selectdriver_for_chat_screen_viewmodel = null;
+class _select_parent_for_chatState extends State<select_parent_for_chat> {
+  dynamic driver_selectparent_for_chat_screen_viewmodel = null;
 
   void milanop(context) async {
-    await parent_selectdriver_for_chat_screen_viewmodel
-        .make_all_drivers_chatbox(context);
+    await driver_selectparent_for_chat_screen_viewmodel
+        .make_all_parents_chatbox(context);
     if (this.mounted) {
       setState(() {});
     }
@@ -29,8 +30,8 @@ class _select_driver_for_chatState extends State<select_driver_for_chat> {
     // TODO: implement initState
     super.initState();
 
-    parent_selectdriver_for_chat_screen_viewmodel =
-        Provider.of<Parent_selectdriver_for_chat_screen_viewmodel>(context,
+    driver_selectparent_for_chat_screen_viewmodel =
+        Provider.of<Driver_selectparent_for_chat_screen_viewmodel>(context,
             listen: false);
 
     milanop(context);
@@ -54,16 +55,16 @@ class _select_driver_for_chatState extends State<select_driver_for_chat> {
             Flexible(
               child: SingleChildScrollView(
                 child: Column(
-                    children: (parent_selectdriver_for_chat_screen_viewmodel
-                                .list_of_drivers_chatbox_widget.length ==
+                    children: (driver_selectparent_for_chat_screen_viewmodel
+                                .list_of_parents_chatbox_widget.length ==
                             0)
                         ? [
                             Center(
                               child: CircularProgressIndicator(),
                             )
                           ]
-                        : parent_selectdriver_for_chat_screen_viewmodel
-                            .list_of_drivers_chatbox_widget),
+                        : driver_selectparent_for_chat_screen_viewmodel
+                            .list_of_parents_chatbox_widget),
               ),
             )
           ],

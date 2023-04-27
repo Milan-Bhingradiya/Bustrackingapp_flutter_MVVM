@@ -1,4 +1,4 @@
-import 'package:bustrackingapp/data/network_services/admin_services/admin_firestore_service.dart';
+import 'package:bustrackingapp/services/network_services/admin_services/admin_firestore_service.dart';
 
 import 'package:flutter/material.dart';
 

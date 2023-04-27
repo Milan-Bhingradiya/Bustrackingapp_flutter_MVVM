@@ -21,7 +21,9 @@ class Alldata extends ChangeNotifier {
     list_of_institute_dropdownitem.clear();
     querysnapshot.docs.forEach((doc) {
       list_of_institute_dropdownitem.add(DropdownMenuItem(
-          value: doc.id.toString(), child: Text(doc.id.toString())));
+          key: Key(doc.id.toString()),
+          value: doc.get("institute_name").toString(),
+          child: Text(doc.get("institute_name").toString())));
     });
   }
 

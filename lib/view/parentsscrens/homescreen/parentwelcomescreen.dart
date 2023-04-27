@@ -5,7 +5,7 @@ import 'dart:convert';
 //import 'dart:html';
 import 'dart:io' as io;
 import 'dart:typed_data';
-import 'package:bustrackingapp/data/network_services/parent_services/parent_firestore_service.dart';
+import 'package:bustrackingapp/services/network_services/parent_services/parent_firestore_service.dart';
 import 'package:bustrackingapp/view/parentsscrens/drawer/parentdrawerwidget.dart';
 import 'package:bustrackingapp/view_model/parents/parent_loginscreen_viewmodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -35,7 +35,6 @@ class _parentwelcomescreenState extends State<parentwelcomescreen> {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     setState(() {
-    
       if (image != null) {
         final_img = io.File(image.path);
       }
@@ -60,8 +59,6 @@ class _parentwelcomescreenState extends State<parentwelcomescreen> {
 
     parent_loginscreen_viewmodel =
         Provider.of<Parent_loginscreen_viewmodel>(context, listen: false);
-    print(
-        "pareeeeeeeeeeeeent welcome : ${parent_loginscreen_viewmodel.parent_selected_institute_at_login}");
 
     print(
         "pareeeeeeeeeeeeent welcome : ${parent_loginscreen_viewmodel.parent_entered_name_at_login}");
@@ -78,16 +75,6 @@ class _parentwelcomescreenState extends State<parentwelcomescreen> {
         drawer: parentdrawer(),
         body: Column(
           children: [
-            ElevatedButton(
-                onPressed: () async {
-                  Parent_firestore_service obj = Parent_firestore_service();
-                  Map a = await obj
-                      .get_parent_institutename_and_parentname_from_phonenumber(
-                          "9016064322");
-
-                  print(a.entries);
-                },
-                child: Text("Aaaaa")),
             SizedBox(
               height: 100,
             ),

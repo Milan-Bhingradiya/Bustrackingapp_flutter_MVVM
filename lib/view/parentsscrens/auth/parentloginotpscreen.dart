@@ -1,4 +1,4 @@
-import 'package:bustrackingapp/data/network_services/parent_services/parent_firestore_service.dart';
+import 'package:bustrackingapp/services/network_services/parent_services/parent_firestore_service.dart';
 import 'package:bustrackingapp/providers/provider.dart';
 import 'package:bustrackingapp/view_model/parents/parent_loginscreen_viewmodel.dart';
 

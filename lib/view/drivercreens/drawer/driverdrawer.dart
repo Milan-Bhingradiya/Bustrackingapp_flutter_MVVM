@@ -21,31 +21,13 @@ class driverdrawer extends StatelessWidget {
                   ),
                 )),
             ListTile(
-              title: Text("wecomescreen of driver"),
-              onTap: () {
-                Navigator.pushNamed(context, "driverwelcomescreen");
-                //Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text("show map "),
-              onTap: () {
-                Navigator.pushNamed(context, "mapfordriver");
-                //Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text("MY PROFILE"),
-              onTap: () {
-                Navigator.pushNamed(context, "driverprofilescreen");
-              },
-            ),
-            // ListTile(
-            //   title: Text("BUSES"),
-            //   onTap: () {
-            //     //Navigator.pop(context);
-            //   },
-            // ),
+                title: Text("Setting"),
+                onTap: () {
+                  // FirebaseAuth.instance.signOut();
+                  // Navigator.pushNamed(context, "selectwhoyouarescreen");
+
+                  //Navigator.pop(context);
+                }),
             ListTile(
                 title: Text("sign out"),
                 onTap: () {

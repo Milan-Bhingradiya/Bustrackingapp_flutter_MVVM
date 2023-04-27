@@ -22,6 +22,8 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
 //
 
   String dropdownvalue = "";
+  String? u_id;
+  String institute_doc_uid = "";
 
   ///
   late String password;
@@ -29,6 +31,16 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
   String errormsg = "";
 
   bool email_or_phone = false;
+
+  String getSingleQuotedString(String input) {
+    RegExp regExp = RegExp("'(.*?)'");
+    RegExpMatch match = regExp.firstMatch(input)!;
+    if (match != null) {
+      return match.group(1)!;
+    } else {
+      return "";
+    }
+  }
 
   @override
   void initState() {
@@ -120,9 +132,21 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
                               items:
                                   Provider.of<Alldata>(context, listen: false)
                                       .list_of_institute_dropdownitem,
-                              onChanged: (value) {
+                              onChanged: (value) async {
                                 setState(() {
                                   dropdownvalue = value;
+
+                                  final key = Provider.of<Alldata>(context,
+                                          listen: false)
+                                      .list_of_institute_dropdownitem
+                                      .firstWhere((item) => item.value == value)
+                                      .key
+                                      .toString();
+
+//  here we get  key like ['getSingleQuotedString'] this and usign this func we get string inside ' '...........
+                                  u_id = getSingleQuotedString(key);
+
+                               
                                 });
                               },
                             ),
@@ -150,6 +174,7 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
                     ),
                     GestureDetector(
                         onTap: (() async {
+                          print(DateTime.now().microsecondsSinceEpoch);
                           // bool checknumexistornot =
                           //     await doesPhonenumberAlreadyExist(phonenumber.toString());
 
@@ -196,7 +221,7 @@ class _parentsloginscreenState extends State<parentsloginscreen> {
                             Enum user_valid_or_not =
                                 await parent_loginscreen_viewmodel
                                     .check_authenticity_of_user(
-                                        dropdownvalue.toString(),
+                                        u_id,
                                         id_textbox_conroller.text,
                                         password_textbox_conroller.text);
 

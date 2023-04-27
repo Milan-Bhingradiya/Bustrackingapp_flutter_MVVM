@@ -88,7 +88,7 @@ class _addnewparents_screen extends State<addnewparents_screen> {
                       SizedBox(
                         height: 10,
                       ),
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                       Container(
                           width: MediaQuery.of(context).size.width,
@@ -104,9 +104,31 @@ class _addnewparents_screen extends State<addnewparents_screen> {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                       SizedBox(
-                        height: 35,
+                        height: 15,
+                      ),
+
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: 10,
+                            child: enter_parent_letitude_textformfield(
+                                schooladmin_parent_viewmodel),
+                          ),
+                          Flexible(
+                            flex: 1,
+                            child: Container(),
+                          ),
+                          Flexible(
+                            flex: 10,
+                            child: enter_parent_longitude_textformfield(
+                                schooladmin_parent_viewmodel),
+                          )
+                        ],
                       ),
                       // DropdownButton(items: , onChanged: onChanged)
+                      SizedBox(
+                        height: 15,
+                      ),
                       GestureDetector(
                         onTap: () async {
                           if (formkey.currentState!.validate()) {
@@ -260,6 +282,34 @@ Widget enter_parent_confirmpassword_textformfield(
     },
     onChanged: ((value) {
       schooladmin_parent_viewmodel.confirmparentpassword = value;
+    }),
+  );
+}
+
+Widget enter_parent_letitude_textformfield(schooladmin_parent_viewmodel) {
+  return TextFormField(
+    decoration: InputDecoration(
+      labelText: "Enter confirm password",
+      counterText: '',
+      border: const OutlineInputBorder(),
+      prefixIcon: const Icon(Icons.person),
+    ),
+    onChanged: ((value) {
+      schooladmin_parent_viewmodel.letitude = value;
+    }),
+  );
+}
+
+Widget enter_parent_longitude_textformfield(schooladmin_parent_viewmodel) {
+  return TextFormField(
+    decoration: InputDecoration(
+      labelText: "Enter confirm password",
+      counterText: '',
+      border: const OutlineInputBorder(),
+      prefixIcon: const Icon(Icons.person),
+    ),
+    onChanged: ((value) {
+      schooladmin_parent_viewmodel.longitude = value;
     }),
   );
 }

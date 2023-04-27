@@ -85,7 +85,7 @@ class admin extends StatelessWidget {
                                       width: 20,
                                     ),
                                     Text(
-                                      "${snapshot.data!.docs[index].id}",
+                                      "${snapshot.data!.docs[index].get("institute_name")}",
                                       style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w500),

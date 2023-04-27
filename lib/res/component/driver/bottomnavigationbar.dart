@@ -13,6 +13,7 @@ class bottomnavigationbar_widget extends StatelessWidget {
     BottomNavigationBarItem(
         icon: Icon(Icons.directions_bus), label: "Live buses"),
     BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+    BottomNavigationBarItem(icon: Icon(Icons.chat), label: "chat"),
   ];
 
   @override
@@ -29,10 +30,9 @@ class bottomnavigationbar_widget extends StatelessWidget {
       //  backgroundColor: Colors.black,
       items: list_of_BottomNavigationBarItem,
       type: BottomNavigationBarType.fixed,
-      currentIndex:
-          Provider.of<Driver_bottomnavigationbar_viewmodel>(context,
-                  listen: false)
-              .selected_index_of_bottomnavigationbar,
+      currentIndex: Provider.of<Driver_bottomnavigationbar_viewmodel>(context,
+              listen: false)
+          .selected_index_of_bottomnavigationbar,
       // selectedItemColor: Colors.black,
       elevation: 5,
     );

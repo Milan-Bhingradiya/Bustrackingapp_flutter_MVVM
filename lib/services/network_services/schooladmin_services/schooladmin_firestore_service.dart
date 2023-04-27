@@ -1,27 +1,30 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Schooladmin_firestore_service {
   //authentication page services...
-  Future<DocumentSnapshot> get_given_institute_snapshot(institutename) async {
+  Future<DocumentSnapshot> get_given_institute_snapshot(
+      institutedoc_u_id) async {
     DocumentSnapshot doc = await FirebaseFirestore.instance
         .collection("main")
         .doc("main_document")
         .collection("institute_list")
-        .doc(institutename.toString())
+        .doc(institutedoc_u_id.toString())
         .get();
     return doc;
   }
 
   //add bus page serviceses...
-  Future<bool> add_bus(institutename, busnum) async {
+  Future<bool> add_bus(institute_doc_u_id, busnum) async {
     bool upadted_or_failed = false;
     await FirebaseFirestore.instance
         .collection('main')
         .doc("main_document")
         .collection("institute_list")
-        .doc(institutename)
+        .doc(institute_doc_u_id.toString())
         .collection("buses")
-        .doc(busnum.toString())
+        .doc()
         .set({"busnum": "${busnum.toString()}", "assigned": false}).then(
             (value) {
       upadted_or_failed = true;
@@ -30,20 +33,20 @@ class Schooladmin_firestore_service {
   }
 
   //for geeting all bus num taking snapshot of buses collection snapshot
-  Future<QuerySnapshot> get_buses_snapshot(institutename) async {
+  Future<QuerySnapshot> get_buses_snapshot(institute_doc_u_id) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection("main")
         .doc("main_document")
         .collection("institute_list")
-        .doc(institutename.toString())
+        .doc(institute_doc_u_id.toString())
         .collection("buses")
         .get();
     return querySnapshot;
   }
 
 //add driver
-  Future<bool> add_driver(institutename, busnum, drivername, driverphonenumber,
-      confirmdriverpassword) async {
+  Future<bool> add_driver(institute_doc_u_id, bus_doc_id, busnum, drivername,
+      driverphonenumber, confirmdriverpassword) async {
     print("caal adddriver");
     bool upadted_or_failed = false;
 
@@ -53,30 +56,29 @@ class Schooladmin_firestore_service {
           .collection('main')
           .doc("main_document")
           .collection("institute_list")
-          .doc(institutename)
+          .doc(institute_doc_u_id.toString())
           .collection("buses")
-          .doc(busnum.toString())
-          .set({
+          .doc(bus_doc_id.toString())
+          .update({
         "assigned": true,
         "assigned_driver": drivername,
-        "busnum": busnum.toString()
       }).then((value) async {
         print("insde secpmd");
         await FirebaseFirestore.instance
             .collection('main')
             .doc("main_document")
             .collection("institute_list")
-            .doc(institutename)
+            .doc(institute_doc_u_id)
             .collection("drivers")
-            .doc(drivername)
+            .doc()
             .set({
           'drivername': drivername,
           'driverphonenumber': driverphonenumber,
           'password': confirmdriverpassword,
           'busnum': busnum,
           // TODO: this is bydefault but ADD  school depo addres here for by default bus when creted location
-          "letitude": 21.0,
-          "longitude": 71.0,
+          "letitude": 21.0123,
+          "longitude": 71.0125,
         }).then((value) {
           upadted_or_failed = true;
         });
@@ -93,8 +95,8 @@ class Schooladmin_firestore_service {
   }
 
 //add driver
-  Future<bool> add_parent(institutename, parentname, parentphonenumber,
-      parentchildname, confirmparentpassword) async {
+  Future<bool> add_parent(institute_doc_id, parentname, parentphonenumber,
+      parentchildname, confirmparentpassword, letitude, longitude) async {
     print("caal adddriver");
     bool upadted_or_failed = false;
     try {
@@ -102,14 +104,16 @@ class Schooladmin_firestore_service {
           .collection('main')
           .doc("main_document")
           .collection("institute_list")
-          .doc(institutename)
+          .doc(institute_doc_id.toString())
           .collection("parents")
-          .doc(parentname)
+          .doc()
           .set({
         'parentname': parentname,
         'parentphonenumber': parentphonenumber,
         'password': confirmparentpassword,
         'parentchildname': parentchildname,
+        'letitude': double.parse(letitude),
+        'longitude': double.parse(longitude),
       }).then((value) {
         upadted_or_failed = true;
       });

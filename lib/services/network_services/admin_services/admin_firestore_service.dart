@@ -20,8 +20,10 @@ class Admin_firestore_service {
           .collection('main')
           .doc("main_document")
           .collection("institute_list")
-          .doc(schoolname.toString())
-          .set({"password": schoolpassword.toString()}).then((value) {
+          .doc()
+          .set({
+            "institute_name" :schoolname.toString(),
+            "password": schoolpassword.toString()}).then((value) {
         upadted_or_failed = true;
       });
     } catch (e) {

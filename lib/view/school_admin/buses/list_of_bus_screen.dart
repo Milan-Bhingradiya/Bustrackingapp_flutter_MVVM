@@ -83,7 +83,7 @@ class _listofbusscreenState extends State<listofbusscreen> {
                     .collection('main')
                     .doc("main_document")
                     .collection("institute_list")
-                    .doc(schooladmin_loginscreen_viewmodel.institutename)
+                    .doc(schooladmin_loginscreen_viewmodel.institute_doc_id)
                     .collection("buses")
                     .snapshots(),
                 builder: (context, snapshot) {

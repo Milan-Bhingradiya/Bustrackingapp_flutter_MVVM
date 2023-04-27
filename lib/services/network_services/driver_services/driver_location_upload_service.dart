@@ -6,7 +6,7 @@ import 'package:geolocator/geolocator.dart';
 class Driver_location_upload_service {
   StreamSubscription<Position>? positionStream;
   void get_livelocation_and_upload_to_db(
-      institutename, drivername, bool on_or_off) async {
+      institutename_doc_u_id, driver_doc_u_id, bool on_or_off) async {
     if (on_or_off == true) {
       positionStream = await Geolocator.getPositionStream(
           locationSettings: LocationSettings(
@@ -22,10 +22,10 @@ class Driver_location_upload_service {
               .doc("main_document")
               .collection("institute_list")
               //TODO: institute ma variable avse
-              .doc(institutename)
+              .doc(institutename_doc_u_id.toString())
               .collection("drivers")
               //TODO: arshil bhai ni jagya a variable avse
-              .doc(drivername)
+              .doc(driver_doc_u_id.toString())
               .update({
             'letitude': position?.latitude,
             'longitude': position?.longitude,

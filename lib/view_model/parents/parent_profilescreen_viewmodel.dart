@@ -1,17 +1,18 @@
 import 'dart:io' as io;
 
-import 'package:bustrackingapp/data/network_services/parent_services/parent_firebasestorage_service.dart';
-import 'package:bustrackingapp/data/network_services/parent_services/parent_firestore_service.dart';
+import 'package:bustrackingapp/services/network_services/parent_services/parent_firebasestorage_service.dart';
+import 'package:bustrackingapp/services/network_services/parent_services/parent_firestore_service.dart';
 import 'package:bustrackingapp/model/parent/profile/parentlocation_model.dart';
 
 import 'package:bustrackingapp/view_model/parents/parent_loginscreen_viewmodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class Parent_profilescreen_viewmodel extends ChangeNotifier {
-    Parent_firestore_service parent_firestore_service =
+  Parent_firestore_service parent_firestore_service =
       Parent_firestore_service();
 
   Parent_firebasestorage_service parent_firebasestorage_service =
@@ -23,8 +24,10 @@ class Parent_profilescreen_viewmodel extends ChangeNotifier {
   double? new_parentlat;
   double? new_parentlong;
 
-  late String institutename;
-  late String parentname;
+  String? institute_doc_u_id;
+  String? parent_doc_u_id;
+  String? parentname;
+
   String? selected_profileimg_path;
 
   //for first time user showing img
@@ -46,14 +49,12 @@ class Parent_profilescreen_viewmodel extends ChangeNotifier {
 
 //first:we geting data of driver
 //get value from loginscreen viewwmodel
-    institutename =
-        parent_login_viewmodel.parent_selected_institute_at_login.toString();
-    parentname = parent_login_viewmodel.parent_entered_name_at_login.toString();
+    institute_doc_u_id = parent_login_viewmodel.institute_doc_u_id.toString();
+    parent_doc_u_id = parent_login_viewmodel.parent_doc_u_id;
 
     ///
     final DocumentSnapshot parentdata = await parent_firestore_service
-        .get_parent_doc(
-            institutename, parentname);
+        .get_parent_doc(institute_doc_u_id, parent_doc_u_id);
 
     // give data to cntrollers....
     if (parentdata.exists) {
@@ -75,7 +76,14 @@ class Parent_profilescreen_viewmodel extends ChangeNotifier {
       parentlongitudecontroller.text = parentdata['longitude'].toString();
       new_parentlong = parentdata['longitude'];
 
-      profile_img_downloadlink = parentdata["profile_img_link"];
+      try {
+  profile_img_downloadlink = parentdata["profile_img_link"];
+}catch (e) {
+
+   print(e);
+        Fluttertoast.showToast(msg: "User have no profile picture");
+}
+
     }
   }
 
@@ -100,33 +108,31 @@ class Parent_profilescreen_viewmodel extends ChangeNotifier {
   // profile upload
 
   Future<bool> upload_profile() async {
-        
-          if (selected_profileimg_path == null ||
-              selected_profileimg_path == "") {
-            //means not selected img
-          } else {
-            print("start uploading parent profile");
-            await 
-                upload_pic_and_save_downloadlink();
-                // after upload img this function set variable->  new_profile_img_downloadlink
-          }
+    if (selected_profileimg_path == null || selected_profileimg_path == "") {
+      //means not selected img
+    } else {
+      print("start uploading parent profile");
+      await upload_pic_and_save_downloadlink();
+      // after upload img this function set variable->  new_profile_img_downloadlink
+    }
 
     bool updated_or_failed = false;
-   
-      updated_or_failed = await parent_firestore_service.parent_profile_upload(
-          institutename,
-          parentname,
-          new_parentname,
-          new_parentchildname,
-          new_parentphonenumber,
-          new_parentlat,
-          new_parentlong,
 
-          // here if new img upload succefully and we get that uploaded img link then we upload 
-          // "new_profile_img_downloadlink" other wise we have to upload old link of profile img "profile_img_downloadlink"
-          (new_profile_img_downloadlink==null || new_profile_img_downloadlink=="")?
-          profile_img_downloadlink:new_profile_img_downloadlink);
-    
+    updated_or_failed = await parent_firestore_service.parent_profile_upload(
+        institute_doc_u_id,
+        parentname,
+        new_parentname,
+        new_parentchildname,
+        new_parentphonenumber,
+        new_parentlat,
+        new_parentlong,
+        // here if new img upload succefully and we get that uploaded img link then we upload
+        // "new_profile_img_downloadlink" other wise we have to upload old link of profile img "profile_img_downloadlink"
+        (new_profile_img_downloadlink == null ||
+                new_profile_img_downloadlink == "")
+            ? profile_img_downloadlink
+            : new_profile_img_downloadlink,
+        parent_doc_u_id);
 
     print("profile upoad status :;;; $updated_or_failed");
     return updated_or_failed;
@@ -148,7 +154,7 @@ class Parent_profilescreen_viewmodel extends ChangeNotifier {
         String id = "${new_parentname}_${new_parentphonenumber}";
         final ref = await FirebaseStorage.instance
             .ref()
-            .child("bustrackingapp/$institutename/parent/$id");
+            .child("bustrackingapp/$institute_doc_u_id/parent/$id");
 
         var uploadTask = ref.putFile(img_to_file);
         final snapshot = await uploadTask.whenComplete(() {});

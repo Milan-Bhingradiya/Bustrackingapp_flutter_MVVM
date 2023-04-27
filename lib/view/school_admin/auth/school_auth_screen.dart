@@ -22,6 +22,17 @@ class _School_auth_screenState extends State<School_auth_screen> {
   TextEditingController passwordcontroller = TextEditingController();
 
   String dropdownvalue = "";
+  String? institute_u_id;
+
+  String getSingleQuotedString(String input) {
+    RegExp regExp = RegExp("'(.*?)'");
+    RegExpMatch match = regExp.firstMatch(input)!;
+    if (match != null) {
+      return match.group(1)!;
+    } else {
+      return "";
+    }
+  }
 
   milanop() async {
     schooladmin_loginscreen_viewmodel =
@@ -114,6 +125,16 @@ class _School_auth_screenState extends State<School_auth_screen> {
                         onChanged: (value) {
                           setState(() {
                             dropdownvalue = value;
+
+                            final key =
+                                Provider.of<Alldata>(context, listen: false)
+                                    .list_of_institute_dropdownitem
+                                    .firstWhere((item) => item.value == value)
+                                    .key
+                                    .toString();
+
+//  here we get  key like ['getSingleQuotedString'] this and usign this func we get string inside ' '...........
+                            institute_u_id = getSingleQuotedString(key);
                           });
                         },
                       ),
@@ -136,9 +157,11 @@ class _School_auth_screenState extends State<School_auth_screen> {
                       bool user_valid_or_not =
                           await schooladmin_loginscreen_viewmodel
                               .check_authenticity_of_user(
-                                  dropdownvalue, passwordcontroller);
+                                  institute_u_id, passwordcontroller);
 
                       if (user_valid_or_not) {
+                        schooladmin_loginscreen_viewmodel.institute_doc_id =
+                            institute_u_id;
                         Navigator.push(
                             context,
                             MaterialPageRoute(

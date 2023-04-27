@@ -1,4 +1,5 @@
 import 'package:bustrackingapp/res/component/driver/bottomnavigationbar.dart';
+import 'package:bustrackingapp/view/drivercreens/chat/select_parent_for_chat.dart';
 import 'package:bustrackingapp/view/drivercreens/home/driverwelcomescreen.dart';
 import 'package:bustrackingapp/view/drivercreens/profile/driverprofilescreen.dart';
 import 'package:bustrackingapp/view/drivercreens/show_map/map_for_driver.dart';
@@ -20,6 +21,7 @@ class _select_driverscreen_from_bottomnavigationbarState
     driverwelcomescreen(),
     mapfordriver(),
     driverprofilescreen(),
+    select_parent_for_chat()
   ];
 
   @override

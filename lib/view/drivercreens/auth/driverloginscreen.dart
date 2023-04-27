@@ -19,6 +19,7 @@ class driverloginscreen extends StatefulWidget {
   State<driverloginscreen> createState() => _driverloginscreenState();
 }
 
+
 class _driverloginscreenState extends State<driverloginscreen> {
   //new
   late final driver_login_viewmodel;
@@ -32,8 +33,21 @@ class _driverloginscreenState extends State<driverloginscreen> {
   String errormsg = "";
 
   String dropdownvalue = "";
+  String u_id = "";
+  
 
   bool email_or_phone = false;
+
+
+ String getSingleQuotedString(String input) {
+    RegExp regExp = RegExp("'(.*?)'");
+    RegExpMatch match = regExp.firstMatch(input)!;
+    if (match != null) {
+      return match.group(1)!;
+    } else {
+      return "";
+    }
+  }
 
 //TODO: change here
   Future<bool> doesPhonenumberAlreadyExist(String name) async {
@@ -145,6 +159,16 @@ class _driverloginscreenState extends State<driverloginscreen> {
                     onChanged: (value) {
                       setState(() {
                         dropdownvalue = value;
+
+                         final key = Provider.of<Alldata>(context,
+                                          listen: false)
+                                      .list_of_institute_dropdownitem
+                                      .firstWhere((item) => item.value == value)
+                                      .key
+                                      .toString();
+
+//  here we get  key like ['getSingleQuotedString'] this and usign this func we get string inside ' '...........
+                                  u_id = getSingleQuotedString(key);
                       });
                     },
                   ),
@@ -215,7 +239,7 @@ class _driverloginscreenState extends State<driverloginscreen> {
                     if (email_or_phone == false) {
                       Enum user_valid_or_not = await driver_login_viewmodel
                           .check_authenticity_of_user(
-                              dropdownvalue.toString(),
+                              u_id,
                               id_textbox_controller.text,
                               password_textbox_controller.text);
 

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'dart:io' as io;
 
 import '../../../providers/provider.dart';
 
@@ -31,6 +32,7 @@ class _driverprofilescreenState extends State<driverprofilescreen> {
   bool taptochoose = false;
 
   bool textfield_enable = false;
+  bool showing_picked_image = false;
 
   late String? errortext_drivernamefield = null;
   late String? errortext_driverphonenumberfield = null;
@@ -79,14 +81,83 @@ class _driverprofilescreenState extends State<driverprofilescreen> {
                       child: Column(
                         children: [
                           SizedBox(
-                            height: 100,
+                            height: 30,
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              print("ontap called");
+                              print(save_or_edit);
+                              if (save_or_edit == "Save") {
+                                print("ontap in side");
+
+                                await driver_profilescreen_viewmodel
+                                    .select_img();
+
+                                if (driver_profilescreen_viewmodel
+                                            .selected_profileimg_path ==
+                                        null ||
+                                    driver_profilescreen_viewmodel
+                                            .selected_profileimg_path ==
+                                        "") {
+                                  showing_picked_image = false;
+                                } else {
+                                  print("showing_picked_image true kayru");
+                                  showing_picked_image = true;
+                                }
+                                setState(() {});
+                              }
+                            },
+                            child: Column(
+                              children: [
+                                Visibility(
+                                  visible: true,
+                                  child: CircleAvatar(
+                                      child: Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                      radius: 70,
+                                      backgroundColor: Colors.grey[100],
+                                      foregroundImage: (driver_profilescreen_viewmodel
+                                                      .profile_img_downloadlink ==
+                                                  null ||
+                                              driver_profilescreen_viewmodel
+                                                      .profile_img_downloadlink ==
+                                                  "")
+                                          ? null
+                                          : NetworkImage(
+                                              driver_profilescreen_viewmodel
+                                                  .profile_img_downloadlink
+                                                  .toString())),
+                                ),
+                                Visibility(
+                                  visible: showing_picked_image,
+                                  child: CircleAvatar(
+                                      radius: 70,
+                                      backgroundColor: Colors.grey[100],
+                                      foregroundImage: (driver_profilescreen_viewmodel
+                                                      .selected_profileimg_path ==
+                                                  null ||
+                                              driver_profilescreen_viewmodel
+                                                      .selected_profileimg_path ==
+                                                  "")
+                                          ? null
+                                          : FileImage(io.File(
+                                              driver_profilescreen_viewmodel
+                                                  .selected_profileimg_path
+                                                  .toString()))),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30,
                           ),
                           Text(
                               "WELCOME  ${driver_profilescreen_viewmodel.new_drivername.toString().toUpperCase()}  ",
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold)),
                           SizedBox(
-                            height: 50,
+                            height: 30,
                           ),
                           Form(
                               key: _formKey,
@@ -103,15 +174,15 @@ class _driverprofilescreenState extends State<driverprofilescreen> {
                                     ),
                                     drivername_textfield(),
                                     SizedBox(
-                                      height: 20,
+                                      height: 15,
                                     ),
                                     driverphonenumber_textfield(),
                                     SizedBox(
-                                      height: 20,
+                                      height: 15,
                                     ),
                                     driveremail_textfield(),
                                     SizedBox(
-                                      height: 20,
+                                      height: 15,
                                     ),
                                     button_edit_or_save()
                                   ],
@@ -229,7 +300,9 @@ class _driverprofilescreenState extends State<driverprofilescreen> {
               fontSize: 16.0,
             );
           }
-          setState(() {});
+          if (this.mounted) {
+            setState(() {});
+          }
           taptochoose = false;
           save_or_edit = "Edit";
           textfield_enable = false;

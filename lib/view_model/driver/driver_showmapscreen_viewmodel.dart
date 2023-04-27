@@ -1,4 +1,4 @@
-import 'package:bustrackingapp/data/network_services/driver_services/driver_firestore_service.dart';
+import 'package:bustrackingapp/services/network_services/driver_services/driver_firestore_service.dart';
 import 'package:bustrackingapp/model/driver/showmap/model_parents.dart';
 
 import 'package:bustrackingapp/view_model/driver/driver_loginscreen_viewmodel.dart';
@@ -12,7 +12,7 @@ class Driver_showmapscreen_viewmodel extends ChangeNotifier {
   Driver_firestore_service driver_firestore_service =
       Driver_firestore_service();
 
-  late String institutename;
+ String? institute_doc_u_id;
 
   List<modelofparents> list_of_parentmodel = [];
   Set<Marker> list_of_markers_of_home = new Set();
@@ -49,14 +49,14 @@ class Driver_showmapscreen_viewmodel extends ChangeNotifier {
     final driver_login_viewmodel =
         Provider.of<Driver_loginscreen_viewmodel>(context, listen: false);
 
-    institutename = await driver_login_viewmodel
-        .driver_selected_institute_at_driverlogin
+    institute_doc_u_id = await driver_login_viewmodel
+        .institute_doc_u_id
         .toString();
 
     ///
     try {
       final querySnapshot = await driver_firestore_service
-          .get_parent_documentist_of_given_institutename(institutename);
+          .get_parent_documentist_of_given_institutename(institute_doc_u_id);
 
       print("oooooooo ${querySnapshot.size}");
       querySnapshot.docs.forEach((doc) {
@@ -79,10 +79,10 @@ class Driver_showmapscreen_viewmodel extends ChangeNotifier {
       for (int x = 0; x < (list_of_parentmodel.length); x++) {
         await list_of_markers_of_home.add(Marker(
           markerId: MarkerId(
-            list_of_parentmodel[x].parentname,
+            list_of_parentmodel[x].parentname!,
           ),
-          position: LatLng(double.parse(list_of_parentmodel[x].lat),
-              double.parse(list_of_parentmodel[x].long)),
+          position: LatLng(list_of_parentmodel[x].lat!,
+              list_of_parentmodel[x].long!),
           icon: homeicon,
         ));
       }

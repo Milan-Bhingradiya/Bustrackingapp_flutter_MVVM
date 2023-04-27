@@ -22,6 +22,17 @@ class _adddriverscreenState extends State<adddriverscreen> {
 
   List<DropdownMenuItem> listof_bus_dropdown = [];
   String? dropdownvalue = "";
+  String? bus_doc_id;
+
+    String getSingleQuotedString(String input) {
+    RegExp regExp = RegExp("'(.*?)'");
+    RegExpMatch match = regExp.firstMatch(input)!;
+    if (match != null) {
+      return match.group(1)!;
+    } else {
+      return "";
+    }
+  }
 
   milanop() {
     schooladmin_driver_viewmodel =
@@ -117,8 +128,20 @@ class _adddriverscreenState extends State<adddriverscreen> {
                               onChanged: (value) {
                                 setState(() {
                                   dropdownvalue = value;
-                                  schooladmin_driver_viewmodel.selectedbusnum =
+                                  schooladmin_driver_viewmodel.bus_doc_u_id =
                                       dropdownvalue;
+
+                                  final bus_id =
+                                      Provider.of<Schooladmin_driver_viewmodel>(
+                                              context,
+                                              listen: false)
+                                          .listof_bus_dropdown
+                                          .firstWhere(
+                                              (item) => item.value == value)
+                                          .key
+                                          .toString();
+
+                                             bus_doc_id = getSingleQuotedString(bus_id);
                                 });
                               })
                         ],
@@ -133,6 +156,12 @@ class _adddriverscreenState extends State<adddriverscreen> {
                           if (formkey.currentState!.validate()) {
                             print("succesful");
                             try {
+                              schooladmin_driver_viewmodel.bus_doc_u_id =
+                                  bus_doc_id;
+
+                              schooladmin_driver_viewmodel.bus_num =
+                                  dropdownvalue;
+
                               bool updated_or_fail =
                                   await schooladmin_driver_viewmodel
                                       .add_driver(context);

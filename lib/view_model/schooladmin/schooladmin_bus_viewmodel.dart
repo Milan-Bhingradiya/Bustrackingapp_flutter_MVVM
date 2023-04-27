@@ -1,4 +1,4 @@
-import 'package:bustrackingapp/data/network_services/schooladmin_services/schooladmin_firestore_service.dart';
+import 'package:bustrackingapp/services/network_services/schooladmin_services/schooladmin_firestore_service.dart';
 
 import 'package:bustrackingapp/view_model/schooladmin/schooladmin_loginscreen_viewmodel.dart';
 import 'package:bustrackingapp/view_model/schooladmin/schooladmin_parent_viewmodel.dart';
@@ -16,8 +16,8 @@ class Schooladmin_bus_viewmodel extends ChangeNotifier {
     schooladmin_loginscreen_viewmodel =
         Provider.of<Schooladmin_loginscreen_viewmodel>(context, listen: false);
 
-    String institutename = schooladmin_loginscreen_viewmodel.institutename;
+    String institute_doc_id = schooladmin_loginscreen_viewmodel.institute_doc_id;
 
-    return await schooladmin_firestore_service.add_bus(institutename, busnum);
+    return await schooladmin_firestore_service.add_bus(institute_doc_id, busnum);
   }
 }

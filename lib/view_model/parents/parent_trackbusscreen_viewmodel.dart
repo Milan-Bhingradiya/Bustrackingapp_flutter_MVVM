@@ -1,4 +1,4 @@
-import 'package:bustrackingapp/data/network_services/parent_services/parent_firestore_service.dart';
+import 'package:bustrackingapp/services/network_services/parent_services/parent_firestore_service.dart';
 import 'package:bustrackingapp/res/component/parent/trackbus/bus_and_num_widget.dart';
 
 import 'package:bustrackingapp/view_model/parents/parent_loginscreen_viewmodel.dart';
@@ -53,7 +53,7 @@ class Parent_trackbusscreen_viewmodel extends ChangeNotifier {
     //----------
     QuerySnapshot querySnapshot =
         await parent_firestore_service.get_driver_collection_querysnapshot(
-            parent_loginscreen_viewmodel.parent_selected_institute_at_login);
+            parent_loginscreen_viewmodel.institute_doc_u_id);
 
     // await FirebaseFirestore.instance.collection('drivers').get();
 

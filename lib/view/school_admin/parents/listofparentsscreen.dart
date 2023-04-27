@@ -30,16 +30,16 @@ class _listofparentsscreenState extends State<listofparentsscreen> {
 
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
-  String? institute_name;
+  String? institute_doc_id;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    institute_name =
+    institute_doc_id =
         Provider.of<Schooladmin_loginscreen_viewmodel>(context, listen: false)
-            .institutename;
+            .institute_doc_id;
   }
 
   @override
@@ -73,11 +73,16 @@ class _listofparentsscreenState extends State<listofparentsscreen> {
                         child: Text("ADD")),
                     onTap: () {
                       print("aaaa");
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => addnewparents_screen(),
-                          ));
+
+                      try {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => addnewparents_screen(),
+                            ));
+                      } catch (e) {
+                        print(e);
+                      }
                     },
                   ),
                 ],
@@ -95,7 +100,7 @@ class _listofparentsscreenState extends State<listofparentsscreen> {
                     .collection('main')
                     .doc("main_document")
                     .collection("institute_list")
-                    .doc(institute_name)
+                    .doc(institute_doc_id.toString())
                     .collection("parents")
                     .snapshots(),
                 builder: (context, snapshot) {
