@@ -77,13 +77,11 @@ class Parent_profilescreen_viewmodel extends ChangeNotifier {
       new_parentlong = parentdata['longitude'];
 
       try {
-  profile_img_downloadlink = parentdata["profile_img_link"];
-}catch (e) {
-
-   print(e);
+        profile_img_downloadlink = parentdata["profile_img_link"];
+      } catch (e) {
+        print(e);
         Fluttertoast.showToast(msg: "User have no profile picture");
-}
-
+      }
     }
   }
 
@@ -151,10 +149,10 @@ class Parent_profilescreen_viewmodel extends ChangeNotifier {
       io.File img_to_file = io.File(selected_profileimg_path.toString());
 
       try {
-        String id = "${new_parentname}_${new_parentphonenumber}";
+        // String id = "${new_parentname}_${new_parentphonenumber}";
         final ref = await FirebaseStorage.instance
             .ref()
-            .child("bustrackingapp/$institute_doc_u_id/parent/$id");
+            .child("bustrackingapp/$institute_doc_u_id/parent/$parent_doc_u_id");
 
         var uploadTask = ref.putFile(img_to_file);
         final snapshot = await uploadTask.whenComplete(() {});

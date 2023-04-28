@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'dart:io' as io;
 
 class addnewparents_screen extends StatefulWidget {
   const addnewparents_screen({super.key});
@@ -64,6 +65,37 @@ class _addnewparents_screen extends State<addnewparents_screen> {
                         style: TextStyle(
                             fontFamily: "Playfair Display", fontSize: 30),
                       ),
+
+                         GestureDetector(
+                        onTap: () async {
+                          print("ontap called");
+
+                          await schooladmin_parent_viewmodel
+                              .pick_img_and_returnpath();
+
+                          setState(() {});
+                        },
+                        child: Column(
+                          children: [
+                            CircleAvatar(
+                                child: Text("Choose Profile"),
+                                radius: 70,
+                                backgroundColor: Colors.grey[100],
+                                foregroundImage: (schooladmin_parent_viewmodel
+                                                .selected_profileimg_path ==
+                                            null ||
+                                        schooladmin_parent_viewmodel
+                                                .selected_profileimg_path ==
+                                            "")
+                                    ? null
+                                    : FileImage(io.File(
+                                        schooladmin_parent_viewmodel
+                                            .selected_profileimg_path
+                                            .toString()))),
+                          ],
+                        ),
+                      ),
+
                       SizedBox(
                         height: 10,
                       ),

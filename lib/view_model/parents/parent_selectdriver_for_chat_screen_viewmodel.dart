@@ -9,10 +9,16 @@ class Parent_selectdriver_for_chat_screen_viewmodel extends ChangeNotifier {
   Parent_firestore_service parent_firestore_service =
       Parent_firestore_service();
   List<parent_chat_box_with_profile> list_of_drivers_chatbox_widget = [];
+  List<parent_chat_box_with_profile> searchlist = [];
 
   List<Modelofdrivers> list_of_drivers_model = [];
 
   dynamic parent_loginscreen_viewmodel = null;
+
+  void set_searchlist(value) {
+    searchlist.add(value);
+    notifyListeners();
+  }
 
   Future<void> make_all_drivers_chatbox(context) async {
     print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");

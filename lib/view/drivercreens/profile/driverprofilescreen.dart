@@ -110,7 +110,7 @@ class _driverprofilescreenState extends State<driverprofilescreen> {
                             child: Column(
                               children: [
                                 Visibility(
-                                  visible: true,
+                                  visible: !showing_picked_image,
                                   child: CircleAvatar(
                                       child: Center(
                                         child: CircularProgressIndicator(),

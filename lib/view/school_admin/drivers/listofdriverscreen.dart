@@ -139,8 +139,10 @@ class _listofdriverscreenState extends State<listofdriverscreen> {
                                       children: [
                                         CircleAvatar(
                                           radius: 48,
-                                          backgroundImage: AssetImage(
-                                              "assets/images/bus.png"),
+                                          backgroundImage: NetworkImage(snapshot
+                                              .data!
+                                              .docs[index]["profile_img_link"]
+                                              .toString()),
                                         )
                                       ],
                                     ),

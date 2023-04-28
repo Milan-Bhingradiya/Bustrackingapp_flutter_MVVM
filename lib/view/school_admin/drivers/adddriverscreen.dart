@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'dart:io' as io;
 
 class adddriverscreen extends StatefulWidget {
   const adddriverscreen({super.key});
@@ -24,7 +25,7 @@ class _adddriverscreenState extends State<adddriverscreen> {
   String? dropdownvalue = "";
   String? bus_doc_id;
 
-    String getSingleQuotedString(String input) {
+  String getSingleQuotedString(String input) {
     RegExp regExp = RegExp("'(.*?)'");
     RegExpMatch match = regExp.firstMatch(input)!;
     if (match != null) {
@@ -47,6 +48,13 @@ class _adddriverscreenState extends State<adddriverscreen> {
     // TODO: implement initState
     super.initState();
     milanop();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    schooladmin_driver_viewmodel.selected_profileimg_path = "";
   }
 
   @override
@@ -75,6 +83,38 @@ class _adddriverscreenState extends State<adddriverscreen> {
                         "ADD driver info",
                         style: TextStyle(fontSize: 30),
                       ),
+////
+                      GestureDetector(
+                        onTap: () async {
+                          print("ontap called");
+
+                          await schooladmin_driver_viewmodel
+                              .pick_img_and_returnpath();
+
+                          setState(() {});
+                        },
+                        child: Column(
+                          children: [
+                            CircleAvatar(
+                                child: Text("Choose Profile"),
+                                radius: 70,
+                                backgroundColor: Colors.grey[100],
+                                foregroundImage: (schooladmin_driver_viewmodel
+                                                .selected_profileimg_path ==
+                                            null ||
+                                        schooladmin_driver_viewmodel
+                                                .selected_profileimg_path ==
+                                            "")
+                                    ? null
+                                    : FileImage(io.File(
+                                        schooladmin_driver_viewmodel
+                                            .selected_profileimg_path
+                                            .toString()))),
+                          ],
+                        ),
+                      ),
+
+                      ////////////
                       SizedBox(
                         height: 10,
                       ),
@@ -141,7 +181,7 @@ class _adddriverscreenState extends State<adddriverscreen> {
                                           .key
                                           .toString();
 
-                                             bus_doc_id = getSingleQuotedString(bus_id);
+                                  bus_doc_id = getSingleQuotedString(bus_id);
                                 });
                               })
                         ],

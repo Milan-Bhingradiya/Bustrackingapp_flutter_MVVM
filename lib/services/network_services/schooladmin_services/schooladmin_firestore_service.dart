@@ -45,8 +45,14 @@ class Schooladmin_firestore_service {
   }
 
 //add driver
-  Future<bool> add_driver(institute_doc_u_id, bus_doc_id, busnum, drivername,
-      driverphonenumber, confirmdriverpassword) async {
+  Future<bool> add_driver(
+      institute_doc_u_id,
+      bus_doc_id,
+      busnum,
+      drivername,
+      driverphonenumber,
+      confirmdriverpassword,
+      profile_img_downloadlink) async {
     print("caal adddriver");
     bool upadted_or_failed = false;
 
@@ -79,6 +85,7 @@ class Schooladmin_firestore_service {
           // TODO: this is bydefault but ADD  school depo addres here for by default bus when creted location
           "letitude": 21.0123,
           "longitude": 71.0125,
+          "profile_img_link": profile_img_downloadlink
         }).then((value) {
           upadted_or_failed = true;
         });
@@ -95,8 +102,15 @@ class Schooladmin_firestore_service {
   }
 
 //add driver
-  Future<bool> add_parent(institute_doc_id, parentname, parentphonenumber,
-      parentchildname, confirmparentpassword, letitude, longitude) async {
+  Future<bool> add_parent(
+      institute_doc_id,
+      parentname,
+      parentphonenumber,
+      parentchildname,
+      confirmparentpassword,
+      letitude,
+      longitude,
+      profile_img_downloadlink) async {
     print("caal adddriver");
     bool upadted_or_failed = false;
     try {
@@ -114,6 +128,7 @@ class Schooladmin_firestore_service {
         'parentchildname': parentchildname,
         'letitude': double.parse(letitude),
         'longitude': double.parse(longitude),
+        "profile_img_link": profile_img_downloadlink
       }).then((value) {
         upadted_or_failed = true;
       });

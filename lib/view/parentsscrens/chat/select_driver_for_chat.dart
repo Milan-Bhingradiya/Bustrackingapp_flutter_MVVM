@@ -1,3 +1,4 @@
+import 'package:bustrackingapp/res/component/parent/chat/driver_list/chat_box_with_profile.dart';
 import 'package:bustrackingapp/view_model/parents/parent_selectdriver_for_chat_screen_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,8 @@ class select_driver_for_chat extends StatefulWidget {
 
 class _select_driver_for_chatState extends State<select_driver_for_chat> {
   dynamic parent_selectdriver_for_chat_screen_viewmodel = null;
+
+  bool searching = false;
 
   void milanop(context) async {
     await parent_selectdriver_for_chat_screen_viewmodel
@@ -47,7 +50,8 @@ class _select_driver_for_chatState extends State<select_driver_for_chat> {
             SizedBox(
               height: size.height / 12,
             ),
-            serchbox_textfield(size),
+            serchbox_textfield(
+                size, parent_selectdriver_for_chat_screen_viewmodel),
             SizedBox(
               height: size.height / 20,
             ),
@@ -62,8 +66,18 @@ class _select_driver_for_chatState extends State<select_driver_for_chat> {
                               child: CircularProgressIndicator(),
                             )
                           ]
-                        : parent_selectdriver_for_chat_screen_viewmodel
-                            .list_of_drivers_chatbox_widget),
+
+                        // why again write provider.of ? beacuase listen is true not in upper mentioned
+                        : (Provider.of<Parent_selectdriver_for_chat_screen_viewmodel>(
+                                        context,
+                                        listen: true)
+                                    .searchlist
+                                    .length ==
+                                0)
+                            ? parent_selectdriver_for_chat_screen_viewmodel
+                                .list_of_drivers_chatbox_widget
+                            : parent_selectdriver_for_chat_screen_viewmodel
+                                .searchlist),
               ),
             )
           ],
@@ -73,10 +87,23 @@ class _select_driver_for_chatState extends State<select_driver_for_chat> {
   }
 }
 
-Widget serchbox_textfield(size) {
+Widget serchbox_textfield(size, parent_selectdriver_for_chat_screen_viewmodel) {
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: size.width / 20),
     child: TextField(
+      onChanged: (value) {
+        parent_selectdriver_for_chat_screen_viewmodel.searchlist.clear();
+
+        for (var element in parent_selectdriver_for_chat_screen_viewmodel
+            .list_of_drivers_chatbox_widget) {
+          print(element.title);
+          /// if exist title's any alphbet match with enterd alphabet then add and show...
+          if (element.title.toLowerCase().contains(value.toLowerCase())) {
+            parent_selectdriver_for_chat_screen_viewmodel
+                .set_searchlist(element);
+          }
+        }
+      },
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white,

@@ -109,10 +109,9 @@ class Driver_profilescreen_viewmodel extends ChangeNotifier {
       io.File img_to_file = io.File(selected_profileimg_path.toString());
 
       try {
-        String id = "${new_drivername}_${new_driverphonenumber}";
-        final ref = await FirebaseStorage.instance
-            .ref()
-            .child("bustrackingapp/$institute_doc_u_id/drivers/$id");
+        // String id = "${new_drivername}_${new_driverphonenumber}";
+        final ref = await FirebaseStorage.instance.ref().child(
+            "bustrackingapp/$institute_doc_u_id/drivers/$driver_doc_u_id");
 
         var uploadTask = ref.putFile(img_to_file);
         final snapshot = await uploadTask.whenComplete(() {});
