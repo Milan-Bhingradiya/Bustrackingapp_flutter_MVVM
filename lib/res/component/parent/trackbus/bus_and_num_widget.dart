@@ -100,7 +100,7 @@ dynamic parent_trackbusscreen_viewmodel=null;
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white),
                 child: Center(
-                  child: Text(widget.busnum),
+                  child: Text(widget.busnum.toString()),
                 ),
               )
             ],

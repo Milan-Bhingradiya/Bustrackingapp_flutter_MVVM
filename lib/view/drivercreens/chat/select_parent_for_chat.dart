@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:bustrackingapp/view_model/driver/driver_selectparent_for_chat_screen_viewmodel.dart';
 import 'package:bustrackingapp/view_model/parents/parent_selectdriver_for_chat_screen_viewmodel.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -18,6 +21,10 @@ class _select_parent_for_chatState extends State<select_parent_for_chat> {
   dynamic driver_selectparent_for_chat_screen_viewmodel = null;
 
   void milanop(context) async {
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+
+    print(fcmToken);
+    print(fcmToken);
     await driver_selectparent_for_chat_screen_viewmodel
         .make_all_parents_chatbox(context);
     if (this.mounted) {
@@ -28,6 +35,7 @@ class _select_parent_for_chatState extends State<select_parent_for_chat> {
   @override
   void initState() {
     // TODO: implement initState
+
     super.initState();
 
     driver_selectparent_for_chat_screen_viewmodel =

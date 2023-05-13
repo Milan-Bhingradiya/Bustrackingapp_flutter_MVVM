@@ -1,5 +1,5 @@
 import 'package:bustrackingapp/providers/provider.dart';
-import 'package:bustrackingapp/view_model/schooladmin/schooladmin_parent_viewmodel.dart';
+import 'package:bustrackingapp/view_model/schooladmin/parent/schooladmin_parent_viewmodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -24,6 +24,8 @@ class _addnewparents_screen extends State<addnewparents_screen> {
   String? finalpassword;
   String? childname;
   String? drivername;
+
+   bool show_loding = false;
 
   dynamic schooladmin_parent_viewmodel = null;
 
@@ -164,6 +166,10 @@ class _addnewparents_screen extends State<addnewparents_screen> {
                       GestureDetector(
                         onTap: () async {
                           if (formkey.currentState!.validate()) {
+                             setState(() {
+                                  show_loding = true;
+                                });
+                                
                             print("succesful");
                             bool updated_or_failed =
                                 await schooladmin_parent_viewmodel

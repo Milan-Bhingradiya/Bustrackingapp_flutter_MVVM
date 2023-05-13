@@ -1,4 +1,5 @@
 import 'package:bustrackingapp/view_model/admin/admin_addinstitute_viewmodel.dart';
+import 'package:bustrackingapp/view_model/admin/admin_viewmodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -12,7 +13,7 @@ class add_school extends StatefulWidget {
 }
 
 class _add_schoolState extends State<add_school> {
-  dynamic admin_addinstitute_viewmodel = null;
+  dynamic admin_viewmodel = null;
 
   final GlobalKey<FormState> key = GlobalKey<FormState>();
 
@@ -20,8 +21,8 @@ class _add_schoolState extends State<add_school> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    admin_addinstitute_viewmodel =
-        Provider.of<Admin_addinstitute_viewmodel>(context, listen: false);
+    admin_viewmodel =
+        Provider.of<Admin_viewmodel>(context, listen: false);
   }
 
   @override
@@ -54,7 +55,7 @@ class _add_schoolState extends State<add_school> {
                     prefixIcon: const Icon(Icons.person),
                   ),
                   onChanged: (value) {
-                    admin_addinstitute_viewmodel.institutename = value;
+                    admin_viewmodel.institutename = value;
                   },
                 ),
               ),
@@ -76,7 +77,7 @@ class _add_schoolState extends State<add_school> {
                     prefixIcon: const Icon(Icons.person),
                   ),
                   onChanged: (value) {
-                    admin_addinstitute_viewmodel.institutepassword = value;
+                    admin_viewmodel.institutepassword = value;
                   },
                 ),
               ),
@@ -91,7 +92,7 @@ class _add_schoolState extends State<add_school> {
                       return "Enter confirm password";
                     }
 
-                    if (admin_addinstitute_viewmodel.institutepassword !=
+                    if (admin_viewmodel.institutepassword !=
                         value) {
                       return "password not match";
                     }
@@ -103,7 +104,7 @@ class _add_schoolState extends State<add_school> {
                     prefixIcon: const Icon(Icons.person),
                   ),
                   onChanged: (value) {
-                    admin_addinstitute_viewmodel.instituteconfirmpassword =
+                    admin_viewmodel.instituteconfirmpassword =
                         value;
                   },
                 ),
@@ -114,7 +115,7 @@ class _add_schoolState extends State<add_school> {
                     onTap: () async {
                       if (key.currentState!.validate()) {
                         bool done =
-                            await admin_addinstitute_viewmodel.add_institute();
+                            await admin_viewmodel.add_institute();
 
                         if (done) {
                           Fluttertoast.showToast(msg: "new school is added");

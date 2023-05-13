@@ -7,6 +7,7 @@ class Modelofparents {
   String? parent_doc_u_id;
   // double? lat;
   // double? long;
+    String? profile_img_link;
   final documentSnapshot;
 
   Modelofparents(this.documentSnapshot) {
@@ -16,5 +17,6 @@ class Modelofparents {
     parent_doc_u_id = documentSnapshot.id;
     parent_chilname = documentSnapshot["parentchildname"];
     parentphonenumber = documentSnapshot["parentphonenumber"];
+     profile_img_link= documentSnapshot["profile_img_link"];
   }
 }

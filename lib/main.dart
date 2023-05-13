@@ -2,6 +2,7 @@ import 'package:bustrackingapp/providers/provider.dart';
 import 'package:bustrackingapp/view/admin/add_school.dart';
 import 'package:bustrackingapp/view/admin/admin.dart';
 import 'package:bustrackingapp/view/admin/auth/admin_login.dart';
+import 'package:bustrackingapp/view/drivercreens/auth/driverloginotpscreen.dart';
 
 import 'package:bustrackingapp/view/drivercreens/auth/driverloginscreen.dart';
 import 'package:bustrackingapp/view/drivercreens/chat/driver_chatting_screen.dart';
@@ -17,7 +18,7 @@ import 'package:bustrackingapp/view/drivercreens/show_map/map_for_driver.dart';
 import 'package:bustrackingapp/view/splashscreen/splashscreen.dart';
 
 import 'package:bustrackingapp/view_model/admin/admin_addinstitute_viewmodel.dart';
-import 'package:bustrackingapp/view_model/admin/admin_loginscreen_viewmodel.dart';
+import 'package:bustrackingapp/view_model/admin/admin_viewmodel.dart';
 import 'package:bustrackingapp/view_model/driver/driver_bottomnavigationbar_viewmodel.dart';
 import 'package:bustrackingapp/view_model/driver/driver_chattingscreen_viewmodel.dart';
 import 'package:bustrackingapp/view_model/driver/driver_loginscreen_viewmodel.dart';
@@ -32,10 +33,12 @@ import 'package:bustrackingapp/view_model/parents/parent_profilescreen_viewmodel
 import 'package:bustrackingapp/view_model/parents/parent_bottomnavigationbar_viewmodel.dart';
 import 'package:bustrackingapp/view_model/parents/parent_selectdriver_for_chat_screen_viewmodel.dart';
 import 'package:bustrackingapp/view_model/parents/parent_trackbusscreen_viewmodel.dart';
+import 'package:bustrackingapp/view_model/schooladmin/driver/schooladmin_editdriver_viewmodel.dart';
+import 'package:bustrackingapp/view_model/schooladmin/parent/schooladmin_editparent_viewmodel.dart';
 import 'package:bustrackingapp/view_model/schooladmin/schooladmin_bus_viewmodel.dart';
-import 'package:bustrackingapp/view_model/schooladmin/schooladmin_driver_viewmodel.dart';
+import 'package:bustrackingapp/view_model/schooladmin/driver/schooladmin_driver_viewmodel.dart';
 import 'package:bustrackingapp/view_model/schooladmin/schooladmin_loginscreen_viewmodel.dart';
-import 'package:bustrackingapp/view_model/schooladmin/schooladmin_parent_viewmodel.dart';
+import 'package:bustrackingapp/view_model/schooladmin/parent/schooladmin_parent_viewmodel.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:bustrackingapp/view/school_admin/school_address_screen/selectschoolscreen.dart';
@@ -50,6 +53,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'view/school_admin/drivers/listofdriverscreen.dart';
 import 'view/school_admin/parents/listofparentsscreen.dart';
+import 'view_model/schooladmin/schooladmin_homescreen_viewmodel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -106,20 +110,33 @@ class MyApp extends StatelessWidget {
                   Parent_selectdriver_for_chat_screen_viewmodel()),
           ChangeNotifierProvider<Parent_chattingscreen_viremodel>(
               create: (create) => Parent_chattingscreen_viremodel()),
+
+
           //schooladmin
+
 
           ChangeNotifierProvider<Schooladmin_loginscreen_viewmodel>(
               create: (create) => Schooladmin_loginscreen_viewmodel()),
+                  ChangeNotifierProvider<Schooladmin_homescreen_viewmodel>(
+              create: (create) => Schooladmin_homescreen_viewmodel()),
+
+//   schooladmin Editparent
+          ChangeNotifierProvider<Schooladmin_editparent_viewmodel>(
+              create: (create) => Schooladmin_editparent_viewmodel()),
+
+           //   schooladmin Editdriver
           ChangeNotifierProvider<Schooladmin_driver_viewmodel>(
               create: (create) => Schooladmin_driver_viewmodel()),
+                 ChangeNotifierProvider<Schooladmin_editdriver_viewmodel>(
+              create: (create) => Schooladmin_editdriver_viewmodel()),
           ChangeNotifierProvider<Schooladmin_parent_viewmodel>(
               create: (create) => Schooladmin_parent_viewmodel()),
           ChangeNotifierProvider<Schooladmin_bus_viewmodel>(
               create: (create) => Schooladmin_bus_viewmodel()),
 
           //admin
-          ChangeNotifierProvider<Admin_loginscreen_viewmodel>(
-              create: (create) => Admin_loginscreen_viewmodel()),
+          ChangeNotifierProvider<Admin_viewmodel>(
+              create: (create) => Admin_viewmodel()),
           ChangeNotifierProvider<Admin_addinstitute_viewmodel>(
               create: (create) => Admin_addinstitute_viewmodel()),
         ],
@@ -147,6 +164,7 @@ class MyApp extends StatelessWidget {
                 "parentsloginscreen": (context) => parentsloginscreen(),
                 //driver
                 "driverwelcomescreen": ((context) => driverwelcomescreen()),
+                "driverloginotpscreen":(context) => driversloginotpscreen(),
                 "mapfordriver": (context) => mapfordriver(),
                 "driverprofilescreen": (context) => driverprofilescreen(),
                 "select_driverscreen_from_bottomnavigationbar": (context) =>

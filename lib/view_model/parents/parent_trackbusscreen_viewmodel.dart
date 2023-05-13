@@ -56,18 +56,20 @@ class Parent_trackbusscreen_viewmodel extends ChangeNotifier {
             parent_loginscreen_viewmodel.institute_doc_u_id);
 
     // await FirebaseFirestore.instance.collection('drivers').get();
-
+    print(
+        "mmmmmmmmmmmmmmmmmmmmmmmm ${parent_loginscreen_viewmodel.institute_doc_u_id}");
     querySnapshot.docs.forEach((element) {
       list_of_bus.add(bus_and_num_widget(
-          busnum: element.get("busnum"), img_path: "assets/images/bus.png"));
+          busnum: element.get("busnum").toString(),
+          img_path: "assets/images/bus.png"));
     });
   }
 
   void create_markers(document) async {
     for (var i = 0; i < list_of_selected_bus.length; i++) {
-      if (document.get("busnum") == list_of_selected_bus[i]) {
+      if (document.get("busnum").toString() == list_of_selected_bus[i]) {
         newmarkers.add(Marker(
-            markerId: MarkerId(document.get("busnum")),
+            markerId: MarkerId(document.get("busnum").toString()),
             position:
                 LatLng(document.get("letitude"), document.get("longitude")),
             infoWindow: InfoWindow(

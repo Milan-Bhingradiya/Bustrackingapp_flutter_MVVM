@@ -2,7 +2,7 @@ import 'package:bustrackingapp/providers/provider.dart';
 import 'package:bustrackingapp/view/admin/admin.dart';
 
 import 'package:bustrackingapp/view/school_admin/adminhomescreen.dart';
-import 'package:bustrackingapp/view_model/admin/admin_loginscreen_viewmodel.dart';
+import 'package:bustrackingapp/view_model/admin/admin_viewmodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -18,14 +18,13 @@ class admin_login extends StatefulWidget {
 }
 
 class _admin_login extends State<admin_login> {
-  dynamic admin_loginscreen_viewmodel = null;
-
+  dynamic admin_viewmodel = null;
+  bool loading = false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    admin_loginscreen_viewmodel =
-        Provider.of<Admin_loginscreen_viewmodel>(context, listen: false);
+    admin_viewmodel = Provider.of<Admin_viewmodel>(context, listen: false);
   }
 
   @override
@@ -40,67 +39,87 @@ class _admin_login extends State<admin_login> {
             color: Colors.black,
           ),
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(size.width / 20),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 30,
-                ),
-                Container(
-                  height: size.height / 4.5,
-                  width: size.width / 2.5,
-                  // decoration: BoxDecoration(
-                  //     color: Colors.amber,
-                  //     borderRadius: BorderRadius.circular(8)),
-                  child: FittedBox(
-                      fit: BoxFit.fill,
-                      child: Image.asset("assets/images/adminlogo.png")),
-                ),
-                SizedBox(
-                  height: size.height / 50,
-                ),
-                textbox(admin_loginscreen_viewmodel, "id"),
-                SizedBox(
-                  height: size.height / 35,
-                ),
-                textbox(admin_loginscreen_viewmodel, "Password"),
-                SizedBox(
-                  height: size.height / 25,
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    bool valid = await admin_loginscreen_viewmodel
-                        .check_admin_authenticity();
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.all(size.width / 20),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Container(
+                      height: size.height / 4.5,
+                      width: size.width / 2.5,
+                      // decoration: BoxDecoration(
+                      //     color: Colors.amber,
+                      //     borderRadius: BorderRadius.circular(8)),
+                      child: FittedBox(
+                          fit: BoxFit.fill,
+                          child: Image.asset("assets/images/adminlogo.png")),
+                    ),
+                    SizedBox(
+                      height: size.height / 50,
+                    ),
+                    textbox(admin_viewmodel, "id"),
+                    SizedBox(
+                      height: size.height / 35,
+                    ),
+                    textbox(admin_viewmodel, "Password"),
+                    SizedBox(
+                      height: size.height / 25,
+                    ),
+                    GestureDetector(
+                      onTap: () async {
+                        setState(() {
+                          loading = true;
+                        });
+                        bool valid =
+                            await admin_viewmodel.check_admin_authenticity();
 
-                    if (valid) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => admin(),
-                          ));
-                    } else {
-                      Fluttertoast.showToast(
-                          msg: "wrong credential", backgroundColor: Colors.red);
-                    }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.amber,
-                        borderRadius: BorderRadius.circular(10)),
-                    height: 60,
-                    width: 300,
-                    child: Center(
-                        child: Text(
-                      "Submit",
-                      style: TextStyle(fontSize: 25),
-                    )),
-                  ),
-                )
-              ],
+                        if (valid) {
+                          setState(() {
+                            loading = false;
+                          });
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => admin(),
+                              ));
+                        } else {
+                          setState(() {
+                            loading = false;
+                          });
+                          Fluttertoast.showToast(
+                              msg: "wrong credential",
+                              backgroundColor: Colors.red);
+                        }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.amber,
+                            borderRadius: BorderRadius.circular(10)),
+                        height: 60,
+                        width: 300,
+                        child: Center(
+                            child: Text(
+                          "Submit",
+                          style: TextStyle(fontSize: 25),
+                        )),
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
-          ),
+            Visibility(
+              visible: loading,
+              child: Center(
+                child: CircularProgressIndicator(color: Colors.amber),
+              ),
+            )
+          ],
         ),
       ),
     );

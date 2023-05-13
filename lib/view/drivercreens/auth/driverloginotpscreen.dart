@@ -1,5 +1,6 @@
 import 'package:bustrackingapp/services/network_services/parent_services/parent_firestore_service.dart';
 import 'package:bustrackingapp/providers/provider.dart';
+import 'package:bustrackingapp/view_model/driver/driver_loginscreen_viewmodel.dart';
 import 'package:bustrackingapp/view_model/parents/parent_loginscreen_viewmodel.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,17 +8,16 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
-import 'parentsloginscreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class parentsloginotpscreen extends StatefulWidget {
+class driversloginotpscreen extends StatefulWidget {
   @override
-  State<parentsloginotpscreen> createState() => _parentsloginotpscreenState();
+  State<driversloginotpscreen> createState() => _driversloginotpscreenState();
 }
 
-class _parentsloginotpscreenState extends State<parentsloginotpscreen> {
-  dynamic parent_loginscreen_viewmodel = null;
+class _driversloginotpscreenState extends State<driversloginotpscreen> {
+  dynamic driver_loginscreen_viewmodel = null;
 
   String? otp;
 
@@ -28,8 +28,8 @@ class _parentsloginotpscreenState extends State<parentsloginotpscreen> {
     // TODO: implement initState
     super.initState();
 
-    parent_loginscreen_viewmodel =
-        Provider.of<Parent_loginscreen_viewmodel>(context, listen: false);
+    driver_loginscreen_viewmodel =
+        Provider.of<Driver_loginscreen_viewmodel>(context, listen: false);
   }
 
   @override
@@ -44,7 +44,7 @@ class _parentsloginotpscreenState extends State<parentsloginotpscreen> {
                 height: size.height / 6,
               ),
               Text(
-                "Parent verification",
+                "Driver verification",
                 style: TextStyle(fontSize: 40),
               ),
               SizedBox(
@@ -88,11 +88,12 @@ class _parentsloginotpscreenState extends State<parentsloginotpscreen> {
               GestureDetector(
                 onTap: () async {
                   print(otp);
+                  
                   try {
                     PhoneAuthCredential credential =
                         PhoneAuthProvider.credential(
                             verificationId:
-                                Provider.of<Parent_loginscreen_viewmodel>(
+                                Provider.of<Driver_loginscreen_viewmodel>(
                                         context,
                                         listen: false)
                                     .verificationid_for_otp
@@ -105,12 +106,15 @@ class _parentsloginotpscreenState extends State<parentsloginotpscreen> {
                       Fluttertoast.showToast(msg: "${error}");
                     });
                     if (user != null) {
-                      await parent_loginscreen_viewmodel
-                          .get_institute_doc_u_id_and_parentname_from_phonenumber(
+                      await driver_loginscreen_viewmodel
+                          .get_institute_doc_u_id_and_driver_doc_u_id_from_phonenumber(
                               context);
                       setState(() {});
+                      print("yes otp is right");
                       Navigator.pushNamed(context,
-                          "select_parentscreen_from_bottomnavigationbar");
+                          "select_driverscreen_from_bottomnavigationbar");
+                    } else {
+                      print("not verify ");
                     }
                   } catch (e) {
                     // Fluttertoast.showToast(msg: "${e.getMessage()}");

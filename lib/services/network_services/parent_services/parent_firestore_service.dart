@@ -68,7 +68,7 @@ class Parent_firestore_service {
 
   Future<bool> parent_profile_upload(
       u_id,
-      parentname,
+      // parentname,
       new_parentname,
       new_parentchildname,
       new_parentphonenumber,
@@ -92,6 +92,43 @@ class Parent_firestore_service {
       "parentphonenumber": new_parentphonenumber,
       'letitude': parentlat,
       'longitude': parentlong,
+      "profile_img_link": profile_img_downloadlink,
+    }).then((value) {
+      check_update_or_not = true;
+    }).catchError((error) {
+      // Handle any errors
+      print("inside service erorr is:;; $error");
+      check_update_or_not = false;
+    });
+
+    if (check_update_or_not == true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> schooladmin_parent_profile_upload(
+      institute_doc_id,
+      new_parentname,
+      new_parentchildname,
+      new_parentphonenumber,
+      profile_img_downloadlink,
+      parent_u_id) async {
+    bool check_update_or_not = false;
+    await FirebaseFirestore.instance
+        .collection('main')
+        .doc("main_document")
+        .collection("institute_list")
+        //TODO: institute ma variable avse
+        .doc(institute_doc_id)
+        .collection("parents")
+        //TODO: arshil bhai ni jagya a variable avse
+        .doc(parent_u_id.toString())
+        .update({
+      "parentname": new_parentname,
+      "parentchildname": new_parentchildname,
+      "parentphonenumber": new_parentphonenumber,
       "profile_img_link": profile_img_downloadlink,
     }).then((value) {
       check_update_or_not = true;
@@ -198,10 +235,8 @@ class Parent_firestore_service {
           .get();
 
       if (all_matched_phonenumber_docs.size > 0) {
-        institutename = institute_doc.get("institute_name").toString();
-        parentname = all_matched_phonenumber_docs.docs.first
-            .get("parentname")
-            .toString();
+        institutename = institute_doc.id.toString();
+        parentname = all_matched_phonenumber_docs.docs.first.id.toString();
 
         map = {
           "institutename": institutename.toString(),
@@ -296,9 +331,8 @@ class Parent_firestore_service {
       });
     }
 
-
     ////2
-     DocumentSnapshot doc_snapshot2 = await FirebaseFirestore.instance
+    DocumentSnapshot doc_snapshot2 = await FirebaseFirestore.instance
         .collection("main")
         .doc("main_document")
         .collection("institute_list")
@@ -314,26 +348,24 @@ class Parent_firestore_service {
           .collection("main")
           .doc("main_document")
           .collection("institute_list")
-       .doc(institute_doc_id.toString())
-        .collection("drivers")
-        .doc(driver_doc_id.toString())
-        .collection("chat")
-        .doc(driver_chat_id.toString())
+          .doc(institute_doc_id.toString())
+          .collection("drivers")
+          .doc(driver_doc_id.toString())
+          .collection("chat")
+          .doc(driver_chat_id.toString())
           .update({
         "received_messages": FieldValue.arrayUnion([msg_data_receivetype])
       });
     } else {
- 
-
       await FirebaseFirestore.instance
           .collection("main")
           .doc("main_document")
           .collection("institute_list")
           .doc(institute_doc_id.toString())
-        .collection("drivers")
-        .doc(driver_doc_id.toString())
-        .collection("chat")
-        .doc(driver_chat_id.toString())
+          .collection("drivers")
+          .doc(driver_doc_id.toString())
+          .collection("chat")
+          .doc(driver_chat_id.toString())
           .set({
         "received_messages": FieldValue.arrayUnion([msg_data_receivetype])
       }).then((value) {

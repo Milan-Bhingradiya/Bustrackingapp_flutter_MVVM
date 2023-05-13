@@ -5,6 +5,7 @@ class Modelofdrivers {
   // String? driveremail;
   String? driverphonenumber;
   String? driver_doc_u_id;
+  String? profile_img_link;
   double? lat;
   double? long;
   final documentSnapshot;
@@ -16,5 +17,6 @@ class Modelofdrivers {
     driver_doc_u_id = documentSnapshot.id;
     // driveremail = QueryDocumentSnapshot["email"];
     driverphonenumber = documentSnapshot["driverphonenumber"];
+    profile_img_link= documentSnapshot["profile_img_link"];
   }
 }

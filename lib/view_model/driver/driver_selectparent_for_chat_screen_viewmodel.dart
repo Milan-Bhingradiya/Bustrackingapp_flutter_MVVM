@@ -47,9 +47,8 @@ class Driver_selectparent_for_chat_screen_viewmodel extends ChangeNotifier {
       list_of_parents_chatbox_widget.add(driver_chat_box_with_profile(
         title: list_of_parents_model[i].parentname,
         subtitile: list_of_parents_model[i].parentphonenumber,
-        profileimglink:
-            "https://firebasestorage.googleapis.com/v0/b/bustrackingapp00final.appspot.com/o/bustrackingapp%2Fbrilliant%20vidyalaya%2Fparent%2Fbabubhainotyo_9016064322?alt=media&token=72fe0664-0db4-40d8-bd7c-941994c494c3",
-        u_id: list_of_parents_model[i].parent_doc_u_id,
+        profileimglink:list_of_parents_model[i].profile_img_link,
+         u_id: list_of_parents_model[i].parent_doc_u_id,
       ));
     }
   }

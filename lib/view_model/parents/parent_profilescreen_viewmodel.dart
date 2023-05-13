@@ -52,6 +52,10 @@ class Parent_profilescreen_viewmodel extends ChangeNotifier {
     institute_doc_u_id = parent_login_viewmodel.institute_doc_u_id.toString();
     parent_doc_u_id = parent_login_viewmodel.parent_doc_u_id;
 
+    print("qqqqqqqqqqq ${institute_doc_u_id}");
+
+    print("qqqqqqqqqqq ${parent_doc_u_id}");
+
     ///
     final DocumentSnapshot parentdata = await parent_firestore_service
         .get_parent_doc(institute_doc_u_id, parent_doc_u_id);
@@ -118,7 +122,7 @@ class Parent_profilescreen_viewmodel extends ChangeNotifier {
 
     updated_or_failed = await parent_firestore_service.parent_profile_upload(
         institute_doc_u_id,
-        parentname,
+        // parentname,
         new_parentname,
         new_parentchildname,
         new_parentphonenumber,
@@ -150,9 +154,8 @@ class Parent_profilescreen_viewmodel extends ChangeNotifier {
 
       try {
         // String id = "${new_parentname}_${new_parentphonenumber}";
-        final ref = await FirebaseStorage.instance
-            .ref()
-            .child("bustrackingapp/$institute_doc_u_id/parent/$parent_doc_u_id");
+        final ref = await FirebaseStorage.instance.ref().child(
+            "bustrackingapp/$institute_doc_u_id/parent/$parent_doc_u_id");
 
         var uploadTask = ref.putFile(img_to_file);
         final snapshot = await uploadTask.whenComplete(() {});

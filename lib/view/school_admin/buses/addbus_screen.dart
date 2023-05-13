@@ -37,6 +37,7 @@ class _addbusscreenState extends State<addbusscreen> {
           Padding(
             padding: EdgeInsets.all(10),
             child: TextFormField(
+              keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 labelText: 'Bus number',
                 counterText: '',
@@ -44,7 +45,9 @@ class _addbusscreenState extends State<addbusscreen> {
                 prefixIcon: const Icon(Icons.person),
               ),
               onChanged: (value) {
-                schooladmin_bus_viewmodel.busnum = value;
+                if (value.isNotEmpty) {
+                  schooladmin_bus_viewmodel.busnum = int.parse(value);
+                }
               },
             ),
           ),

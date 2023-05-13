@@ -9,6 +9,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 class Driver_loginscreen_viewmodel with ChangeNotifier {
   Driver_firestore_service driver_firestore_service =
       Driver_firestore_service();
+
+  String? verificationid_for_otp;
+   String? driverphonenumber;
+
   late String dropdownvalue;
 
   String? driver_name_at_driverlogin;
@@ -79,5 +83,33 @@ class Driver_loginscreen_viewmodel with ChangeNotifier {
             institute_doc_uid1, phonenumber);
 
     driver_name_at_driverlogin = await result.docs.first.reference.id;
+  }
+
+
+  
+  Future<bool> get_institute_doc_u_id_and_driver_doc_u_id_from_phonenumber(
+      context) async {
+    Map res = await driver_firestore_service
+        .get_driver_institutename_id_and_driver_id_from_phonenumber(
+            driverphonenumber);
+
+    var institute_doc_id = res["institute_id"];
+    var driver_doc_id = res["driver_id"];
+
+    if (institute_doc_id == "" ||
+        institute_doc_id == null ||
+        driver_doc_id == "" ||
+        driver_doc_id == null) {
+      print("falsssssssssssssssssssssssssssssssssssssss");
+      return false;
+    } else {
+      institute_doc_u_id = institute_doc_id.toString();
+      driver_name_at_driverlogin = driver_doc_id.toString();
+
+      print("trueeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+      print(institute_doc_id);
+     
+      return true;
+    }
   }
 }

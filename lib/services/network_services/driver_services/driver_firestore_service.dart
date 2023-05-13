@@ -44,6 +44,57 @@ class Driver_firestore_service {
     return querySnapshot.docs[0].id.toString();
   }
 
+
+
+//when user goto parent welcome screen  using phone number and otp method we neeed to find
+// s=institute name and parent name from this phonenumber ..
+//if we have institutename and parent name then we can easily call function for fil profile data
+
+  Future<Map<String, String>>
+      get_driver_institutename_id_and_driver_id_from_phonenumber(
+          phonenumber) async {
+    String? institutename;
+    String? parentname;
+    Map<String, String>? map;
+
+    final all_institute = await FirebaseFirestore.instance
+        .collection("main")
+        .doc("main_document")
+        .collection("institute_list")
+        .get();
+
+    for (var institute_doc in all_institute.docs) {
+      final all_matched_phonenumber_docs = await FirebaseFirestore.instance
+          .collection("main")
+          .doc("main_document")
+          .collection("institute_list")
+          .doc(institute_doc.id.toString())
+          .collection("drivers")
+          .where("driverphonenumber", isEqualTo: phonenumber)
+          .get();
+
+      if (all_matched_phonenumber_docs.size > 0) {
+        institutename = institute_doc.id.toString();
+        parentname = all_matched_phonenumber_docs.docs.first.id.toString();
+
+        map = {
+          "institute_id": institutename.toString(),
+          "driver_id": parentname.toString()
+        };
+        break; // exit loop once a match is found
+      }
+    }
+
+    if (map == null) {
+      map = {"institute_id": "", "driver_id": ""};
+
+      return map;
+    } else {
+      return map;
+    }
+  }
+
+
 //profilepage services....
 
 // get doc using instituteneme ,drivername, password
@@ -100,6 +151,46 @@ class Driver_firestore_service {
       "drivername": new_drivername.toString(),
       "driverphonenumber": new_driverphonenumber.toString(),
       "profile_img_link": profile_img_downloadlink,
+      // "email": new_driveremail.toString()
+    }).then((value) {
+      print("drive updateddddddddddddddddd");
+      check_update_or_not = true;
+    }).catchError((error) {
+      // Handle any errors
+      print(error);
+      check_update_or_not = false;
+    });
+
+    if (check_update_or_not == true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+   Future<bool> schooladmin_driver_profile_upload(institute_doc_u_id, driver_u_id,
+      new_drivername, new_driverphonenumber,new_busnum, profile_img_downloadlink
+      // new_driveremail
+
+      ) async {
+    print(institute_doc_u_id);
+    print(driver_u_id);
+
+    bool check_update_or_not = false;
+    await FirebaseFirestore.instance
+        .collection('main')
+        .doc("main_document")
+        .collection("institute_list")
+        //TODO: institute ma variable avse
+        .doc(institute_doc_u_id)
+        .collection("drivers")
+        //TODO: arshil bhai ni jagya a variable avse
+        .doc(driver_u_id.toString())
+        .update({
+      "drivername": new_drivername.toString(),
+      "driverphonenumber": new_driverphonenumber.toString(),
+      "profile_img_link": profile_img_downloadlink,
+      "busnum": new_busnum,
       // "email": new_driveremail.toString()
     }).then((value) {
       print("drive updateddddddddddddddddd");

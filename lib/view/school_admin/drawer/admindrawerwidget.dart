@@ -30,25 +30,6 @@ class admindrawer extends StatelessWidget {
               },
             ),
             ListTile(
-              title: Text("DRIVER"),
-              onTap: () {
-                Navigator.pushNamed(context, "listofdriverscreen");
-                //Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text("PARENTS"),
-              onTap: () {
-                Navigator.pushNamed(context, "listofparentsscreen");
-              },
-            ),
-            ListTile(
-              title: Text("BUSES"),
-              onTap: () {
-                Navigator.pushNamed(context, "listofbusscreen");
-              },
-            ),
-            ListTile(
                 title: Text("sign out"),
                 onTap: () {
                   FirebaseAuth.instance.signOut();
