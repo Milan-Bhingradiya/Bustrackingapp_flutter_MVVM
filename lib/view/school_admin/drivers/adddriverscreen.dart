@@ -80,14 +80,6 @@ class _adddriverscreenState extends State<adddriverscreen> {
                       key: formkey,
                       child: Column(
                         children: [
-                          SizedBox(
-                            height: 30,
-                          ),
-                          Text(
-                            "ADD driver info",
-                            style: TextStyle(fontSize: 30),
-                          ),
-////
                           GestureDetector(
                             onTap: () async {
                               print("ontap called");
@@ -99,21 +91,24 @@ class _adddriverscreenState extends State<adddriverscreen> {
                             },
                             child: Column(
                               children: [
-                                CircleAvatar(
-                                    child: Text("Choose Profile"),
-                                    radius: 70,
-                                    backgroundColor: Colors.grey[100],
-                                    foregroundImage: (schooladmin_driver_viewmodel
-                                                    .selected_profileimg_path ==
-                                                null ||
-                                            schooladmin_driver_viewmodel
-                                                    .selected_profileimg_path ==
-                                                "")
-                                        ? null
-                                        : FileImage(io.File(
-                                            schooladmin_driver_viewmodel
-                                                .selected_profileimg_path
-                                                .toString()))),
+                                Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: CircleAvatar(
+                                      child: Text("Choose Profile"),
+                                      radius: 70,
+                                      backgroundColor: Colors.grey[100],
+                                      foregroundImage: (schooladmin_driver_viewmodel
+                                                      .selected_profileimg_path ==
+                                                  null ||
+                                              schooladmin_driver_viewmodel
+                                                      .selected_profileimg_path ==
+                                                  "")
+                                          ? null
+                                          : FileImage(io.File(
+                                              schooladmin_driver_viewmodel
+                                                  .selected_profileimg_path
+                                                  .toString()))),
+                                ),
                               ],
                             ),
                           ),
@@ -269,7 +264,7 @@ class _adddriverscreenState extends State<adddriverscreen> {
 Widget enter_driver_name_textformfield(schooladmin_driver_viewmodel) {
   return TextFormField(
     decoration: InputDecoration(
-      labelText: "Enter Driver name",
+      labelText: "name",
       counterText: '',
       border: const OutlineInputBorder(),
       prefixIcon: const Icon(Icons.person),
@@ -290,7 +285,7 @@ Widget enter_driver_name_textformfield(schooladmin_driver_viewmodel) {
 Widget enter_driver_phonenumber_textformfield(schooladmin_driver_viewmodel) {
   return TextFormField(
     decoration: InputDecoration(
-      labelText: "Enter Driver phone number",
+      labelText: "Phone number",
       counterText: '',
       border: const OutlineInputBorder(),
       prefixIcon: const Icon(Icons.person),
@@ -311,7 +306,7 @@ Widget enter_driver_phonenumber_textformfield(schooladmin_driver_viewmodel) {
 Widget enter_driver_password_textformfield(schooladmin_driver_viewmodel) {
   return TextFormField(
     decoration: InputDecoration(
-      labelText: "Enter password",
+      labelText: "password",
       counterText: '',
       border: const OutlineInputBorder(),
       prefixIcon: const Icon(Icons.person),
@@ -333,7 +328,7 @@ Widget enter_driver_confirmpassword_textformfield(
     schooladmin_driver_viewmodel) {
   return TextFormField(
     decoration: InputDecoration(
-      labelText: "Enter confirm password",
+      labelText: "confirm password",
       counterText: '',
       border: const OutlineInputBorder(),
       prefixIcon: const Icon(Icons.person),

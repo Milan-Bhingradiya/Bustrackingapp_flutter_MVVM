@@ -32,7 +32,6 @@ class _listofparentsscreenState extends State<listofparentsscreen> {
   late String childname;
   late String drivername;
 
-
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   String? institute_doc_id;
@@ -258,11 +257,10 @@ class _listofparentsscreenState extends State<listofparentsscreen> {
                                             .delete_parent(context,
                                                 snapshot.data!.docs[index].id);
                                     if (result) {
-                                      Fluttertoast.showToast(msg: "aaa");
+                                      Fluttertoast.showToast(
+                                          msg: "Successfully deleted");
                                     }
                                   }
-
-                                
                                 },
                                 child: Container(
                                   child: Padding(

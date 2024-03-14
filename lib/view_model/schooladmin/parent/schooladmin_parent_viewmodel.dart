@@ -1,4 +1,5 @@
 import 'package:bustrackingapp/services/network_services/schooladmin_services/schooladmin_firestore_service.dart';
+import 'package:bustrackingapp/utils/hashing.dart';
 
 import 'package:bustrackingapp/view_model/schooladmin/schooladmin_loginscreen_viewmodel.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -62,7 +63,7 @@ class Schooladmin_parent_viewmodel extends ChangeNotifier {
   }
 
   Future<bool> add_parent(context) async {
-  if (selected_profileimg_path == null || selected_profileimg_path == "") {
+    if (selected_profileimg_path == null || selected_profileimg_path == "") {
       //means not selected img
     } else {
       print("start uploading parent profile");
@@ -75,34 +76,30 @@ class Schooladmin_parent_viewmodel extends ChangeNotifier {
         Provider.of<Schooladmin_loginscreen_viewmodel>(context, listen: false);
 
     institute_doc_id = schooladmin_login_viewmodel.institute_doc_id;
-  final fcmtoken = await FirebaseMessaging.instance.getToken();
+    final fcmtoken = await FirebaseMessaging.instance.getToken();
 
     print("inside add parent in schooladmin");
     print(fcmtoken);
+
     return await schooladmin_firestore_service.add_parent(
         institute_doc_id,
         parentname,
         parentphonenumber,
         parentchildname,
-        confirmparentpassword,
+        hashPassword(confirmparentpassword!),
         letitude,
         longitude,
-        profile_img_downloadlink,fcmtoken);
+        profile_img_downloadlink,
+        fcmtoken);
   }
 
-
-  
-  Future<bool> delete_parent(context,parent_doc_id) async {
-   
-
+  Future<bool> delete_parent(context, parent_doc_id) async {
 //use this only for getting institute name ....
     final schooladmin_login_viewmodel =
         Provider.of<Schooladmin_loginscreen_viewmodel>(context, listen: false);
- 
+
     institute_doc_id = schooladmin_login_viewmodel.institute_doc_id;
     return await schooladmin_firestore_service.delete_parent(
-      institute_doc_id,parent_doc_id
-     
-    );
+        institute_doc_id, parent_doc_id);
   }
 }

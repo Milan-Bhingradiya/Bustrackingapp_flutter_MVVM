@@ -1,4 +1,5 @@
 import 'package:bustrackingapp/services/network_services/schooladmin_services/schooladmin_firestore_service.dart';
+import 'package:bustrackingapp/utils/hashing.dart';
 
 import 'package:bustrackingapp/view_model/driver/driver_loginscreen_viewmodel.dart';
 import 'package:bustrackingapp/view_model/schooladmin/schooladmin_loginscreen_viewmodel.dart';
@@ -114,7 +115,7 @@ class Schooladmin_driver_viewmodel extends ChangeNotifier {
       bus_num,
       drivername,
       driverphonenumber,
-      confirmdriverpassword,
+      hashPassword(confirmdriverpassword!),
       profile_img_downloadlink,
       fcmtoken
     );

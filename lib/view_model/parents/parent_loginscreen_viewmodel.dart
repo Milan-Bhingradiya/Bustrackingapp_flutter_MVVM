@@ -1,6 +1,7 @@
 import 'package:bustrackingapp/services/network_services/parent_services/parent_firestore_service.dart';
-import 'package:bustrackingapp/model/parent/auth/parent_enum.dart';
 
+import 'package:bustrackingapp/model/parent/auth/parent_enum.dart';
+import 'package:bustrackingapp/utils/hashing.dart';
 import 'package:flutter/material.dart';
 
 class Parent_loginscreen_viewmodel extends ChangeNotifier {
@@ -15,31 +16,37 @@ class Parent_loginscreen_viewmodel extends ChangeNotifier {
       Parent_firestore_service();
 
   Future<user_valid_or_invalid_or_emptyfiled_in_parent>
-      check_authenticity_of_user(u_id, parentname, password) async {
-    var get_password_from_firebase;
+      check_authenticity_of_user(u_id, parentname, enteredPassword) async {
+    var storedHashedPassword;
 
-    if (u_id == "" || u_id == null || parentname == null || password == "") {
+    if (u_id == "" ||
+        u_id == null ||
+        parentname == null ||
+        enteredPassword == "") {
     } else {
       print("parent login getting password query fired");
 
-      get_password_from_firebase = await parent_firestore_service
+      storedHashedPassword = await parent_firestore_service
           .get_password_of_parent_from_document(u_id, parentname);
-      print("password: $get_password_from_firebase");
     }
 
     //
-    if (u_id == "" || u_id == null || password == null || parentname == null) {
-      print("some value is  null in driver login");
+    if (u_id == "" ||
+        u_id == null ||
+        enteredPassword == null ||
+        parentname == null) {
+      print("some value is  null in parent login");
 
       return user_valid_or_invalid_or_emptyfiled_in_parent.Empty;
     } else {
-      if (get_password_from_firebase == password) {
+      if (verifyPassword(enteredPassword, storedHashedPassword)) {
         print("bhai hu aya  id and pass is true");
 
         parent_entered_name_at_login = parentname;
         institute_doc_u_id = u_id;
 
-       parent_doc_u_id= await parent_firestore_service.get_parent_u_id_from_parentname(institute_doc_u_id,parentname);
+        parent_doc_u_id = await parent_firestore_service
+            .get_parent_u_id_from_parentname(institute_doc_u_id, parentname);
         //get parent u_id from name
 
         return user_valid_or_invalid_or_emptyfiled_in_parent.True;
@@ -64,13 +71,11 @@ class Parent_loginscreen_viewmodel extends ChangeNotifier {
         institute_doc_id == null ||
         parentname == "" ||
         parentname == null) {
-      print("falsssssssssssssssssssssssssssssssssssssss");
       return false;
     } else {
       institute_doc_u_id = institute_doc_id.toString();
       parent_entered_name_at_login = parentname.toString();
 
-      print("trueeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
       print(institute_doc_id);
       print(parentname);
       return true;

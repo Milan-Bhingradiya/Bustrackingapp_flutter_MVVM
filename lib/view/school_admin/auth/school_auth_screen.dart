@@ -39,6 +39,12 @@ class _School_auth_screenState extends State<School_auth_screen> {
     schooladmin_loginscreen_viewmodel =
         await Provider.of<Schooladmin_loginscreen_viewmodel>(context,
             listen: false);
+
+    // Provider.of<Alldata>(context, listen: false)
+    //     .list_of_institute_dropdownitem
+    //     .clear();
+    Provider.of<Alldata>(context, listen: false)
+        .fill_list_of_institute_dropdownitem();
   }
 
   @override
@@ -158,7 +164,7 @@ class _School_auth_screenState extends State<School_auth_screen> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                         setState(() {
+                        setState(() {
                           loading = true;
                         });
                         if (!(dropdownvalue == "" || dropdownvalue == null)) {
@@ -170,18 +176,18 @@ class _School_auth_screenState extends State<School_auth_screen> {
                           if (user_valid_or_not) {
                             schooladmin_loginscreen_viewmodel.institute_doc_id =
                                 institute_u_id;
-                                  setState(() {
-                          loading = false;
-                        });
+                            setState(() {
+                              loading = false;
+                            });
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => adminhomescreen(),
                                 ));
                           } else {
-                              setState(() {
-                          loading = false;
-                        });
+                            setState(() {
+                              loading = false;
+                            });
                             Fluttertoast.showToast(
                                 msg: "Wrong Credentials",
                                 backgroundColor: Colors.red[400]);

@@ -76,8 +76,8 @@ class _mapfordriverState extends State<mapfordriver> {
     // TODO: implement initState
     super.initState();
     milanop();
-    getpolyline();
-    addpolyline();
+    // getpolyline();
+    // addpolyline();
   }
 
   @override
@@ -96,7 +96,7 @@ class _mapfordriverState extends State<mapfordriver> {
                   target: LatLng(21.999, 71.990),
                 ),
                 markers: driver_showmapscreen_viewmodel.list_of_markers_of_home,
-                polylines: Set<Polyline>.of(polylines_map.values),
+                // polylines: Set<Polyline>.of(polylines_map.values),
               ),
             ),
     );

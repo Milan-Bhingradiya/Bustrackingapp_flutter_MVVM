@@ -3,7 +3,6 @@ import 'package:bustrackingapp/view/admin/add_school.dart';
 import 'package:bustrackingapp/view/admin/admin.dart';
 import 'package:bustrackingapp/view/admin/auth/admin_login.dart';
 import 'package:bustrackingapp/view/drivercreens/auth/driverloginotpscreen.dart';
-
 import 'package:bustrackingapp/view/drivercreens/auth/driverloginscreen.dart';
 import 'package:bustrackingapp/view/drivercreens/chat/driver_chatting_screen.dart';
 import 'package:bustrackingapp/view/drivercreens/select_driverscreen_from_bottomnavigationbar.dart';
@@ -92,9 +91,8 @@ class MyApp extends StatelessWidget {
               create: (create) =>
                   Driver_selectparent_for_chat_screen_viewmodel()),
 
-                   ChangeNotifierProvider<Driver_chattingscreen_viewmodel>(
-              create: (create) =>
-                  Driver_chattingscreen_viewmodel()),
+          ChangeNotifierProvider<Driver_chattingscreen_viewmodel>(
+              create: (create) => Driver_chattingscreen_viewmodel()),
 
           //parent ke
           ChangeNotifierProvider<Parent_loginscreen_viewmodel>(
@@ -111,23 +109,21 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<Parent_chattingscreen_viremodel>(
               create: (create) => Parent_chattingscreen_viremodel()),
 
-
           //schooladmin
-
 
           ChangeNotifierProvider<Schooladmin_loginscreen_viewmodel>(
               create: (create) => Schooladmin_loginscreen_viewmodel()),
-                  ChangeNotifierProvider<Schooladmin_homescreen_viewmodel>(
+          ChangeNotifierProvider<Schooladmin_homescreen_viewmodel>(
               create: (create) => Schooladmin_homescreen_viewmodel()),
 
 //   schooladmin Editparent
           ChangeNotifierProvider<Schooladmin_editparent_viewmodel>(
               create: (create) => Schooladmin_editparent_viewmodel()),
 
-           //   schooladmin Editdriver
+          //   schooladmin Editdriver
           ChangeNotifierProvider<Schooladmin_driver_viewmodel>(
               create: (create) => Schooladmin_driver_viewmodel()),
-                 ChangeNotifierProvider<Schooladmin_editdriver_viewmodel>(
+          ChangeNotifierProvider<Schooladmin_editdriver_viewmodel>(
               create: (create) => Schooladmin_editdriver_viewmodel()),
           ChangeNotifierProvider<Schooladmin_parent_viewmodel>(
               create: (create) => Schooladmin_parent_viewmodel()),
@@ -164,13 +160,13 @@ class MyApp extends StatelessWidget {
                 "parentsloginscreen": (context) => parentsloginscreen(),
                 //driver
                 "driverwelcomescreen": ((context) => driverwelcomescreen()),
-                "driverloginotpscreen":(context) => driversloginotpscreen(),
+                "driverloginotpscreen": (context) => driversloginotpscreen(),
                 "mapfordriver": (context) => mapfordriver(),
                 "driverprofilescreen": (context) => driverprofilescreen(),
                 "select_driverscreen_from_bottomnavigationbar": (context) =>
                     select_driverscreen_from_bottomnavigationbar(),
 
-                    "driver_chatting_screen":(context) => Driver_chatting_screen(),
+                "driver_chatting_screen": (context) => Driver_chatting_screen(),
 
                 //buses
                 "listofbusscreen": (context) => listofbusscreen(),

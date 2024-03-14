@@ -25,7 +25,7 @@ class _addnewparents_screen extends State<addnewparents_screen> {
   String? childname;
   String? drivername;
 
-   bool show_loding = false;
+  bool show_loding = false;
 
   dynamic schooladmin_parent_viewmodel = null;
 
@@ -59,16 +59,7 @@ class _addnewparents_screen extends State<addnewparents_screen> {
                   key: formkey,
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Text(
-                        "ADD driver info",
-                        style: TextStyle(
-                            fontFamily: "Playfair Display", fontSize: 30),
-                      ),
-
-                         GestureDetector(
+                      GestureDetector(
                         onTap: () async {
                           print("ontap called");
 
@@ -98,7 +89,7 @@ class _addnewparents_screen extends State<addnewparents_screen> {
                         ),
                       ),
 
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Container(
@@ -137,10 +128,21 @@ class _addnewparents_screen extends State<addnewparents_screen> {
                               schooladmin_parent_viewmodel)),
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
-
+                      //  make left align below text in flutter
+                      Padding(
+                        padding:
+                            EdgeInsets.all(8.0), // Add padding around the text
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Pick up detail',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ),
+                      ),
                       Row(
                         children: [
                           Flexible(
@@ -166,10 +168,10 @@ class _addnewparents_screen extends State<addnewparents_screen> {
                       GestureDetector(
                         onTap: () async {
                           if (formkey.currentState!.validate()) {
-                             setState(() {
-                                  show_loding = true;
-                                });
-                                
+                            setState(() {
+                              show_loding = true;
+                            });
+
                             print("succesful");
                             bool updated_or_failed =
                                 await schooladmin_parent_viewmodel
@@ -258,7 +260,7 @@ Widget enter_parent_phonenumber_textformfield(schooladmin_parent_viewmodel) {
 Widget enter_parent_childname_textformfield(schooladmin_parent_viewmodel) {
   return TextFormField(
     decoration: InputDecoration(
-      labelText: "Enter parent child number",
+      labelText: "Enter child Name",
       counterText: '',
       border: const OutlineInputBorder(),
       prefixIcon: const Icon(Icons.person),
@@ -327,7 +329,7 @@ Widget enter_parent_confirmpassword_textformfield(
 Widget enter_parent_letitude_textformfield(schooladmin_parent_viewmodel) {
   return TextFormField(
     decoration: InputDecoration(
-      labelText: "Enter confirm password",
+      labelText: "letitude",
       counterText: '',
       border: const OutlineInputBorder(),
       prefixIcon: const Icon(Icons.person),
@@ -341,7 +343,7 @@ Widget enter_parent_letitude_textformfield(schooladmin_parent_viewmodel) {
 Widget enter_parent_longitude_textformfield(schooladmin_parent_viewmodel) {
   return TextFormField(
     decoration: InputDecoration(
-      labelText: "Enter confirm password",
+      labelText: "longitude",
       counterText: '',
       border: const OutlineInputBorder(),
       prefixIcon: const Icon(Icons.person),

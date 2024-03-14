@@ -61,13 +61,8 @@ class _selectwhoyouarescreenState extends State<selectwhoyouarescreen> {
   @override
   void initState() {
     // TODO: implement initState
-    print("oookokokk");
 
-    Provider.of<Alldata>(context, listen: false)
-        .list_of_institute_dropdownitem
-        .clear();
-    Provider.of<Alldata>(context, listen: false)
-        .fill_list_of_institute_dropdownitem();
+   
   }
 
   @override

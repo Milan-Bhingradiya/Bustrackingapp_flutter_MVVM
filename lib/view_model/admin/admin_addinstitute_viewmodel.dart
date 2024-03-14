@@ -1,4 +1,5 @@
 import 'package:bustrackingapp/services/network_services/admin_services/admin_firestore_service.dart';
+import 'package:bustrackingapp/utils/hashing.dart';
 
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,7 @@ class Admin_addinstitute_viewmodel with ChangeNotifier {
   String? instituteconfirmpassword;
 
   Future<bool> add_institute() async {
-    return await admin_firestore_service.add_institute(
-        institutename, institutepassword);
+    String password = hashPassword(institutepassword!);
+    return await admin_firestore_service.add_institute(institutename, password);
   }
 }
